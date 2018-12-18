@@ -24,34 +24,10 @@ enum ZLScanFlashResult {
 class ZLScannerViewController: ZLScannerBasicViewController {
     var isFromEdit = false
     private var captureSessionManager: CaptureSessionManager?
-    
     private let videoPreviewlayer = AVCaptureVideoPreviewLayer()
     private let quadView = ZLQuadrilateralView()
-
     private var flashEnabled = false
     private var banTriggerFlash = false
-    
-    private lazy var shutterButton: ZLScanShutterButton = {
-        let button = ZLScanShutterButton()
-        button.isHidden = true
-        button.addTarget(self, action: #selector(captureImage(_:)), for: .touchUpInside)
-        return button
-    }()
-    private lazy var promptView: ZLScanningPromptView = {
-        let promptView = ZLScanningPromptView(frame: .zero)
-        return promptView
-    }()
-    private lazy var previewImageView: UIImageView  = {
-        let previewImageView = UIImageView()
-        previewImageView.contentMode = .scaleAspectFill
-        return previewImageView
-    }()
-    private lazy var photoCollectionView: ZLPhotoWaterFallView = {
-        let photoCollectionView = ZLPhotoWaterFallView(frame: CGRect(x: 0, y: view.frame.height - kNavHeight - photoCollectionViewWithBarHeight - kBottomGap, width: view.frame.width, height: photoCollectionViewWithBarHeight + kBottomGap))
-        photoCollectionView.delegate = self
-        return photoCollectionView
-    }()
-    
     private var disappear: Bool = false
     private var isAutoCapture: Bool = false {
         didSet {
@@ -63,13 +39,56 @@ class ZLScannerViewController: ZLScannerBasicViewController {
         }
     }
     
+    private lazy var autoCaptureButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Manual", for: .normal)
+        button.setTitle("Auto", for: .selected)
+        return button
+    }()
+    
+    private lazy var autoFlashButton: UIButton = {
+        let image = UIImage(named: "flash", in: Bundle(for: ZLScannerViewController.self), compatibleWith: nil)
+        let button = UIButton()
+        button.setImage(image, for: .normal)
+        return button
+    }()
+    
+    private lazy var shutterButton: ZLScanShutterButton = {
+        let button = ZLScanShutterButton()
+        button.isHidden = false
+        button.addTarget(self, action: #selector(captureImage(_:)), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var promptView: ZLScanningPromptView = {
+        let promptView = ZLScanningPromptView(frame: .zero)
+        return promptView
+    }()
+    
+    private lazy var previewImageView: UIImageView  = {
+        let previewImageView = UIImageView()
+        previewImageView.contentMode = .scaleAspectFill
+        return previewImageView
+    }()
+    
+    private lazy var deleteShadowView: ZLScannerViewController.DeleteShadowView = {
+        let view = ZLScannerViewController.DeleteShadowView()
+        view.isHidden = false
+        return view
+    }()
+    
+    private lazy var photoCollectionView: ZLPhotoWaterFallView = {
+        let photoCollectionView = ZLPhotoWaterFallView(frame: CGRect(x: 0, y: view.frame.height - kNavHeight - photoCollectionViewWithBarHeight - kBottomGap, width: view.frame.width, height: photoCollectionViewWithBarHeight + kBottomGap))
+        photoCollectionView.backViewColor = UIColor.black
+        photoCollectionView.delegate = self
+        return photoCollectionView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Scanning"
-        
         setupViews()
         setupConstraints()
-        
         captureSessionManager = CaptureSessionManager(videoPreviewLayer: videoPreviewlayer)
         captureSessionManager?.delegate = self
     }
@@ -99,19 +118,34 @@ class ZLScannerViewController: ZLScannerBasicViewController {
         quadView.editable = false
         
         view.addSubview(quadView)
+        view.addSubview(autoFlashButton)
+        view.addSubview(autoCaptureButton)
         view.addSubview(shutterButton)
         view.addSubview(promptView)
         view.addSubview(previewImageView)
+        view.addSubview(deleteShadowView)
         view.addSubview(photoCollectionView)
     }
     private func setupConstraints() {
-        let shutterButtonConstraints = [
-            view.bottomAnchor.constraint(equalTo: shutterButton.bottomAnchor, constant: photoCollectionViewWithBarHeight + 30 + kBottomGap),
-            shutterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            shutterButton.widthAnchor.constraint(equalToConstant: 65.0),
-            shutterButton.heightAnchor.constraint(equalToConstant: 65.0)
-        ]
-        NSLayoutConstraint.activate(shutterButtonConstraints)
+        shutterButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([shutterButton.bottomAnchor.constraint(equalTo: photoCollectionView.topAnchor, constant: 64 - 24),
+                                     shutterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                                     shutterButton.widthAnchor.constraint(equalToConstant: 60.0),
+                                     shutterButton.heightAnchor.constraint(equalToConstant: 60.0)])
+        
+        autoFlashButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([autoFlashButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+                                     autoFlashButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20.0)])
+        
+        autoCaptureButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([autoCaptureButton.topAnchor.constraint(equalTo: autoFlashButton.topAnchor, constant: 0),
+                                     autoCaptureButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20)])
+        
+        deleteShadowView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([deleteShadowView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+                                     deleteShadowView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0),
+                                     deleteShadowView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
+                                     deleteShadowView.bottomAnchor.constraint(equalTo: photoCollectionView.topAnchor, constant: 64)])
     }
 }
 extension ZLScannerViewController: ZLScanRectangleDetectionDelegateProtocol {
@@ -282,9 +316,6 @@ extension ZLScannerViewController: ZLPhotoWaterFallViewProtocol {
         captureSessionManager?.stop()
         navigationController?.pushViewController(vc, animated: true)
     }
-    func manualToggle(_ button: UIButton) {
-        if button.isSelected { isAutoCapture = false } else { isAutoCapture = true }
-    }
 }
 //MARK: GET Quadrilateral
 extension ZLScannerViewController { 
@@ -306,5 +337,47 @@ extension ZLScannerViewController {
         let transforms = [scaleTransform, rotationTransform, translationTransform]
         let transformedQuad = quard.applyTransforms(transforms)
         return transformedQuad
+    }
+}
+
+fileprivate extension ZLScannerViewController {
+    class DeleteShadowView : UIView {
+        private lazy var lineView: UIView = {
+            let view = UIView()
+            view.backgroundColor = UIColor.white
+            return view
+        }()
+        
+        private lazy var deleteImageView: UIImageView = {
+            let view = UIImageView()
+            view.backgroundColor = UIColor.orange
+            return view
+        }()
+        
+        init() {
+            super.init(frame: CGRect.zero)
+            backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+            addSubview(lineView)
+            addSubview(deleteImageView)
+            setupFrame()
+        }
+        
+        private func setupFrame() {
+            lineView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([lineView.heightAnchor.constraint(equalToConstant: 1),
+                                         lineView.leftAnchor.constraint(equalTo: self.leftAnchor),
+                                         lineView.rightAnchor.constraint(equalTo: self.rightAnchor),
+                                         lineView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -100)])
+            
+            deleteImageView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([deleteImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 200),
+                                         deleteImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+                                         deleteImageView.widthAnchor.constraint(equalToConstant: 100),
+                                         deleteImageView.heightAnchor.constraint(equalToConstant: 100)])
+        }
+        
+        required init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
     }
 }

@@ -34,7 +34,9 @@ class ZLScannerBasicViewController: UIViewController {
     }
 }
 extension ZLScannerBasicViewController {
-    @objc func backBtnClick() {}
+    @objc func backBtnClick() {
+        
+    }
     
     func showAlter(title: String, message: String, confirm: String, cancel: String,confirmComp:@escaping ((UIAlertAction)->()),cancelComp:@escaping ((UIAlertAction)->())){
         let confirmAlt = UIAlertAction(title: confirm, style: .destructive, handler: confirmComp)

@@ -519,12 +519,12 @@
 		FEE9FDEC21C898E20065E87B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				FEE9FDBA21C8977C0065E87B /* ZLPhotoWaterFallView.swift */,
+				FEE9FDB721C8977C0065E87B /* ZLPhotoWaterFallLayout.swift */,
 				FEE9FDC221C8977C0065E87B /* ZLPhotoEditingView.swift */,
 				FEE9FDC521C8977C0065E87B /* ZLPhotoEditingView.xib */,
 				FEE9FDBD21C8977C0065E87B /* ZLPhotoCell.swift */,
 				FEE9FDC421C8977C0065E87B /* ZLPhotoCell.xib */,
-				FEE9FDBA21C8977C0065E87B /* ZLPhotoWaterFallView.swift */,
-				FEE9FDB721C8977C0065E87B /* ZLPhotoWaterFallLayout.swift */,
 				FEE9FDBC21C8977C0065E87B /* ZLScanMaskView.swift */,
 				FEE9FDC021C8977C0065E87B /* ZLScanImageViewer.swift */,
 			);
