@@ -13,13 +13,10 @@ private let kToolBarViewHeight: CGFloat = 64
 
 protocol ZLPhotoWaterFallViewProtocol: NSObjectProtocol {
     func selectedItem(_ models: [ZLPhotoModel], index: Int)
+    func itemBeginDrag(_ status: DragStatus)
 }
 class ZLPhotoWaterFallView: UIView {
     weak var delegate: ZLPhotoWaterFallViewProtocol?
-    // remove all photo call back
-    var deleteActionCallBack: (()->())?
-    // selected item call back(completion: selected all and index is 0)
-    var selectedItemCallBack: ((_ photoModels: [ZLPhotoModel], _ index: Int)->())?
     // backColor
     var backViewColor: UIColor? {
         didSet {
@@ -27,6 +24,16 @@ class ZLPhotoWaterFallView: UIView {
                 return
             }
             collectionView.backgroundColor = color
+        }
+    }
+    
+    var completeButtonIsHidden : Bool = false {
+        didSet {
+            if photoModels.count <= 0 {
+                completeButton.isHidden = true
+                return
+            }
+            completeButton.isHidden = completeButtonIsHidden
         }
     }
     
@@ -39,7 +46,7 @@ class ZLPhotoWaterFallView: UIView {
         return toolBarView
     }()
     
-    fileprivate lazy var completeButton: UIButton = {
+    lazy var completeButton: UIButton = {
         let width: CGFloat = 88
         let height: CGFloat = 32
         let completeButton = UIButton(frame: CGRect(x: kScreenWidth - width - 6, y: 0, width: width, height: height))
@@ -93,6 +100,7 @@ class ZLPhotoWaterFallView: UIView {
             if isSuccess {
                 guard let models = models else { return }
                 photoModels = models
+                updateCompletionButton(count: photoModels.count)
                 collectionView.reloadData()
             }
         })
@@ -112,6 +120,16 @@ extension ZLPhotoWaterFallView {
             }, completion: { _ in
                 self.shadowImageView.isHidden = true
             })
+        }
+    }
+    
+    fileprivate func updateCompletionButton(count: Int) {
+        if count > 0 {
+            completeButton.setTitle("Done (\(count))", for: .normal)
+            completeButton.isHidden = false
+        } else {
+            completeButton.setTitle("Done", for: .normal)
+            completeButton.isHidden = true
         }
     }
     
@@ -139,6 +157,9 @@ extension ZLPhotoWaterFallView: UICollectionViewDataSource, UICollectionViewDele
         cell.photoModel = photoModels[indexPath.row]
         cell.itemDidRemove = { [weak self] (item) in
             self?.removeItem(item)
+        }
+        cell.itemBeginDrag = { [weak self] status in
+            self?.delegate?.itemBeginDrag(status)
         }
         return cell
     }
@@ -178,11 +199,13 @@ extension ZLPhotoWaterFallView {
                 let photoModel = ZLPhotoModel.init(oritempPath, scantempPath, enhantempPath, isEnhanced, ZLPhotoManager.getRectDict(detectedRectangle))
                 photoModel.save(handle: { [weak self] (isSuccess) in
                     if isSuccess {
-                        self?.photoModels.append(photoModel)
-                        self?.collectionView.reloadData()
-                        self?.collectionView.layoutIfNeeded()
+                        guard let weakSelf = self else { return }
+                        weakSelf.photoModels.append(photoModel)
+                        weakSelf.updateCompletionButton(count: weakSelf.photoModels.count)
+                        weakSelf.collectionView.reloadData()
+                        weakSelf.collectionView.layoutIfNeeded()
                         // scroll to bottom
-                        self?.scrollToBottom()
+                        weakSelf.scrollToBottom()
                     }
                 })
             }
@@ -194,6 +217,7 @@ extension ZLPhotoWaterFallView {
         photoModels[indexPath.row].remove { (isSuccess) in
             if isSuccess {
                 photoModels.remove(at: indexPath.row)
+                updateCompletionButton(count: photoModels.count)
                 collectionView.reloadData()
             }
         }
@@ -203,19 +227,9 @@ extension ZLPhotoWaterFallView {
 
 // MARK: - Event
 extension ZLPhotoWaterFallView {
-    // delete All
-    @objc fileprivate func deleteButtonAction() {
-        ZLPhotoModel.removeAllModel { (isSuccess) in
-            photoModels.removeAll()
-            collectionView.reloadData()
-        }
-    }
-    
     // ccompletion
     @objc fileprivate func completeButtonAction() {
-        if let callBack = selectedItemCallBack {
-            callBack(photoModels, 0)
-        }
+        delegate?.selectedItem(photoModels, index: 0)
     }
 }
 

@@ -83,6 +83,8 @@ final class CaptureSessionManager: NSObject, AVCaptureVideoDataOutputSampleBuffe
     /// The minimum number of time required by `noRectangleCount` to validate that showScanningNoticeThreshold
     private let showScanningNoticeThreshold = 20
     
+    ///CaptureSessionManager autoCapture
+    var autoCapture = false
     // MARK: Life Cycle
     
     init?(videoPreviewLayer: AVCaptureVideoPreviewLayer) {
@@ -258,7 +260,7 @@ final class CaptureSessionManager: NSObject, AVCaptureVideoDataOutputSampleBuffe
                 
                 let shouldAutoScan = (result == .showAndAutoScan)
                 strongSelf.displayRectangleResult(rectangleResult: RectangleDetectorResult(rectangle: rectangle, imageSize: imageSize))
-                if shouldAutoScan, ZLScanCaptureSession.current.autoScanEnabled, !ZLScanCaptureSession.current.isEditing {
+                if shouldAutoScan, ZLScanCaptureSession.current.autoScanEnabled, !ZLScanCaptureSession.current.isEditing, autoCapture{
                     ZLScanCaptureSession.current.isPreviewing = true
                     capturePhoto()
                 }
