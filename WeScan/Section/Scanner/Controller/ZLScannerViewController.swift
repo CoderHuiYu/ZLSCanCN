@@ -239,7 +239,7 @@ extension ZLScannerViewController: ZLScanRectangleDetectionDelegateProtocol {
 }
 extension ZLScannerViewController{
     @objc private func captureImage(_ sender: UIButton) {
-        navigationController?.pushViewController(ZLScanSortViewController(), animated: true)
+//        navigationController?.pushViewController(ZLScanSortViewController(), animated: true)
     }
     
     @discardableResult func toggleTorch(toOn: Bool) -> ZLScanFlashResult {

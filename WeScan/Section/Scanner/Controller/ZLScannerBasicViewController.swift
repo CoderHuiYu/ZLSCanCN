@@ -13,7 +13,6 @@ class ZLScannerBasicViewController: UIViewController {
     var dismissWithPDFPath: ((_ pdfPath: String)->())?
     var dismissCallBackIndex: ((_ index: Int?)->())?
     var dismissCallBack: ((String)->())?
-    
     private lazy var backBtn: UIButton = {
         let backBtn = UIButton()
         backBtn.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
@@ -22,10 +21,17 @@ class ZLScannerBasicViewController: UIViewController {
         backBtn.addTarget(self, action: #selector(backBtnClick), for: .touchUpInside)
         return backBtn
     }()
-    
+    lazy var bottomBtn: UIButton = {
+        let bottomBtn = UIButton()
+        bottomBtn.setTitle("Save", for: .normal)
+        bottomBtn.setTitleColor(.black, for: .normal)
+        bottomBtn.addTarget(self, action: #selector(bottomBtnClick), for: .touchUpInside)
+        return bottomBtn
+    }()
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
+        navigationController?.navigationBar.isTranslucent = false
         addBackBtn()
     }
     
@@ -34,13 +40,11 @@ class ZLScannerBasicViewController: UIViewController {
     }
 }
 extension ZLScannerBasicViewController {
-    @objc func backBtnClick() {
-        
-    }
-    
+    @objc func backBtnClick() {}
+    @objc func bottomBtnClick() {}
     func showAlter(title: String, message: String, confirm: String, cancel: String,confirmComp:@escaping ((UIAlertAction)->()),cancelComp:@escaping ((UIAlertAction)->())){
-        let confirmAlt = UIAlertAction(title: confirm, style: .destructive, handler: confirmComp)
-        let cancelAlt  = UIAlertAction(title: cancel, style: .cancel, handler: cancelComp)
+        let confirmAlt = UIAlertAction(title: confirm, style: .default, handler: confirmComp)
+        let cancelAlt  = UIAlertAction(title: cancel, style: .default, handler: cancelComp)
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(confirmAlt)
         alert.addAction(cancelAlt)

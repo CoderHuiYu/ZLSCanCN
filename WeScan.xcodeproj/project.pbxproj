@@ -91,6 +91,8 @@
 		FEE9FDF921C8A7E80065E87B /* ZLScanDefine.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE9FDF821C8A7E80065E87B /* ZLScanDefine.swift */; };
 		FEE9FDFB21C8A83B0065E87B /* ZLScanVisionRectangleDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE9FDFA21C8A83B0065E87B /* ZLScanVisionRectangleDetector.swift */; };
 		FEE9FDFD21C8A88F0065E87B /* ZLScanCIRectangleDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE9FDFC21C8A88F0065E87B /* ZLScanCIRectangleDetector.swift */; };
+		FEE9FE0521C8EEC80065E87B /* ZLScanAllpagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE9FE0421C8EEC80065E87B /* ZLScanAllpagesViewController.swift */; };
+		FEE9FE0721C8F9F20065E87B /* ZLSortAllpagesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE9FE0621C8F9F20065E87B /* ZLSortAllpagesCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -249,6 +251,8 @@
 		FEE9FDF821C8A7E80065E87B /* ZLScanDefine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLScanDefine.swift; sourceTree = "<group>"; };
 		FEE9FDFA21C8A83B0065E87B /* ZLScanVisionRectangleDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLScanVisionRectangleDetector.swift; sourceTree = "<group>"; };
 		FEE9FDFC21C8A88F0065E87B /* ZLScanCIRectangleDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLScanCIRectangleDetector.swift; sourceTree = "<group>"; };
+		FEE9FE0421C8EEC80065E87B /* ZLScanAllpagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLScanAllpagesViewController.swift; sourceTree = "<group>"; };
+		FEE9FE0621C8F9F20065E87B /* ZLSortAllpagesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLSortAllpagesCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -534,8 +538,8 @@
 		FEE9FDED21C899290065E87B /* Sort */ = {
 			isa = PBXGroup;
 			children = (
+				FEE9FE0321C8EE670065E87B /* Model */,
 				FEE9FDEE21C899290065E87B /* Controller */,
-				FEE9FDEF21C899290065E87B /* Model */,
 				FEE9FDF021C899290065E87B /* View */,
 			);
 			path = Sort;
@@ -545,21 +549,16 @@
 			isa = PBXGroup;
 			children = (
 				FEE9FDAF21C8977C0065E87B /* ZLScanSortViewController.swift */,
+				FEE9FE0421C8EEC80065E87B /* ZLScanAllpagesViewController.swift */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-		FEE9FDEF21C899290065E87B /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		FEE9FDF021C899290065E87B /* View */ = {
 			isa = PBXGroup;
 			children = (
 				FEE9FDBE21C8977C0065E87B /* ZLSortCollectionViewCell.swift */,
+				FEE9FE0621C8F9F20065E87B /* ZLSortAllpagesCollectionViewCell.swift */,
 				FEE9FDBF21C8977C0065E87B /* ZLSortCollectionView.swift */,
 				FEE9FDC621C8977C0065E87B /* ZLSortNavgationView.swift */,
 			);
@@ -574,6 +573,13 @@
 				18EB1C6721B10717001CEA1E /* ZLPhotoAsset.xcassets */,
 			);
 			path = Resource;
+			sourceTree = "<group>";
+		};
+		FEE9FE0321C8EE670065E87B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -797,6 +803,7 @@
 				FEE9FDD521C8977C0065E87B /* ZLPhotoWaterFallLayout.swift in Sources */,
 				FEE9FDC821C8977C0065E87B /* ZLScannerViewController.swift in Sources */,
 				FEE9FDC921C8977C0065E87B /* ZLPhotoEditorController.swift in Sources */,
+				FEE9FE0721C8F9F20065E87B /* ZLSortAllpagesCollectionViewCell.swift in Sources */,
 				FEE9FDD421C8977C0065E87B /* ZLScanCaptureSessionManager.swift in Sources */,
 				FEE9FDDA21C8977C0065E87B /* ZLScanMaskView.swift in Sources */,
 				FEE9FD6421C789730065E87B /* ZLTransformable.swift in Sources */,
@@ -806,6 +813,7 @@
 				FEE9FDDB21C8977C0065E87B /* ZLPhotoCell.swift in Sources */,
 				A1D4BD15202C6CC000FCDDEC /* Array+Utils.swift in Sources */,
 				FEE9FDD121C8977C0065E87B /* ZLScanRectangleFeaturesFunnel.swift in Sources */,
+				FEE9FE0521C8EEC80065E87B /* ZLScanAllpagesViewController.swift in Sources */,
 				FEE9FDFB21C8A83B0065E87B /* ZLScanVisionRectangleDetector.swift in Sources */,
 				FE15D3B621C2374A000AD056 /* Utilities.swift in Sources */,
 				FEE9FDE421C8977C0065E87B /* ZLSortNavgationView.swift in Sources */,
