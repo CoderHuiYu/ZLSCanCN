@@ -288,10 +288,13 @@ extension ZLPhotoEditorController {
             }
             
         } else {
-            let sortVC = ZLScanSortViewController()
-            sortVC.photoModels = photoModels
-            sortVC.delegate = self
-            self.present(sortVC, animated: true, completion: nil)
+            let allPagesVC = ZLScanAllpagesViewController(photoModels)
+            allPagesVC.updateEditCallBack = { [weak self] photoModels in
+                guard let strongSelf = self else { return }
+                strongSelf.photoModels = photoModels
+                strongSelf.collectionView.reloadData()
+            }
+            navigationController?.pushViewController(allPagesVC, animated: true)
         }
     }
     // save action

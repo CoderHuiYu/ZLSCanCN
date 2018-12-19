@@ -65,7 +65,7 @@ extension UIView {
                                initialAlpha: CGFloat = 0.0,
                                finalAlpha: CGFloat = 1.0,
                                delay: Double = 0,
-                               animationInterval: TimeInterval = 0.05,
+                               animationInterval: TimeInterval = 0.1,
                                duration: TimeInterval = ViewAnimatorConfig.duration,
                                options: UIView.AnimationOptions = [],
                                completion: (() -> Void)? = nil) {

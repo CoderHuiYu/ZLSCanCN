@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct ZLPhotoModel {
+struct ZLPhotoModel: Equatable {
     
     // local store
     var originalImagePath: String
@@ -20,7 +20,6 @@ struct ZLPhotoModel {
     var isEnhanced: Bool
     
     var rectangle: [String: [String: Double]]
-    
     
     // to show
     var scannedImage: UIImage

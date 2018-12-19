@@ -8,10 +8,10 @@
 
 import UIKit
 
-
-
 class ZLSortCollectionView: UICollectionView{
+
     var photoModels = [ZLPhotoModel]()
+    var deleteModels = [ZLPhotoModel]()
 
     private var cell: ZLSortCollectionViewCell?
     private var dragingIndexPath: IndexPath?
@@ -75,7 +75,6 @@ extension ZLSortCollectionView : UIGestureRecognizerDelegate{
         NotificationCenter.default.post(name: NSNotification.Name(rawValue:"ZLScanBeginDrag"), object: nil)
         let cell = self.cellForItem(at: dragingIndexPath! ) as! ZLSortCollectionViewCell
         cell.iconimageView.isHidden = true
-        cell.delBtn.isHidden = true
         dragCell.frame = cell.iconimageView.frame
         dragCell.isHidden = false
         dragCell.center = point
@@ -116,18 +115,18 @@ extension ZLSortCollectionView : UIGestureRecognizerDelegate{
             let dif = targetIndexPath!.row - dragingIndexPath!.row
             if  dif >= 2{
                 let midCell1 = self.cellForItem(at: IndexPath.init(row: (dragingIndexPath?.row)! + 1, section: (dragingIndexPath?.section)!)) as! ZLSortCollectionViewCell
-                midCell1.title.text = String((dragingIndexPath?.item)! + 2)
+                midCell1.numberBtn.setTitle(String((dragingIndexPath?.item)! + 2), for: .normal)
                 let midCell2 = self.cellForItem(at: IndexPath.init(row: dragingIndexPath!.row + 2, section: self.dragingIndexPath!.section)) as! ZLSortCollectionViewCell
-                midCell2.title.text = String(dragingIndexPath!.item + 3)
+                midCell2.numberBtn.setTitle(String(dragingIndexPath!.item + 3), for: .normal)
             }
             if dif <= -2{
                 let midCell1 = self.cellForItem(at: IndexPath.init(row: (targetIndexPath?.row)! + 1, section: (targetIndexPath?.section)!)) as! ZLSortCollectionViewCell
-                midCell1.title.text = String((targetIndexPath?.item)! + 2)
+                midCell1.numberBtn.setTitle(String((targetIndexPath?.item)! + 2), for: .normal)
                 let midCell2 = self.cellForItem(at: IndexPath.init(row: targetIndexPath!.row + 2, section: self.targetIndexPath!.section)) as! ZLSortCollectionViewCell
-                midCell2.title.text = String(targetIndexPath!.item + 3)
+                midCell2.numberBtn.setTitle(String(targetIndexPath!.item + 3), for: .normal)
             }
-            currentCell.title.text = String((dragingIndexPath?.item)! + 1)
-            targetCell.title.text = String((targetIndexPath?.item)! + 1)
+            currentCell.numberBtn.setTitle(String(dragingIndexPath!.item + 1), for: .normal)
+            targetCell.numberBtn.setTitle(String(targetIndexPath!.item + 1), for: .normal)
             dragingIndexPath = targetIndexPath
         }
     }
@@ -143,7 +142,6 @@ extension ZLSortCollectionView : UIGestureRecognizerDelegate{
         }) { (finished) in
             self.dragCell.isHidden = true
             cell.iconimageView.isHidden = false
-            cell.delBtn.isHidden = false
             
         }
         cancelPress()
@@ -179,18 +177,31 @@ extension ZLSortCollectionView: UICollectionViewDelegate,UICollectionViewDataSou
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ZLSortCollectionViewCell.ZLSortCollectionViewCellID, for: indexPath) as! ZLSortCollectionViewCell
-        cell.title.text = String(indexPath.item + 1)
-        cell.configImage(iconImage: photoModels[indexPath.item].enhancedImage)
+        cell.configImage(iconImage: photoModels[indexPath.item].enhancedImage, style: .editing)
+        cell.numberBtn.setTitle(String(indexPath.item + 1), for: .normal)
         cell.delegate = self
         return cell
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! ZLSortCollectionViewCell
+        var model = photoModels[indexPath.item]
+        model.isSelected = !model.isSelected
+        if model.isSelected {
+            cell.numberBtn.backgroundColor = .blue
+            deleteModels.append(model)
+        }else{
+            cell.numberBtn.backgroundColor = .orange
+            deleteModels = deleteModels.filter({$0.originalImagePath != model.originalImagePath})
+        }
+        photoModels[indexPath.item] = model
     }
 }
 //MARK: ZLSortCollectionViewCellProtocol
 extension ZLSortCollectionView: ZLSortCollectionViewCellProtocol{
     //removeImageFrom photoModels
     func deleteItem(_ currentCell: ZLSortCollectionViewCell) {
-        let index = self.indexPath(for: currentCell)
+        let index = indexPath(for: currentCell)
         photoModels.remove(at: (index?.item)!)
-        self.reloadData()
+        reloadData()
     }
 }
