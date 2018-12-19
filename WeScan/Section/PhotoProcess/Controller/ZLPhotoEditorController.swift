@@ -10,44 +10,27 @@ import UIKit
 import CoreGraphics
 import Photos
 
-private let kSaveToolBarHeight: CGFloat = 250 // 200 -> 250 is right constraint
-private let kCollectionBottomConsValue: CGFloat = 170
-private let kCollectionBottomConsSaveValue: CGFloat = 220
-
+private let kCollectionBottomConsValue: CGFloat = 130
 class ZLPhotoEditorController: ZLScannerBasicViewController,EmitterAnimate,Convertable {
-    
     var photoModels = [ZLPhotoModel]()
     var currentIndex: IndexPath?
-    var isFilter: Bool = false
     
     var pdfpath: String?
     var isNeedLoadPDF: Bool = false
     
     var updataCallBack: (()->())?
     
-    @IBOutlet weak var customNavBar: UIView!
-    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var toolBarView: UIView!
-    @IBOutlet weak var rightNavButton: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     
     @IBOutlet weak var toolBarViewBottomCons: NSLayoutConstraint!
     @IBOutlet weak var collectionViewBottomCons: NSLayoutConstraint!
-    @IBOutlet weak var saveToolBarViewBottomCons: NSLayoutConstraint!
     
-    lazy var coverView: ZLScanMaskView = {
-        let coverView = ZLScanMaskView(frame: CGRect(x: 0, y: 0, width: kScreenWidth, height: kScreenHeight-160 - kBottomGap))
-        return coverView
-    }()
     fileprivate lazy var editingView: ZLPhotoEditingView = {
         let editingView = Bundle.init(for: self.classForCoder).loadNibNamed("ZLPhotoEditingView", owner: nil, options: nil)?.first as! ZLPhotoEditingView
         editingView.frame = view.bounds
         editingView.delegate = self
         return editingView
-    }()
-    fileprivate lazy var imageViewer: ZLScanImageViewer = {
-        let imgViewer = ZLScanImageViewer()
-        return imgViewer
     }()
     fileprivate lazy var addImageBtn: UIButton = {
         let addImageBtn = UIButton()
@@ -58,47 +41,27 @@ class ZLPhotoEditorController: ZLScannerBasicViewController,EmitterAnimate,Conve
         addImageBtn.isHidden = true
         return addImageBtn
     }()
-    fileprivate var isSavingStatus = false {
-        didSet {
-            if isSavingStatus {
-                photoModels = photoModels.map({ (model) -> ZLPhotoModel in
-                    var zlModel = model
-                    zlModel.isSelected = true
-                    return zlModel
-                })
-                rightNavButton.setTitle( "Cancel Select All", for: .normal)
-                setSaveToolBar(isHidden: false)
-                collectionView.reloadData()
-                collectionViewBottomCons.constant = kCollectionBottomConsSaveValue
-            } else {
-                rightNavButton.setTitle( "Sort", for: .normal)
-                setSaveToolBar(isHidden: true)
-                collectionView.reloadData()
-                collectionViewBottomCons.constant = kCollectionBottomConsValue
-            }
-        }
-    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
         setupUI()
         if isNeedLoadPDF {
             addImageBtn.isHidden = false
             loadPDF {(models) in
                 self.photoModels = models
                 self.collectionView.reloadData()
-                self.titleLabel.text = "\(1)/\(models.count)"
+                self.title = "\(1)/\(models.count)"
             }
         }
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.isHidden = true
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.navigationBar.isHidden = false
     }
 }
 // MARK: - UI
@@ -108,7 +71,7 @@ extension ZLPhotoEditorController {
       
         view.backgroundColor = UIColor.white
         if let currentIndex = currentIndex {
-            titleLabel.text = "\(currentIndex.row + 1)/\(photoModels.count)"
+            title = "\(currentIndex.row + 1)/\(photoModels.count)"
         }
         
         view.clipsToBounds = true
@@ -132,23 +95,7 @@ extension ZLPhotoEditorController {
             collectionView.scrollToItem(at: currentIndex, at: UICollectionView.ScrollPosition.centeredHorizontally, animated: true)
         }
     }
-    fileprivate func setNavBar(isHidden: Bool) {
-        UIView.animate(withDuration: 0.25, animations: {
-            self.customNavBar.alpha = isHidden ? 0.1 : 1.0
-        }) { (_) in
-            self.customNavBar.isHidden = isHidden
-        }
-    }
-    fileprivate func setSaveToolBar(isHidden: Bool) {
-        if isHidden {
-            saveToolBarViewBottomCons.constant = -kSaveToolBarHeight
-        } else {
-            saveToolBarViewBottomCons.constant = 0
-        }
-        UIView.animate(withDuration: 0.25) {
-            self.view.layoutIfNeeded()
-        }
-    }
+
     fileprivate func updateTitle() {
         let cells = collectionView.visibleCells
         let centerCells = cells.filter({
@@ -159,7 +106,7 @@ extension ZLPhotoEditorController {
         guard let centerCell = centerCells.first else { return }
         guard let indexPath = collectionView.indexPath(for: centerCell) else { return }
         
-        titleLabel.text = "\(indexPath.row + 1)/\(photoModels.count)"
+        title = "\(indexPath.row + 1)/\(photoModels.count)"
     }
     fileprivate func updateEditView(_ index: IndexPath, model: ZLPhotoModel) {
         
@@ -183,47 +130,25 @@ extension ZLPhotoEditorController: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 //        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: .kCollectionCellIdentifier, for: indexPath) as! ZLPhotoCell
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: .kCollectionCellIdentifier, for: indexPath) as! ZLPhotoCell
-        cell.delegate = self
-        cell.cellType = isSavingStatus ? .saving : .edit
+        cell.cellType = .edit
         cell.photoModel = photoModels[indexPath.row]
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         guard let cell = collectionView.cellForItem(at: indexPath) else { return }
-        
-        if isSavingStatus {
-            var model = photoModels[indexPath.row]
-            model.isSelected = !model.isSelected
-            photoModels[indexPath.row] = model
+        let center = collectionView.convert(cell.center, to: view)
+        if center.x == view.center.x {
             let photoCell = cell as! ZLPhotoCell
-            photoCell.photoModel = model
-            
-            let selectedModels = photoModels.filter({return $0.isSelected == true})
-            if selectedModels.count == 0 {
-                rightNavButton.setTitle( "Select All", for: .normal)
-            } else {
-                rightNavButton.setTitle( "Cancel Select All", for: .normal)
-            }
-        } else {
-            let center = collectionView.convert(cell.center, to: view)
-            if center.x == view.center.x {
-                
-                setNavBar(isHidden: true)
-                
-                let photoCell = cell as! ZLPhotoCell
-                currentIndex = indexPath
-                let model = photoModels[indexPath.row]
-                editingView.isEnhanced = model.isEnhanced
-                editingView.show(photoCell.imageView)
-                
-                let visibleCells = collectionView.visibleCells
-                visibleCells.forEach { (theCell) in
-                    if theCell != cell {
-                        theCell.isHidden = true
-                    } else {
-                        theCell.isHidden = false
-                    }
+            currentIndex = indexPath
+            let model = photoModels[indexPath.row]
+            editingView.isEnhanced = model.isEnhanced
+            editingView.show(photoCell.imageView)
+            let visibleCells = collectionView.visibleCells
+            visibleCells.forEach { (theCell) in
+                if theCell != cell {
+                    theCell.isHidden = true
+                } else {
+                    theCell.isHidden = false
                 }
             }
         }
@@ -232,7 +157,7 @@ extension ZLPhotoEditorController: UICollectionViewDelegate, UICollectionViewDat
         let offSet = scrollView.contentOffset.x
         let itemWidth = (collectionView.bounds.width - 80 + 10)
         let index = Int((offSet + itemWidth * 0.5) / itemWidth)
-        titleLabel.text = "\(index + 1)/\(photoModels.count)"
+        title = "\(index + 1)/\(photoModels.count)"
     }
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         updateTitle()
@@ -245,65 +170,27 @@ extension ZLPhotoEditorController: UICollectionViewDelegate, UICollectionViewDat
 extension ZLPhotoEditorController {
     // nav leftbutton action
     @IBAction fileprivate func leftButtonAction(_ sender: Any) {
-        if isSavingStatus {
-            isSavingStatus = false
-        } else {
-            if isNeedLoadPDF {
-                showAlter(title: "The image will be deleted", message: "Are you sure?", confirm: "OK", cancel: "Cancel", confirmComp: { (_) in
-                    ZLPhotoModel.removeAllModel { (_) in
-                        self.dismiss(animated: true, completion: nil)
-                    }
-                }) { (_) in }
-            }else{
-                navigationController?.popViewController(animated: true)
-            }
+        if isNeedLoadPDF {
+            showAlter(title: "The image will be deleted", message: "Are you sure?", confirm: "OK", cancel: "Cancel", confirmComp: { (_) in
+                ZLPhotoModel.removeAllModel { (_) in
+                    self.dismiss(animated: true, completion: nil)
+                }
+            }) { (_) in }
+        }else{
+            navigationController?.popViewController(animated: true)
         }
     }
     // nav rightbutton action
     @IBAction fileprivate func rightButtonAction(_ sender: Any) {
-        
-        if isSavingStatus {
-            
-            let button = sender as! UIButton
-            let title = button.titleLabel?.text ?? ""
-            if title == "Select All" {
-                rightNavButton.setTitle( "Cancel Select All", for: .normal)
-                
-                photoModels = photoModels.map { (model) -> ZLPhotoModel in
-                    var zlModel = model
-                    zlModel.isSelected = true
-                    return zlModel
-                }
-                collectionView.reloadData()
-                
-            } else {
-                rightNavButton.setTitle( "Select All", for: .normal)
-                
-                photoModels = photoModels.map { (model) -> ZLPhotoModel in
-                    var zlModel = model
-                    zlModel.isSelected = false
-                    return zlModel
-                }
-                collectionView.reloadData()
-            }
-            
-        } else {
-            let allPagesVC = ZLScanAllpagesViewController(photoModels)
-            allPagesVC.updateEditCallBack = { [weak self] photoModels in
-                guard let strongSelf = self else { return }
-                strongSelf.photoModels = photoModels
-                strongSelf.collectionView.reloadData()
-            }
-            navigationController?.pushViewController(allPagesVC, animated: true)
+        let allPagesVC = ZLScanAllpagesViewController(photoModels)
+        allPagesVC.updateEditCallBack = { [weak self] photoModels in
+            guard let strongSelf = self else { return }
+            strongSelf.photoModels = photoModels
+            strongSelf.collectionView.reloadData()
         }
+        navigationController?.pushViewController(allPagesVC, animated: true)
     }
-    // save action
-    @IBAction func saveButtonAction(_ sender: Any) {
-        isSavingStatus = true
-    }
-    @IBAction func saveToolBarCancleAction(_ sender: Any) {
-        isSavingStatus = false
-    }
+    
     @IBAction func saveToPhotoLibrary(_ sender: Any) {
         
         let selectedModels = photoModels.filter({return $0.isSelected == true})
@@ -325,13 +212,6 @@ extension ZLPhotoEditorController {
     }
     fileprivate func editToolBarItemAction(_ index: Int) {
         editToolBarAction(index)
-    }
-    fileprivate func scaleImageView(_ cell: ZLPhotoCell) {
-        let imgView = cell.imageView as UIImageView
-        imageViewer.contentImages = [imgView.image!]
-        let frame = UIView.getCorrectFrameFromOriginView(originView: imgView)
-        imageViewer.originFrame = frame
-        imageViewer.show()
     }
 }
 extension ZLPhotoEditorController{
@@ -368,15 +248,15 @@ extension ZLPhotoEditorController{
                         self.view.layoutIfNeeded()
                         if let index = index {
                             // click item call back
-                            self.titleLabel.text = "\(index + 1)/\(models.count)"
+                            self.title = "\(index + 1)/\(models.count)"
                             self.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: UICollectionView.ScrollPosition.centeredHorizontally, animated: true)
                         } else {
                             // click cancle call back
-                            if let text = self.titleLabel.text {
+                            if let text = self.title {
                                 let str = text.components(separatedBy: "/").first ?? "1"
-                                self.titleLabel.text = "\(str)/\(models.count)"
+                                self.title = "\(str)/\(models.count)"
                             } else {
-                                self.titleLabel.text = "\(1)/\(models.count)"
+                                self.title = "\(1)/\(models.count)"
                             }
                         }
                     }
@@ -409,6 +289,7 @@ extension ZLPhotoEditorController {
             break
         }
     }
+    
     func deleteModelAtIndexPath(indexPath: IndexPath){
         photoModels[indexPath.row].remove { (isSuccess) in
             if isSuccess {
@@ -421,6 +302,7 @@ extension ZLPhotoEditorController {
             }
         }
     }
+    
     func rotateCellAtIndexPath(indexPath: IndexPath){
         let lastModel = photoModels[indexPath.item]
         let originalImage = UIImage(contentsOfFile: kZLScanPhotoFileDataPath + "/\(lastModel.originalImagePath)") ?? lastModel.scannedImage
@@ -454,6 +336,7 @@ extension ZLPhotoEditorController {
             }
         }
     }
+    
     func cutImageAtIndexPath(indexPath: IndexPath){
         let lastModel = photoModels[indexPath.item]
         guard let imageToEdit =  UIImage(contentsOfFile: kZLScanPhotoFileDataPath + "/\(lastModel.originalImagePath)") else { return }
@@ -471,9 +354,8 @@ extension ZLPhotoEditorController {
         let navigationController = UINavigationController(rootViewController: editVC)
         present(navigationController, animated: true)
     }
+    
     func filterImageAtIndexPath(indexPath: IndexPath){
-        startEmitter(CGPoint.init(x: coverView.center.x, y: coverView.frame.height))
-        
         let lastModel = photoModels[indexPath.item]
         let originalImage = UIImage(contentsOfFile: kZLScanPhotoFileDataPath + "/\(lastModel.originalImagePath)") ?? lastModel.scannedImage
         let isEnhanced = lastModel.isEnhanced
@@ -500,20 +382,8 @@ extension ZLPhotoEditorController {
     }
 }
 // MARK: - Protocol
-extension ZLPhotoEditorController: ZLPhotoCellProtocol {
-    func itemDidRemove(_ cell: ZLPhotoCell) {
-        removeItem(cell)
-    }
-    func itemBeginDrag(_ cell: ZLPhotoCell, status: DragStatus) {
-        setNavBar(isHidden: status == .begin)
-    }
-    func itemPinch(_ cell: ZLPhotoCell) {
-        scaleImageView(cell)
-    }
-}
 extension ZLPhotoEditorController: ZLPhotoEditingViewDelegate{
     func editingViewHideBack(){
-        self.setNavBar(isHidden: false)
         let visibleCells = self.collectionView.visibleCells
         visibleCells.forEach { (theCell) in theCell.isHidden = false }
     }

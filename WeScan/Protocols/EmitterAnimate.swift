@@ -56,12 +56,12 @@ extension EmitterAnimate where Self : ZLPhotoEditorController {
         
         emitterLayer.emitterCells = cells
         
-        coverView.layer.addSublayer(emitterLayer)
-        view.addSubview(coverView)
+//        coverView.layer.addSublayer(emitterLayer)
+//        view.addSubview(coverView)
     }
     //MARK: -- stopAnimate
     func stopEmitter() {
-        coverView.layer.sublayers?.filter({$0.isKind(of: CAEmitterLayer.self)}).first?.removeFromSuperlayer()
-        coverView.removeFromSuperview()
+//        coverView.layer.sublayers?.filter({$0.isKind(of: CAEmitterLayer.self)}).first?.removeFromSuperlayer()
+//        coverView.removeFromSuperview()
     }
 }

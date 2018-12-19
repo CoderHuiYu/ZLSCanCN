@@ -15,6 +15,8 @@ private let kOpenFlashCD: Double = 3
 private let brightValueOpen: Double = -2
 private let brightValueClose: Double = 3
 
+let kDeleteShadowViewMaxBottomSpace: CGFloat = 100
+
 /// An enum used to know if the flashlight was toggled successfully.
 enum ZLScanFlashResult {
     case successful
@@ -24,53 +26,71 @@ enum ZLScanFlashResult {
 class ZLScannerViewController: ZLScannerBasicViewController {
     var isFromEdit = false
     private var captureSessionManager: CaptureSessionManager?
-    
     private let videoPreviewlayer = AVCaptureVideoPreviewLayer()
     private let quadView = ZLQuadrilateralView()
-
     private var flashEnabled = false
     private var banTriggerFlash = false
+    private var disappear: Bool = false
+    private var isAutoCapture: Bool = true {
+        didSet {
+            promptView.isHidden = !isAutoCapture
+            captureSessionManager?.autoCapture = isAutoCapture
+        }
+    }
+    
+    private lazy var autoCaptureButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Manual", for: .normal)
+        button.setTitle("Auto", for: .selected)
+        button.addTarget(self, action: #selector(autoCaptureAction(_:)), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var autoFlashButton: UIButton = {
+        let image = UIImage(named: "flash", in: Bundle(for: ZLScannerViewController.self), compatibleWith: nil)
+        let button = UIButton()
+        button.setImage(image, for: .normal)
+        button.addTarget(self, action: #selector(flashActionToggle(_:)), for: .touchUpInside)
+        return button
+    }()
     
     private lazy var shutterButton: ZLScanShutterButton = {
         let button = ZLScanShutterButton()
-        button.isHidden = true
         button.addTarget(self, action: #selector(captureImage(_:)), for: .touchUpInside)
         return button
     }()
+    
     private lazy var promptView: ZLScanningPromptView = {
         let promptView = ZLScanningPromptView(frame: .zero)
         return promptView
     }()
+    
     private lazy var previewImageView: UIImageView  = {
         let previewImageView = UIImageView()
         previewImageView.contentMode = .scaleAspectFill
         return previewImageView
     }()
+    
+    private lazy var deleteShadowView: ZLScannerViewController.DeleteShadowView = {
+        let view = ZLScannerViewController.DeleteShadowView()
+        view.isHidden = true
+        return view
+    }()
+    
     private lazy var photoCollectionView: ZLPhotoWaterFallView = {
         let photoCollectionView = ZLPhotoWaterFallView(frame: CGRect(x: 0, y: view.frame.height - kNavHeight - photoCollectionViewWithBarHeight - kBottomGap, width: view.frame.width, height: photoCollectionViewWithBarHeight + kBottomGap))
+        photoCollectionView.backViewColor = UIColor.black
         photoCollectionView.delegate = self
         return photoCollectionView
     }()
     
-    private var disappear: Bool = false
-    private var isAutoCapture: Bool = false {
-        didSet {
-            if isAutoCapture {
-                shutterButton.isHidden = true
-            } else {
-                shutterButton.isHidden = false
-            }
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Scanning"
-        
         setupViews()
         setupConstraints()
-        
         captureSessionManager = CaptureSessionManager(videoPreviewLayer: videoPreviewlayer)
+        captureSessionManager?.autoCapture = isAutoCapture
         captureSessionManager?.delegate = self
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -99,36 +119,50 @@ class ZLScannerViewController: ZLScannerBasicViewController {
         quadView.editable = false
         
         view.addSubview(quadView)
-        view.addSubview(shutterButton)
+        view.addSubview(autoFlashButton)
+        view.addSubview(autoCaptureButton)
         view.addSubview(promptView)
         view.addSubview(previewImageView)
+        view.addSubview(deleteShadowView)
         view.addSubview(photoCollectionView)
+        view.addSubview(shutterButton)
     }
     private func setupConstraints() {
-        let shutterButtonConstraints = [
-            view.bottomAnchor.constraint(equalTo: shutterButton.bottomAnchor, constant: photoCollectionViewWithBarHeight + 30 + kBottomGap),
-            shutterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            shutterButton.widthAnchor.constraint(equalToConstant: 65.0),
-            shutterButton.heightAnchor.constraint(equalToConstant: 65.0)
-        ]
-        NSLayoutConstraint.activate(shutterButtonConstraints)
+        shutterButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([shutterButton.bottomAnchor.constraint(equalTo: photoCollectionView.topAnchor, constant: 64 - 24),
+                                     shutterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                                     shutterButton.widthAnchor.constraint(equalToConstant: 60.0),
+                                     shutterButton.heightAnchor.constraint(equalToConstant: 60.0)])
+        
+        autoFlashButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([autoFlashButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+                                     autoFlashButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20.0)])
+        
+        autoCaptureButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([autoCaptureButton.topAnchor.constraint(equalTo: autoFlashButton.topAnchor, constant: 0),
+                                     autoCaptureButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20)])
+        
+        deleteShadowView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([deleteShadowView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+                                     deleteShadowView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0),
+                                     deleteShadowView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
+                                     deleteShadowView.bottomAnchor.constraint(equalTo: photoCollectionView.topAnchor, constant: 64)])
     }
 }
 extension ZLScannerViewController: ZLScanRectangleDetectionDelegateProtocol {
     func startCapturingLoading(for captureSessionManager: CaptureSessionManager, currentAutoScanPassCounts: Int) {
+        guard isAutoCapture else { return }
         quadView.capturingRoudedProgressView.setProgress(progress:CGFloat((currentAutoScanPassCounts - ZLScanRectangleFeaturesFunnel().startShootLoadingThreshold))/CGFloat(ZLScanRectangleFeaturesFunnel().autoScanThreshold - ZLScanRectangleFeaturesFunnel().startShootLoadingThreshold) , time: 0.0, animate: false)
     }
     
     func captureSessionManager(_ captureSessionManager: CaptureSessionManager, didFailWithError error: Error) {
-        shutterButton.isUserInteractionEnabled = true
-        promptView.isHidden = false
+        promptView.isHidden = !isAutoCapture
         quadView.capturingRoudedProgressView.setProgress(progress: 0.0, time: 0, animate: false)
     }
     
     func didStartCapturingPicture(for captureSessionManager: CaptureSessionManager) {
         promptView.scanningNoticeImageView.stopAnimating()
         promptView.isHidden = true
-        shutterButton.isUserInteractionEnabled = false
     }
     
     func captureSessionManager(_ captureSessionManager: CaptureSessionManager, didCapturePicture picture: UIImage, withQuad quad: ZLQuadrilateral?) {
@@ -167,12 +201,13 @@ extension ZLScannerViewController: ZLScanRectangleDetectionDelegateProtocol {
             quadView.capturingRoudedProgressView.setProgress(progress: 0.0, time: 0, animate: false)
             return
         }
-        promptView.isHidden = true
+        promptView.isHidden = !isAutoCapture
         promptView.scanningNoticeImageView.stopAnimating()
         quadView.drawQuadrilateral(quad: getQuadrilateral(quad, imageSize: imageSize), animated: true)
     }
     
     func startShowingScanningNotice(noRectangle: Int) {
+        guard isAutoCapture else { return }
         promptView.isHidden = false
         promptView.scanningNoticeImageView.startAnimating()
     }
@@ -220,6 +255,7 @@ extension ZLScannerViewController{
         DispatchQueue.main.async {
             if self.flashEnabled == false && self.toggleTorch(toOn: true) == .successful {
                 self.flashEnabled = true
+                self.autoFlashButton.isSelected = true
             }
         }
         banTriggerFlash = true
@@ -229,12 +265,14 @@ extension ZLScannerViewController{
             }
         }
     }
+    
     private func closeFlash() {
         guard UIImagePickerController.isFlashAvailable(for: .rear) else { return }
         DispatchQueue.main.async {
             if self.flashEnabled == true {
                 self.flashEnabled = false
                 self.toggleTorch(toOn: false)
+                self.autoFlashButton.isSelected = false
             }
         }
     }
@@ -258,8 +296,69 @@ extension ZLScannerViewController{
     }
 }
 extension ZLScannerViewController: ZLPhotoWaterFallViewProtocol {
-    func flashActionToggle(_ button: UIButton) {
-        if button.isSelected { openFlash() } else { closeFlash() }
+    func itemBeginDrag(_ status: DragStatus) {
+        switch status {
+        case .begin(_):
+            deleteShadowView.alpha = 0.1
+            deleteShadowView.isHidden = false
+            deleteShadowView.process = 0
+            self.quadView.removeQuadrilateral()
+            self.captureSessionManager?.stop()
+            
+            UIView.animate(withDuration: 0.25, animations: {
+                self.deleteShadowView.alpha = 1.0
+                self.shutterButton.alpha = 0.1
+                self.autoFlashButton.alpha = 0.1
+                self.autoCaptureButton.alpha = 0.1
+                self.photoCollectionView.completeButton.alpha = 0.1
+            }) { (_) in
+                self.shutterButton.isHidden = true
+                self.autoFlashButton.isHidden = true
+                self.autoCaptureButton.isHidden = true
+                self.photoCollectionView.completeButtonIsHidden = true
+                
+                self.promptView.isHidden = true
+                self.promptView.scanningNoticeImageView.stopAnimating()
+            }
+            
+            break
+        case .changed(_, let offSet):
+            deleteShadowView.process = offSet / kDeleteShadowViewMaxBottomSpace
+            break
+        case .end(_):
+            UIView.animate(withDuration: 0.25, animations: {
+                self.deleteShadowView.alpha = 0.1
+                self.shutterButton.alpha = 1.0
+                self.autoFlashButton.alpha = 1.0
+                self.autoCaptureButton.alpha = 1.0
+                self.photoCollectionView.completeButton.alpha = 1.0
+            }) { (_) in
+                self.deleteShadowView.isHidden = true
+                self.deleteShadowView.process = 0
+                self.shutterButton.isHidden = false
+                self.autoFlashButton.isHidden = false
+                self.autoCaptureButton.isHidden = false
+                self.photoCollectionView.completeButtonIsHidden = false
+                
+                ZLScanCaptureSession.current.isEditing = false
+                self.quadView.removeQuadrilateral()
+                self.captureSessionManager?.start()
+            }
+            break
+        }
+    }
+    
+    @objc func flashActionToggle(_ button: UIButton) {
+        if !button.isSelected { openFlash(false) } else { closeFlash() }
+    }
+    
+    @objc func autoCaptureAction(_ button: UIButton) {
+        button.isSelected = !button.isSelected
+        if button.isSelected {
+            self.isAutoCapture = false
+        } else {
+            self.isAutoCapture = true
+        }
     }
     
     func selectedItem(_ models: [ZLPhotoModel], index: Int) {
@@ -282,9 +381,6 @@ extension ZLScannerViewController: ZLPhotoWaterFallViewProtocol {
         captureSessionManager?.stop()
         navigationController?.pushViewController(vc, animated: true)
     }
-    func manualToggle(_ button: UIButton) {
-        if button.isSelected { isAutoCapture = false } else { isAutoCapture = true }
-    }
 }
 //MARK: GET Quadrilateral
 extension ZLScannerViewController { 
@@ -306,5 +402,53 @@ extension ZLScannerViewController {
         let transforms = [scaleTransform, rotationTransform, translationTransform]
         let transformedQuad = quard.applyTransforms(transforms)
         return transformedQuad
+    }
+}
+
+fileprivate extension ZLScannerViewController {
+    class DeleteShadowView : UIView {
+        var process: CGFloat = 0 {
+            didSet {
+                deleteImageView.alpha = process
+            }
+        }
+        
+        private lazy var lineView: UIView = {
+            let view = UIView()
+            view.backgroundColor = UIColor.white
+            return view
+        }()
+        
+        private lazy var deleteImageView: UIImageView = {
+            let view = UIImageView()
+            view.backgroundColor = UIColor.orange
+            return view
+        }()
+        
+        init() {
+            super.init(frame: CGRect.zero)
+            backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+            addSubview(lineView)
+            addSubview(deleteImageView)
+            setupFrame()
+        }
+        
+        private func setupFrame() {
+            lineView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([lineView.heightAnchor.constraint(equalToConstant: 1),
+                                         lineView.leftAnchor.constraint(equalTo: self.leftAnchor),
+                                         lineView.rightAnchor.constraint(equalTo: self.rightAnchor),
+                                         lineView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -kDeleteShadowViewMaxBottomSpace)])
+            
+            deleteImageView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([deleteImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 200),
+                                         deleteImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+                                         deleteImageView.widthAnchor.constraint(equalToConstant: 100),
+                                         deleteImageView.heightAnchor.constraint(equalToConstant: 100)])
+        }
+        
+        required init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
     }
 }

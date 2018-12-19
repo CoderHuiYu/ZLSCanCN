@@ -9,13 +9,10 @@
 import UIKit
 
 final class ZLScanShutterButton: UIControl {
-    
     private let outterRingLayer = CAShapeLayer()
     private let innerCircleLayer = CAShapeLayer()
-    
-    private let outterRingRatio: CGFloat = 0.80
-    private let innerRingRatio: CGFloat = 0.75
-    
+    private let outterRingRatio: CGFloat = 0.95
+    private let innerRingRatio: CGFloat = 0.9
     private let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
     
     override var isHighlighted: Bool {
@@ -27,7 +24,6 @@ final class ZLScanShutterButton: UIControl {
     }
     
     // MARL: Life Cycle
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         layer.addSublayer(outterRingLayer)
@@ -43,7 +39,6 @@ final class ZLScanShutterButton: UIControl {
     }
     
     // MARK: - Drawing
-    
     override func draw(_ rect: CGRect) {
         outterRingLayer.frame = rect
         outterRingLayer.path = pathForOutterRing(inRect: rect).cgPath
@@ -59,7 +54,6 @@ final class ZLScanShutterButton: UIControl {
     }
     
     // MARK: - Animation
-    
     private func animateInnerCircleLayer(forHighlightedState isHighlighted: Bool) {
         let animation = CAKeyframeAnimation(keyPath: "transform")
         var values = [CATransform3DMakeScale(1.0, 1.0, 1.0), CATransform3DMakeScale(0.9, 0.9, 0.9), CATransform3DMakeScale(0.93, 0.93, 0.93), CATransform3DMakeScale(0.9, 0.9, 0.9)]
@@ -76,22 +70,17 @@ final class ZLScanShutterButton: UIControl {
     }
     
     // MARK: - Paths
-    
     private func pathForOutterRing(inRect rect: CGRect) -> UIBezierPath {
         let path = UIBezierPath(ovalIn: rect)
-        
         let innerRect = rect.scaleAndCenter(withRatio: outterRingRatio)
         let innerPath = UIBezierPath(ovalIn: innerRect).reversing()
-        
         path.append(innerPath)
-        
         return path
     }
     
     private func pathForInnerCircle(inRect rect: CGRect) -> UIBezierPath {
         let rect = rect.scaleAndCenter(withRatio: innerRingRatio)
         let path = UIBezierPath(ovalIn: rect)
-        
         return path
     }
     
