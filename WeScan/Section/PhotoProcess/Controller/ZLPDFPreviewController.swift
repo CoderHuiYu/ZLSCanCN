@@ -9,21 +9,40 @@
 import UIKit
 import QuickLook
 
-class ZLPDFPreviewController: UIViewController, QLPreviewControllerDelegate,QLPreviewControllerDataSource{
+class ZLPDFPreviewController: ZLScannerBasicViewController, QLPreviewControllerDelegate,QLPreviewControllerDataSource{
     
-    private var webview: UIWebView = UIWebView()
     private var pdfPath: String?
-    private var preview: QLPreviewController = QLPreviewController()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    private lazy var preview: QLPreviewController = {
+        let preview = QLPreviewController()
         preview.delegate = self
-        navigationController?.pushViewController(preview, animated: true)
+        preview.dataSource = self
+        preview.currentPreviewItemIndex = 1
+        preview.view.frame = CGRect(x: 0, y: 0, width: kScreenWidth, height: kScreenHeight)
+        return preview
+    }()
+    private let menuView = ZLPDFMenuView()
+    
+    init(pdfPath: String){
+        super.init(nibName: nil, bundle: nil)
+        self.pdfPath = pdfPath
     }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        viewConfigs()
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.isHidden = false
+    }
+    private func viewConfigs() {
+        title = pdfPath?.components(separatedBy: "/").last
+        addChild(preview)
+        view.addSubview(preview.view)
+        preview.didMove(toParent: self)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rBtn)
     }
     // MARK: Delegate
     func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
@@ -32,5 +51,11 @@ class ZLPDFPreviewController: UIViewController, QLPreviewControllerDelegate,QLPr
     
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
         return URL.init(fileURLWithPath: pdfPath!) as QLPreviewItem
+    }
+    override func backBtnClick() {
+        navigationController?.dismiss(animated: true, completion: nil)
+    }
+    override func rBtnClick() {
+        menuView.showMenuView()
     }
 }
