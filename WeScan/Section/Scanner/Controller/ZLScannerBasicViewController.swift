@@ -21,6 +21,14 @@ class ZLScannerBasicViewController: UIViewController {
         backBtn.addTarget(self, action: #selector(backBtnClick), for: .touchUpInside)
         return backBtn
     }()
+    lazy var rBtn: UIButton = {
+        let rBtn = UIButton()
+        rBtn.frame = CGRect(x: kScreenWidth-44, y: 0, width: 44, height: 44)
+        rBtn.setTitle("Edit", for: .normal)
+        rBtn.setTitleColor(globalColor, for: .normal)
+        rBtn.addTarget(self, action: #selector(rBtnClick), for: .touchUpInside)
+        return rBtn
+    }()
     lazy var bottomBtn: UIButton = {
         let bottomBtn = UIButton()
         bottomBtn.setTitle("Save", for: .normal)
@@ -42,6 +50,8 @@ class ZLScannerBasicViewController: UIViewController {
 extension ZLScannerBasicViewController {
     @objc func backBtnClick() {}
     @objc func bottomBtnClick() {}
+    @objc func rBtnClick() {}
+    
     func showAlter(title: String, message: String, confirm: String, cancel: String,confirmComp:@escaping ((UIAlertAction)->()),cancelComp:@escaping ((UIAlertAction)->())){
         let confirmAlt = UIAlertAction(title: confirm, style: .default, handler: confirmComp)
         let cancelAlt  = UIAlertAction(title: cancel, style: .default, handler: cancelComp)
