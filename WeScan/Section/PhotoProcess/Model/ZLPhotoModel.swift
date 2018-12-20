@@ -9,29 +9,22 @@
 import UIKit
 
 struct ZLPhotoModel: Equatable {
-    
     // local store
     var originalImagePath: String
-    
     var scannedImagePath: String
-    
     var enhancedImagePath: String
-    
     var isEnhanced: Bool
-    
     var rectangle: [String: [String: Double]]
     
     // to show
     var scannedImage: UIImage
     var enhancedImage: UIImage
+    var originalImage: UIImage
     var imageSize: CGSize
-    
     var isSelected: Bool = false
-    
     var detectedRectangle: ZLQuadrilateral = ZLQuadrilateral(topLeft: CGPoint.zero, topRight: CGPoint.zero, bottomRight: CGPoint.zero, bottomLeft: CGPoint.zero)
     
     init(_ originalImagePath: String, _ scannedImagePath: String, _ enhancedImagePath: String, _ isEnhanced: Bool,_ rectangle: [String: [String: Double]]) {
-        
         self.originalImagePath = originalImagePath
         self.scannedImagePath = scannedImagePath
         self.enhancedImagePath = enhancedImagePath
@@ -40,7 +33,7 @@ struct ZLPhotoModel: Equatable {
         
         self.scannedImage = UIImage(contentsOfFile: kZLScanPhotoFileDataPath + "/\(scannedImagePath)") ?? UIImage()
         self.enhancedImage = UIImage(contentsOfFile: kZLScanPhotoFileDataPath + "/\(enhancedImagePath)") ?? UIImage()
-        
+        self.originalImage = UIImage(contentsOfFile: kZLScanPhotoFileDataPath + "/\(originalImagePath)") ?? UIImage()
         self.imageSize = enhancedImage.size
         
         guard let topLeftDict = rectangle["topLeft"] else {
@@ -62,17 +55,13 @@ struct ZLPhotoModel: Equatable {
             return
         }
         let bottomLeft = CGPoint(x: bottomLeftDict["x"] ?? 0.0, y: bottomLeftDict["y"] ?? 0.0)
-        
         detectedRectangle = ZLQuadrilateral(topLeft: topLeft, topRight: topRight, bottomRight: bottomRight, bottomLeft: bottomLeft)
     }
     
 }
 
 extension ZLPhotoModel {
-    
-    
     func save(handle:((_ isSuccess: Bool)->())) {
-        
         let rectDict: [String: Any] = rectangle
         let dict: [String : Any] = ["originalImagePath":originalImagePath,
                                     "scannedImagePath":scannedImagePath,
@@ -142,20 +131,14 @@ extension ZLPhotoModel {
                 }
                 index += 1
             }
-            
-            
+        
             ZLPhotoManager.saveImage(originalImage, scannedImage, enhancedImage) { (oriPath, scanPath, enhanPath) in
-                
                 if let oritempPath = oriPath, let scantempPath = scanPath, let enhantempPath = enhanPath  {
-                    
                     // remove last model data
                     ZLPhotoManager.removeImage(self) { (isSuccess) in
                         if isSuccess {
-                            
                             array.removeObject(at: index)
-                            
                             let photoModel = ZLPhotoModel.init(oritempPath, scantempPath, enhantempPath, isEnhanced, ZLPhotoManager.getRectDict(detectedRect))
-                            
                             
                             let rectDict: [String: Any] = photoModel.rectangle
                             let dict: [String : Any] = ["originalImagePath":oritempPath,
@@ -168,7 +151,6 @@ extension ZLPhotoModel {
                             // save current model data
                             let isSuccess = array.write(toFile: kZLScanPhotoModelDataPath, atomically: true)
                             handle(isSuccess, photoModel)
-                            
                         } else {
                             handle(false, nil)
                         }
@@ -221,7 +203,6 @@ extension ZLPhotoModel {
     }
     
     static func removeAllModel(handle:((_ isSuccess: Bool)->())) {
-        
         let manager = FileManager.default
         if manager.fileExists(atPath: kZLScanPhotoModelDataPath) {
             do {
@@ -239,10 +220,8 @@ extension ZLPhotoModel {
     }
     
     static func sortAllModel(_ models: [ZLPhotoModel], handle:((_ isSuccess: Bool)->())) {
-        
         ZLPhotoManager.removefile(kZLScanPhotoModelDataPath) { (isSuccess) in
             if isSuccess {
-                
                 let array = NSMutableArray()
                 for model in models {
                     
@@ -258,7 +237,6 @@ extension ZLPhotoModel {
                 
                 let isSuccess = array.write(toFile: kZLScanPhotoModelDataPath, atomically: true)
                 handle(isSuccess)
-                
             } else {
                 handle(false)
             }

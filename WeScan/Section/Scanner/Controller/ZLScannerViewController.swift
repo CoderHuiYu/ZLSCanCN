@@ -177,7 +177,6 @@ extension ZLScannerViewController: ZLScanRectangleDetectionDelegateProtocol {
         cartesianScaledQuad.reorganize()
         
         let filteredImage = ciImage.applyingFilter("CIPerspectiveCorrection", parameters: ciImage.getFilterDict(cartesianScaledQuad))
-        
         var uiImage: UIImage!
         if let cgImage = CIContext(options: nil).createCGImage(filteredImage, from: filteredImage.extent) {
             uiImage = UIImage(cgImage: cgImage)

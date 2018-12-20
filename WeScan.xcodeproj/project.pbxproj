@@ -82,10 +82,8 @@
 		FEE9FDDD21C8977C0065E87B /* ZLSortCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE9FDBF21C8977C0065E87B /* ZLSortCollectionView.swift */; };
 		FEE9FDDE21C8977C0065E87B /* ZLScanImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE9FDC021C8977C0065E87B /* ZLScanImageViewer.swift */; };
 		FEE9FDDF21C8977C0065E87B /* ZLScanShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE9FDC121C8977C0065E87B /* ZLScanShutterButton.swift */; };
-		FEE9FDE021C8977C0065E87B /* ZLPhotoEditingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE9FDC221C8977C0065E87B /* ZLPhotoEditingView.swift */; };
 		FEE9FDE121C8977C0065E87B /* ZLQuadrilateralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE9FDC321C8977C0065E87B /* ZLQuadrilateralView.swift */; };
 		FEE9FDE221C8977C0065E87B /* ZLPhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEE9FDC421C8977C0065E87B /* ZLPhotoCell.xib */; };
-		FEE9FDE321C8977C0065E87B /* ZLPhotoEditingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FEE9FDC521C8977C0065E87B /* ZLPhotoEditingView.xib */; };
 		FEE9FDE421C8977C0065E87B /* ZLSortNavgationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE9FDC621C8977C0065E87B /* ZLSortNavgationView.swift */; };
 		FEE9FDF321C89F330065E87B /* ZLScanToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE9FDF221C89F330065E87B /* ZLScanToast.swift */; };
 		FEE9FDF521C8A39C0065E87B /* ZLScanEidtCornerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE9FDF421C8A39C0065E87B /* ZLScanEidtCornerView.swift */; };
@@ -245,10 +243,8 @@
 		FEE9FDBF21C8977C0065E87B /* ZLSortCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLSortCollectionView.swift; sourceTree = "<group>"; };
 		FEE9FDC021C8977C0065E87B /* ZLScanImageViewer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLScanImageViewer.swift; sourceTree = "<group>"; };
 		FEE9FDC121C8977C0065E87B /* ZLScanShutterButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLScanShutterButton.swift; sourceTree = "<group>"; };
-		FEE9FDC221C8977C0065E87B /* ZLPhotoEditingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLPhotoEditingView.swift; sourceTree = "<group>"; };
 		FEE9FDC321C8977C0065E87B /* ZLQuadrilateralView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLQuadrilateralView.swift; sourceTree = "<group>"; };
 		FEE9FDC421C8977C0065E87B /* ZLPhotoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZLPhotoCell.xib; sourceTree = "<group>"; };
-		FEE9FDC521C8977C0065E87B /* ZLPhotoEditingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZLPhotoEditingView.xib; sourceTree = "<group>"; };
 		FEE9FDC621C8977C0065E87B /* ZLSortNavgationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLSortNavgationView.swift; sourceTree = "<group>"; };
 		FEE9FDF221C89F330065E87B /* ZLScanToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLScanToast.swift; sourceTree = "<group>"; };
 		FEE9FDF421C8A39C0065E87B /* ZLScanEidtCornerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLScanEidtCornerView.swift; sourceTree = "<group>"; };
@@ -531,8 +527,6 @@
 		FEE9FDEC21C898E20065E87B /* View */ = {
 			isa = PBXGroup;
 			children = (
-				FEE9FDC221C8977C0065E87B /* ZLPhotoEditingView.swift */,
-				FEE9FDC521C8977C0065E87B /* ZLPhotoEditingView.xib */,
 				FEE9FDBD21C8977C0065E87B /* ZLPhotoCell.swift */,
 				FEE9FDC421C8977C0065E87B /* ZLPhotoCell.xib */,
 				FEE9FDBA21C8977C0065E87B /* ZLPhotoWaterFallView.swift */,
@@ -762,7 +756,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FEE9FDE321C8977C0065E87B /* ZLPhotoEditingView.xib in Resources */,
 				18EB1C6821B10717001CEA1E /* ZLPhotoAsset.xcassets in Resources */,
 				93061F7021BA2FAE008A78BE /* ZLColorAsset.xcassets in Resources */,
 				FEE9FDD021C8977C0065E87B /* ZLPhotoEditorController.xib in Resources */,
@@ -829,7 +822,6 @@
 				FEE9FDE421C8977C0065E87B /* ZLSortNavgationView.swift in Sources */,
 				FE15D3A421C23578000AD056 /* ViewAnimator.swift in Sources */,
 				FEE9FE0D21CA4B050065E87B /* ZLPDFMenuView.swift in Sources */,
-				FEE9FDE021C8977C0065E87B /* ZLPhotoEditingView.swift in Sources */,
 				FEE9FDD221C8977C0065E87B /* ZLPhotoManager.swift in Sources */,
 				FEE9FDCA21C8977C0065E87B /* ZLScanReviewViewController.swift in Sources */,
 				FEE9FDC721C8977C0065E87B /* ZLEditScanViewController.swift in Sources */,
