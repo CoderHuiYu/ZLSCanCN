@@ -15,6 +15,8 @@
 		74F7D03C211ACC6B0046AF7E /* CGAffineTransformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F7D03B211ACC6B0046AF7E /* CGAffineTransformTests.swift */; };
 		74F7D03E211ACC890046AF7E /* AVCaptureVideoOrientationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F7D03D211ACC890046AF7E /* AVCaptureVideoOrientationTests.swift */; };
 		93061F7021BA2FAE008A78BE /* ZLColorAsset.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93061F6F21BA2FAE008A78BE /* ZLColorAsset.xcassets */; };
+		93C0BEC221CA45B200D6ACD5 /* ZLPhotoEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0BEC021CA45B200D6ACD5 /* ZLPhotoEditingController.swift */; };
+		93C0BEC321CA45B200D6ACD5 /* ZLPhotoEditingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93C0BEC121CA45B200D6ACD5 /* ZLPhotoEditingController.xib */; };
 		A11C5CD920495EA1005075FE /* RectangleFeaturesFunnelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11C5CD820495EA1005075FE /* RectangleFeaturesFunnelTests.swift */; };
 		A11C5CDB20495EC9005075FE /* AVCaptureVideoOrientation+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11C5CDA20495EC9005075FE /* AVCaptureVideoOrientation+Utils.swift */; };
 		A14089EE204EAA180009530F /* ArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14089ED204EAA180009530F /* ArrayTests.swift */; };
@@ -171,6 +173,8 @@
 		74F7D03B211ACC6B0046AF7E /* CGAffineTransformTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGAffineTransformTests.swift; sourceTree = "<group>"; };
 		74F7D03D211ACC890046AF7E /* AVCaptureVideoOrientationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVCaptureVideoOrientationTests.swift; sourceTree = "<group>"; };
 		93061F6F21BA2FAE008A78BE /* ZLColorAsset.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ZLColorAsset.xcassets; sourceTree = "<group>"; };
+		93C0BEC021CA45B200D6ACD5 /* ZLPhotoEditingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLPhotoEditingController.swift; sourceTree = "<group>"; };
+		93C0BEC121CA45B200D6ACD5 /* ZLPhotoEditingController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ZLPhotoEditingController.xib; sourceTree = "<group>"; };
 		A11C5CD820495EA1005075FE /* RectangleFeaturesFunnelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RectangleFeaturesFunnelTests.swift; sourceTree = "<group>"; };
 		A11C5CDA20495EC9005075FE /* AVCaptureVideoOrientation+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AVCaptureVideoOrientation+Utils.swift"; sourceTree = "<group>"; };
 		A14089ED204EAA180009530F /* ArrayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayTests.swift; sourceTree = "<group>"; };
@@ -506,6 +510,8 @@
 			children = (
 				FEE9FDA921C8977B0065E87B /* ZLPhotoEditorController.swift */,
 				FEE9FDB021C8977C0065E87B /* ZLPhotoEditorController.xib */,
+				93C0BEC021CA45B200D6ACD5 /* ZLPhotoEditingController.swift */,
+				93C0BEC121CA45B200D6ACD5 /* ZLPhotoEditingController.xib */,
 				FEE9FDAD21C8977C0065E87B /* ZLPDFPreviewController.swift */,
 			);
 			path = Controller;
@@ -759,6 +765,7 @@
 				FEE9FDD021C8977C0065E87B /* ZLPhotoEditorController.xib in Resources */,
 				18EB1C6821B10717001CEA1E /* ZLPhotoAsset.xcassets in Resources */,
 				FEE9FDE221C8977C0065E87B /* ZLPhotoCell.xib in Resources */,
+				93C0BEC321CA45B200D6ACD5 /* ZLPhotoEditingController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -829,6 +836,7 @@
 				FEE9FDF521C8A39C0065E87B /* ZLScanEidtCornerView.swift in Sources */,
 				A1F22EA5202DB3AA001723AD /* CGPoint+Utils.swift in Sources */,
 				FE15D3AE21C2369B000AD056 /* UITableView+Animator.swift in Sources */,
+				93C0BEC221CA45B200D6ACD5 /* ZLPhotoEditingController.swift in Sources */,
 				FEE9FDF321C89F330065E87B /* ZLScanToast.swift in Sources */,
 				B9274D3A219B951000F9FCD1 /* CIImage+Utils.swift in Sources */,
 				A1C4DD4E2044ADE600D36684 /* CGRect+Utils.swift in Sources */,

@@ -14,9 +14,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ZLPhotoEditorController" customModule="WeScan" customModuleProvider="target">
             <connections>
                 <outlet property="collectionView" destination="Wtn-9Z-PLS" id="Hbt-T4-nyo"/>
-                <outlet property="collectionViewBottomCons" destination="1Ls-sN-HFN" id="BuE-IO-UsR"/>
                 <outlet property="toolBarView" destination="ofm-Wg-uGs" id="BeM-1C-m99"/>
-                <outlet property="toolBarViewBottomCons" destination="kEg-za-j2E" id="tdC-Wj-Ofl"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -26,7 +24,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Wtn-9Z-PLS">
-                    <rect key="frame" x="0.0" y="84" width="375" height="453"/>
+                    <rect key="frame" x="0.0" y="40" width="375" height="497"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="whw-hy-Mni">
                         <size key="itemSize" width="50" height="50"/>
@@ -66,7 +64,7 @@
                 <constraint firstItem="Wtn-9Z-PLS" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="BB4-0h-z2G"/>
                 <constraint firstItem="Wtn-9Z-PLS" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="S1W-eK-Mon"/>
                 <constraint firstItem="ofm-Wg-uGs" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="TYd-dz-ta5"/>
-                <constraint firstItem="Wtn-9Z-PLS" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="64" id="frZ-Ha-DxK"/>
+                <constraint firstItem="Wtn-9Z-PLS" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="20" id="frZ-Ha-DxK"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="ofm-Wg-uGs" secondAttribute="bottom" id="kEg-za-j2E"/>
                 <constraint firstItem="ofm-Wg-uGs" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="tnv-ay-CIM"/>
             </constraints>
