@@ -303,7 +303,9 @@ extension ZLScannerViewController: ZLPhotoWaterFallViewProtocol {
             deleteShadowView.isHidden = false
             deleteShadowView.process = 0
             self.quadView.removeQuadrilateral()
-            self.captureSessionManager?.stop()
+            DispatchQueue.global().async {
+                self.captureSessionManager?.stop()
+            }
             
             UIView.animate(withDuration: 0.25, animations: {
                 self.deleteShadowView.alpha = 1.0
