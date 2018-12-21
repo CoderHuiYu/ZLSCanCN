@@ -147,8 +147,9 @@ extension ZLPhotoEditorController {
     override func backBtnClick() {
         if isNeedLoadPDF {
             showAlter(title: "The image will be deleted", message: "Are you sure?", confirm: "OK", cancel: "Cancel", confirmComp: { (_) in
-                ZLPhotoModel.removeAllModel { (_) in
-                    self.dismiss(animated: true, completion: nil)
+                ZLPhotoModel.removeAllModel { [weak self] (_) in
+                    guard let self = self else { return }
+                    self.navigationController?.popViewController(animated: true)
                 }
             }) { (_) in }
         }else{

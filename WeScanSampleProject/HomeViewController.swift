@@ -54,6 +54,9 @@ final class HomeViewController: UIViewController {
         setupConstraints()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
     // MARK: - Setups
     
     private func setupViews() {

@@ -38,7 +38,6 @@ extension UIAlertController {
                 subview.effect = UIBlurEffect(style: style)
             }
         }
-        
         DispatchQueue.main.async {
             vc!.present(self, animated: animated, completion: completion)
         }
@@ -110,5 +109,15 @@ extension UIView {
         }
         getSubview(view: self)
         return all
+    }
+}
+extension UIWindow {
+    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let vc = self.rootViewController?.presentedViewController?.presentedViewController else {
+            return
+        }
+        if vc is UIAlertController {
+            vc.dismiss(animated: true, completion: nil)
+        }
     }
 }

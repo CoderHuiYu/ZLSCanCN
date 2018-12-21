@@ -96,6 +96,8 @@
 		FEE9FE1221CB8DAE0065E87B /* ZLScanShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE9FE1121CB8DAE0065E87B /* ZLScanShareViewController.swift */; };
 		FEE9FE1421CB8E5C0065E87B /* UIAlertController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE9FE1321CB8E5C0065E87B /* UIAlertController+Extension.swift */; };
 		FEE9FE3621CC8CEE0065E87B /* ZLScanShareFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE9FE3521CC8CEE0065E87B /* ZLScanShareFlowLayout.swift */; };
+		FEE9FE3921CCADFF0065E87B /* ZLScanRenameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE9FE3821CCADFF0065E87B /* ZLScanRenameViewController.swift */; };
+		FEE9FE3B21CCE0C20065E87B /* UIView+CAGradientLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE9FE3A21CCE0C20065E87B /* UIView+CAGradientLayer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -259,6 +261,8 @@
 		FEE9FE1121CB8DAE0065E87B /* ZLScanShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLScanShareViewController.swift; sourceTree = "<group>"; };
 		FEE9FE1321CB8E5C0065E87B /* UIAlertController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extension.swift"; sourceTree = "<group>"; };
 		FEE9FE3521CC8CEE0065E87B /* ZLScanShareFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLScanShareFlowLayout.swift; sourceTree = "<group>"; };
+		FEE9FE3821CCADFF0065E87B /* ZLScanRenameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLScanRenameViewController.swift; sourceTree = "<group>"; };
+		FEE9FE3A21CCE0C20065E87B /* UIView+CAGradientLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+CAGradientLayer.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -401,6 +405,7 @@
 				C3E2EB8D20B8970800A42E58 /* UIImage+Utils.swift */,
 				A1DF90F52037187500841A11 /* UIImage+Orientation.swift */,
 				FEE9FE1321CB8E5C0065E87B /* UIAlertController+Extension.swift */,
+				FEE9FE3A21CCE0C20065E87B /* UIView+CAGradientLayer.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -517,6 +522,7 @@
 				FEE9FDAD21C8977C0065E87B /* ZLPDFPreviewController.swift */,
 				FEE9FE1121CB8DAE0065E87B /* ZLScanShareViewController.swift */,
 				FEE9FE3521CC8CEE0065E87B /* ZLScanShareFlowLayout.swift */,
+				FEE9FE3821CCADFF0065E87B /* ZLScanRenameViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -803,6 +809,7 @@
 				FE15D3A621C235B2000AD056 /* ViewAnimatorConfig.swift in Sources */,
 				FEE9FDCB21C8977C0065E87B /* ZLScannerBasicViewController.swift in Sources */,
 				FEE9FDD321C8977C0065E87B /* ZLPhotoModel.swift in Sources */,
+				FEE9FE3921CCADFF0065E87B /* ZLScanRenameViewController.swift in Sources */,
 				A1DF90F22035992A00841A11 /* CGAffineTransform+Utils.swift in Sources */,
 				FEE9FDCD21C8977C0065E87B /* ZLPDFPreviewController.swift in Sources */,
 				FEE9FDDF21C8977C0065E87B /* ZLScanShutterButton.swift in Sources */,
@@ -831,10 +838,10 @@
 				FEE9FE0D21CA4B050065E87B /* ZLPDFMenuView.swift in Sources */,
 				FEE9FDD221C8977C0065E87B /* ZLPhotoManager.swift in Sources */,
 				FEE9FE1221CB8DAE0065E87B /* ZLScanShareViewController.swift in Sources */,
-				FEE9FDCA21C8977C0065E87B /* ZLScanReviewViewController.swift in Sources */,
 				FEE9FDC721C8977C0065E87B /* ZLEditScanViewController.swift in Sources */,
 				FE15D3B421C23708000AD056 /* Animation.swift in Sources */,
 				FE15D3B021C236BD000AD056 /* AnimatorType.swift in Sources */,
+				FEE9FE3B21CCE0C20065E87B /* UIView+CAGradientLayer.swift in Sources */,
 				C3E2EB8E20B8970800A42E58 /* UIImage+Utils.swift in Sources */,
 				FEE9FDCE21C8977C0065E87B /* ZLImageScannerController.swift in Sources */,
 				FEE9FDF521C8A39C0065E87B /* ZLScanEidtCornerView.swift in Sources */,
@@ -1038,7 +1045,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4TJ7K2DH6D;
+				DEVELOPMENT_TEAM = A5X7BL9CZV;
 				INFOPLIST_FILE = WeScanSampleProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1055,7 +1062,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4TJ7K2DH6D;
+				DEVELOPMENT_TEAM = A5X7BL9CZV;
 				INFOPLIST_FILE = WeScanSampleProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

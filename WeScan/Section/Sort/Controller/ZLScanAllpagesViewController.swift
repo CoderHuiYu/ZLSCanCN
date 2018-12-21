@@ -64,6 +64,7 @@ class ZLScanAllpagesViewController: ZLScannerBasicViewController, Convertable{
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBtn)
         bottomBtn.frame = CGRect(x: 0, y: kScreenHeight-100-kNavHeight, width: kScreenWidth, height: 100)
         bottomBtn.setTitle("Done", for: .normal)
+        bottomBtn.getGradientColor()
         view.addSubview(bottomBtn)
     }
 }

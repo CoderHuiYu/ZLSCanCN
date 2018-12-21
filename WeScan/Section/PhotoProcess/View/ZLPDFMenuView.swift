@@ -18,7 +18,7 @@ class ZLPDFMenuView: UIView {
     
     weak var delegate: ZLPDFMenuViewProtocol?
     
-    private lazy var menuTableView: UITableView = {
+    lazy var menuTableView: UITableView = {
         let menuTableView = UITableView(frame: CGRect(x: kScreenWidth-200, y: kNavHeight, width: 180, height: 200), style: .plain)
         menuTableView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
         menuTableView.layer.anchorPoint = CGPoint(x: 1, y: 0)

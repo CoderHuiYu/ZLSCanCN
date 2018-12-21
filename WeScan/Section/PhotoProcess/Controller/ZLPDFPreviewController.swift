@@ -17,7 +17,7 @@ class ZLPDFPreviewController: ZLScannerBasicViewController, QLPreviewControllerD
         preview.delegate = self
         preview.dataSource = self
         preview.currentPreviewItemIndex = 1
-        preview.view.frame = CGRect(x: 0, y: 0, width: kScreenWidth, height: kScreenHeight)
+        preview.view.frame = CGRect(x: 0, y: 0, width: kScreenWidth, height: kScreenHeight-kNavHeight)
         return preview
     }()
     private let menuView = ZLPDFMenuView()
@@ -63,23 +63,35 @@ class ZLPDFPreviewController: ZLScannerBasicViewController, QLPreviewControllerD
         case 0:
             sharePDF()
         case 1:
-            let vc = ZLPhotoEditorController.init(nibName: "ZLPhotoEditorController", bundle: Bundle(for: ZLPhotoEditorController.self))
-            vc.isNeedLoadPDF = true
-            navigationController?.pushViewController(vc, animated: true)
-            break
+            editPDF()
         case 2:
-            break
+            renamePDF()
         case 3:
-            break
+            deletePDF()
         default:
             break
         }
     }
-    func sharePDF() {
+    private func sharePDF() {
         let text = "test"
         let shareUrl = URL(fileURLWithPath: pdfPath!)
         let items: [Any] = [text, shareUrl]
         let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
         present(activityVC, animated: true, completion: nil)
+    }
+    private func editPDF() {
+        let vc = ZLPhotoEditorController.init(nibName: "ZLPhotoEditorController", bundle: Bundle(for: ZLPhotoEditorController.self))
+        vc.isNeedLoadPDF = true
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    private func deletePDF() {
+        showAlter(title: "", message: "Do you want to delete this file?", confirm: "Delete", cancel: "Cancel", confirmComp: { (_) in
+            
+        }) { (_) in }
+    }
+    private func renamePDF() {
+        let alter = UIAlertController(style: .actionSheet)
+        alter.addScanRenameViewController()
+        alter.show(vc: self.navigationController)
     }
 }
