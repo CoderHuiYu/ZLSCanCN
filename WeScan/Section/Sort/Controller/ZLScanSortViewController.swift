@@ -57,9 +57,9 @@ class ZLScanSortViewController: ZLScannerBasicViewController {
         
         collectionView.photoModels = models
         view.addSubview(collectionView)
-        bottomBtn.frame = CGRect(x: 0, y: kScreenHeight-100-kNavHeight, width: kScreenWidth, height: 100)
-        bottomBtn.setTitle("Save", for: .normal)
-        view.addSubview(bottomBtn)
+//        bottomBtn.frame = CGRect(x: 0, y: kScreenHeight-100-kNavHeight, width: kScreenWidth, height: 100)
+//        bottomBtn.setTitle("Save", for: .normal)
+//        view.addSubview(bottomBtn)
         let rightBtn = UIButton ()
         rightBtn.setTitle("Delete", for: .normal)
         rightBtn.setTitleColor(globalColor, for: .normal)

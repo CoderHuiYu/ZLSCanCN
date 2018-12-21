@@ -12,7 +12,7 @@ extension UIView {
     func getGradientColor(){
         let gradient = CAGradientLayer()
         gradient.frame = self.bounds
-        gradient.colors = [COLORFROMHEX(0x006ea6).cgColor,COLORFROMHEX(0x18acf8).cgColor]
+        gradient.colors = [COLORFROMHEX(0x18acf8).cgColor,COLORFROMHEX(0x006ea6).cgColor]
         gradient.locations = [0, 1]
         gradient.startPoint = CGPoint(x: 0, y: 0)
         gradient.endPoint = CGPoint(x: 1, y: 0)

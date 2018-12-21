@@ -62,10 +62,7 @@ class ZLScanAllpagesViewController: ZLScannerBasicViewController, Convertable{
         rightBtn.setTitleColor(globalColor, for: .normal)
         rightBtn.addTarget(self, action: #selector(rightBtnClick(_:)), for: .touchUpInside)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBtn)
-        bottomBtn.frame = CGRect(x: 0, y: kScreenHeight-100-kNavHeight, width: kScreenWidth, height: 100)
-        bottomBtn.setTitle("Done", for: .normal)
-        bottomBtn.getGradientColor()
-        view.addSubview(bottomBtn)
+        view.addSubview(bottomView(title: "Save"))
     }
 }
 extension ZLScanAllpagesViewController: UICollectionViewDelegate, UICollectionViewDataSource, ZLScanSortViewControllerProtocol{

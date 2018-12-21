@@ -29,20 +29,27 @@ class ZLScannerBasicViewController: UIViewController {
         rBtn.addTarget(self, action: #selector(rBtnClick), for: .touchUpInside)
         return rBtn
     }()
-    lazy var bottomBtn: UIButton = {
-        let bottomBtn = UIButton()
-        bottomBtn.setTitle("Save", for: .normal)
-        bottomBtn.setTitleColor(.black, for: .normal)
-        bottomBtn.addTarget(self, action: #selector(bottomBtnClick), for: .touchUpInside)
-        return bottomBtn
-    }()
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
         navigationController?.navigationBar.isTranslucent = false
         addBackBtn()
     }
-    
+    func bottomView(title: String) -> UIView {
+        let bottomView = UIView()
+        bottomView.backgroundColor = .white
+        bottomView.frame = CGRect(x: 0, y: kScreenHeight-80-kNavHeight, width: kScreenWidth, height: 80)
+        let bottomBtn = UIButton()
+        bottomBtn.frame = CGRect(x: 15, y: 15, width: kScreenWidth-30 , height: 50)
+        bottomBtn.setTitle(title, for: .normal)
+        bottomBtn.setTitleColor(.white, for: .normal)
+        bottomBtn.addTarget(self, action: #selector(bottomBtnClick), for: .touchUpInside)
+        bottomBtn.layer.cornerRadius = 5.0
+        bottomBtn.layer.masksToBounds = true
+        bottomBtn.getGradientColor()
+        bottomView.addSubview(bottomBtn)
+        return bottomView
+    }
     private func addBackBtn(){
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backBtn)
     }
