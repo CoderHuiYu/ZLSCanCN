@@ -37,6 +37,14 @@ class ZLPhotoWaterFallView: UIView {
         }
     }
     
+    var photoCount: Int {
+        return photoModels.count
+    }
+    
+    var collectionHeight: CGFloat {
+        return collectionView.frame.size.height
+    }
+    
     fileprivate var photoModels = [ZLPhotoModel]()
     
     // tool bar UI
@@ -241,7 +249,10 @@ class ZLCustomButton: UIButton {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+//        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
+        self.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+        self.titleLabel?.textAlignment = .center
     }
     
     override func layoutSubviews() {
@@ -249,7 +260,7 @@ class ZLCustomButton: UIButton {
         guard let imageView = self.imageView, let titleLabel = self.titleLabel else {
             return
         }
-        self.imageView?.frame = CGRect(x: (frame.size.width - imageView.frame.size.width) * 0.5, y: 0, width: imageView.frame.size.width, height: imageView.frame.size.height)
+        self.imageView?.frame = CGRect(x: (frame.size.width - imageView.frame.size.width) * 0.5, y: 20, width: imageView.frame.size.width, height: imageView.frame.size.height)
         self.titleLabel?.frame = CGRect(x: 0, y: imageView.frame.maxY + 10, width: frame.size.width, height: titleLabel.frame.size.height)
     }
 }

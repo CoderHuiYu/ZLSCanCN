@@ -210,36 +210,6 @@ extension ZLPhotoEditorController{
             ZLScanToast.showText("save success!")
         }
     }
-    
-    @objc func addImageBtnClick() {
-        let scannerViewController = ZLScannerViewController()
-        scannerViewController.dismissCallBackIndex = { index in
-            ZLPhotoModel.getAllModel(handle: { (isSuccess, models) in
-                if isSuccess {
-                    if let models = models {
-                        self.photoModels = models
-                        self.collectionView.reloadData()
-                        self.view.layoutIfNeeded()
-                        if let index = index {
-                            // click item call back
-                            self.title = "\(index + 1)/\(models.count)"
-                            self.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: UICollectionView.ScrollPosition.centeredHorizontally, animated: true)
-                        } else {
-                            // click cancle call back
-                            if let text = self.title {
-                                let str = text.components(separatedBy: "/").first ?? "1"
-                                self.title = "\(str)/\(models.count)"
-                            } else {
-                                self.title = "\(1)/\(models.count)"
-                            }
-                        }
-                    }
-                }
-            })
-        }
-        scannerViewController.isFromEdit = true
-        present(scannerViewController, animated: true, completion: nil)
-    }
 }
 
 // MARK: - edit photo
