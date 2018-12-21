@@ -209,6 +209,12 @@ extension ZLScannerViewController: ZLScanRectangleDetectionDelegateProtocol {
         guard isAutoCapture else { return }
         promptView.isHidden = false
         promptView.scanningNoticeImageView.startAnimating()
+        if noRectangle < 200 {
+            promptView.scanningNoticeLabel.text = "Looking for Document"
+        }else {
+            promptView.scanningNoticeLabel.text = "Position the document in view"
+        }
+        
     }
     func captureSessionManager(_ captureSessionManager: CaptureSessionManager, brightValueDidChange brightValue: Double) {
         if banTriggerFlash == true { return }
