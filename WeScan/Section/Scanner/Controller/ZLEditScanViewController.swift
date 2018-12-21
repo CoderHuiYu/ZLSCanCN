@@ -11,7 +11,7 @@ import AVFoundation
 
 final class ZLEditScanViewController: UIViewController {
     
-    var editCompletion: ((_ result: ZLImageScannerResults, _ rect: ZLQuadrilateral)->())?
+    var editCompletion: ((_ result: ZLImageScannerResults)->())?
     
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
@@ -55,7 +55,8 @@ final class ZLEditScanViewController: UIViewController {
     
     // MARK: - Life Cycle
     init(image: UIImage, quad: ZLQuadrilateral?) {
-        self.image = image.applyingPortraitOrientation()
+//        self.image = image.applyingPortraitOrientation()
+        self.image = image
         self.quad = quad ?? ZLEditScanViewController.defaultQuad(forImage: image)
         super.init(nibName: nil, bundle: nil)
     }
@@ -65,7 +66,6 @@ final class ZLEditScanViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupViews()
         setupConstraints()
         title = "Edit Scan"
@@ -73,7 +73,6 @@ final class ZLEditScanViewController: UIViewController {
         navigationItem.leftBarButtonItem = cancelButton
         
         zoomGestureController = ZLScanZoomGestureController(image: image, quadView: quadView)
-        
         let touchDown = UILongPressGestureRecognizer(target: zoomGestureController, action: #selector(zoomGestureController.handle(pan:)))
         touchDown.minimumPressDuration = 0
         view.addGestureRecognizer(touchDown)
@@ -127,15 +126,8 @@ final class ZLEditScanViewController: UIViewController {
     }
     
     // MARK: - Actions
-    
     @objc func navigationControllerPop() {
-        if navigationController?.viewControllers.first == self {
-            self.dismiss(animated: true) {
-                
-            }
-        } else {
-            navigationController?.popViewController(animated: true)
-        }
+        navigationController?.popViewController(animated: true)
     }
     
     @objc func finishEditing() {
@@ -166,9 +158,9 @@ final class ZLEditScanViewController: UIViewController {
         
         let results = ZLImageScannerResults(originalImage: image, scannedImage: uiImage, enhancedImage: nil, doesUserPreferEnhancedImage: false, detectedRectangle: scaledQuad)
         if let callBack = editCompletion {
-            callBack(results, scaledQuad)
+            callBack(results)
         }
-        dismiss(animated: true, completion: nil)
+        navigationControllerPop()
     }
     
     private func displayQuad() {

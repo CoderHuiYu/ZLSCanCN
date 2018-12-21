@@ -10,7 +10,6 @@ import UIKit
 import AVFoundation
 
 private let photoCollectionViewWithBarHeight: CGFloat = 188.0
-private let photoCollectionViewHeight: CGFloat = 88.0
 private let kOpenFlashCD: Double = 3
 private let brightValueOpen: Double = -2
 private let brightValueClose: Double = 3
@@ -25,12 +24,14 @@ enum ZLScanFlashResult {
 
 class ZLScannerViewController: ZLScannerBasicViewController {
     var isFromEdit = false
+    var captureImageCallBack: ((_ result: ZLImageScannerResults)->Void)?
     private var captureSessionManager: CaptureSessionManager?
     private let videoPreviewlayer = AVCaptureVideoPreviewLayer()
     private let quadView = ZLQuadrilateralView()
     private var flashEnabled = false
     private var banTriggerFlash = false
     private var disappear: Bool = false
+    private var isTouchShutter: Bool = false
     private var isAutoCapture: Bool = true {
         didSet {
             promptView.isHidden = !isAutoCapture
@@ -42,6 +43,7 @@ class ZLScannerViewController: ZLScannerBasicViewController {
         let button = UIButton()
         button.setTitle("Manual", for: .normal)
         button.setTitle("Auto", for: .selected)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         button.addTarget(self, action: #selector(autoCaptureAction(_:)), for: .touchUpInside)
         return button
     }()
@@ -103,14 +105,19 @@ class ZLScannerViewController: ZLScannerBasicViewController {
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        videoPreviewlayer.frame = view.layer.bounds
-        videoPreviewlayer.frame = CGRect(x: 0, y: 0, width: kScreenWidth, height: kScreenHeight - photoCollectionViewHeight - kBottomGap)
-        quadView.frame = CGRect(x: 0, y: 0, width: kScreenWidth, height: kScreenHeight - photoCollectionViewHeight - kBottomGap)
+        if isFromEdit {
+            videoPreviewlayer.frame = view.layer.bounds
+        } else {
+            videoPreviewlayer.frame = CGRect(x: 0, y: 0, width: kScreenWidth, height: view.layer.bounds.height - photoCollectionView.collectionHeight - kBottomGap)
+            quadView.frame = CGRect(x: 0, y: 0, width: kScreenWidth, height: view.layer.bounds.height - photoCollectionView.collectionHeight - kBottomGap)
+        }
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         disappear = true
         UIApplication.shared.isIdleTimerDisabled = false
+        closeFlash()
+        captureSessionManager?.stop()
     }
     
     private func setupViews() {
@@ -129,10 +136,18 @@ class ZLScannerViewController: ZLScannerBasicViewController {
     }
     private func setupConstraints() {
         shutterButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([shutterButton.bottomAnchor.constraint(equalTo: photoCollectionView.topAnchor, constant: 64 - 24),
-                                     shutterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                                     shutterButton.widthAnchor.constraint(equalToConstant: 60.0),
-                                     shutterButton.heightAnchor.constraint(equalToConstant: 60.0)])
+        if isFromEdit {
+            photoCollectionView.isHidden = true
+            NSLayoutConstraint.activate([shutterButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -24),
+                                         shutterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                                         shutterButton.widthAnchor.constraint(equalToConstant: 60.0),
+                                         shutterButton.heightAnchor.constraint(equalToConstant: 60.0)])
+        } else {
+            NSLayoutConstraint.activate([shutterButton.bottomAnchor.constraint(equalTo: photoCollectionView.topAnchor, constant: 64 - 24),
+                                         shutterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                                         shutterButton.widthAnchor.constraint(equalToConstant: 60.0),
+                                         shutterButton.heightAnchor.constraint(equalToConstant: 60.0)])
+        }
         
         autoFlashButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([autoFlashButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
@@ -166,32 +181,63 @@ extension ZLScannerViewController: ZLScanRectangleDetectionDelegateProtocol {
     }
     
     func captureSessionManager(_ captureSessionManager: CaptureSessionManager, didCapturePicture picture: UIImage, withQuad quad: ZLQuadrilateral?) {
+        shutterButton.isUserInteractionEnabled = false
         promptView.scanningNoticeImageView.stopAnimating()
         promptView.isHidden = true
-        let image = picture.applyingPortraitOrientation()
-        let quad = quad ?? ZLScannerViewController.defaultQuad(forImage: image)
         
-        guard let ciImage = CIImage(image: image) else { return }
-        
-        var cartesianScaledQuad = quad.toCartesian(withHeight: image.size.height)
-        cartesianScaledQuad.reorganize()
-        
-        let filteredImage = ciImage.applyingFilter("CIPerspectiveCorrection", parameters: ciImage.getFilterDict(cartesianScaledQuad))
-        var uiImage: UIImage!
-        if let cgImage = CIContext(options: nil).createCGImage(filteredImage, from: filteredImage.extent) {
-            uiImage = UIImage(cgImage: cgImage)
-        } else {
-            uiImage = UIImage(ciImage: filteredImage, scale: 1.0, orientation: .up)
+        DispatchQueue.global().async {
+            let image = picture.applyingPortraitOrientation()
+            var q = quad ?? ZLScannerViewController.defaultQuad(forImage: image)
+            if let quad = quad {
+                q = quad
+            } else {
+                q = ZLQuadrilateral(topLeft: CGPoint(x: 0, y: 0), topRight: CGPoint(x: image.size.width, y: 0), bottomRight: CGPoint(x: image.size.width, y: image.size.height), bottomLeft: CGPoint(x: 0, y: image.size.height))
+            }
+            guard let ciImage = CIImage(image: image) else { return }
+            var cartesianScaledQuad = q.toCartesian(withHeight: image.size.height)
+            cartesianScaledQuad.reorganize()
+            
+            let filteredImage = ciImage.applyingFilter("CIPerspectiveCorrection", parameters: ciImage.getFilterDict(cartesianScaledQuad))
+            var uiImage: UIImage!
+            if let cgImage = CIContext(options: nil).createCGImage(filteredImage, from: filteredImage.extent) {
+                uiImage = UIImage(cgImage: cgImage)
+            } else {
+                uiImage = UIImage(ciImage: filteredImage, scale: 1.0, orientation: .up)
+            }
+            
+            DispatchQueue.main.async {
+                if self.isFromEdit {
+                    if let callBack = self.captureImageCallBack {
+                        guard let enhancedImage = uiImage.colorControImage() else { return }
+                        let result = ZLImageScannerResults.init(originalImage: image, scannedImage: uiImage, enhancedImage: enhancedImage, doesUserPreferEnhancedImage: true, detectedRectangle: q)
+                        callBack(result)
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                    return
+                }
+                
+                if self.isTouchShutter {
+                    let editVC = ZLEditScanViewController(image: image, quad: q)
+                    editVC.editCompletion = { [weak self] (result) in
+                        guard let enhancedImage = result.scannedImage.colorControImage() else { return }
+                        self?.photoCollectionView.addPhoto(image, result.scannedImage, enhancedImage, true, result.detectedRectangle)
+                    }
+                    self.navigationController?.pushViewController(editVC, animated: true)
+                    self.isTouchShutter = false
+                    self.shutterButton.isUserInteractionEnabled = true
+                    return
+                }
+                
+                self.previewImageView.image = uiImage
+                if uiImage.size.width == 0 || uiImage.size.height == 0 { return }
+                self.previewImageView.frame = self.quadView.getQuardRect();
+                guard let enhancedImage = uiImage.colorControImage() else { return }
+                self.previewImageView.image = enhancedImage
+                self.photoCollectionView.addPhoto(image, uiImage, enhancedImage, true, q)
+                self.shutterButton.isUserInteractionEnabled = true
+                self.previewAnimate { captureSessionManager.start() }
+            }
         }
-        
-        previewImageView.image = uiImage
-        if uiImage.size.width == 0 || uiImage.size.height == 0 { return }
-        previewImageView.frame = quadView.getQuardRect();
-        
-        guard let enhancedImage = uiImage.colorControImage() else { return }
-        previewImageView.image = enhancedImage
-        photoCollectionView.addPhoto(image, uiImage, enhancedImage, true, quad)
-        previewAnimate { captureSessionManager.start() }
     }
     
     func captureSessionManager(_ captureSessionManager: CaptureSessionManager, didDetectQuad quad: ZLQuadrilateral?, _ imageSize: CGSize) {
@@ -244,18 +290,8 @@ extension ZLScannerViewController: ZLScanRectangleDetectionDelegateProtocol {
 }
 extension ZLScannerViewController{
     @objc private func captureImage(_ sender: UIButton) {
+        self.isTouchShutter = true
         captureSessionManager?.capturePhoto()
-//        guard let model = model else { return }
-//        let editVC = ZLEditScanViewController(image: model.originalImage.applyingPortraitOrientation(), quad: model.detectedRectangle)
-//        editVC.editCompletion = { [weak self] (result, rect) in
-//            model.replace(result.originalImage, result.scannedImage, result.scannedImage, model.isEnhanced, rect, handle: { (isSuccess, model) in
-//                if isSuccess {
-//                    guard let m = model else { return }
-//                    self?.imageView.image = m.enhancedImage
-//                }
-//            })
-//        }
-//        navigationController?.pushViewController(editVC, animated: true)
     }
     
     @discardableResult func toggleTorch(toOn: Bool) -> ZLScanFlashResult {
@@ -296,17 +332,20 @@ extension ZLScannerViewController{
     override func backBtnClick() {
         self.captureSessionManager?.stop()
         if isFromEdit {
-            if let callBack = dismissCallBackIndex { callBack(nil) }
-            dismiss(animated: true, completion: nil)
+            self.navigationController?.popViewController(animated: true)
         }else{
-            showAlter(title: "The image will be deleted", message: "Are you sure?", confirm: "OK", cancel: "Cancel", confirmComp: { (_) in
-                ZLPhotoModel.removeAllModel { (_) in
-                    self.dismiss(animated: true, completion: nil)
+            if photoCollectionView.photoCount > 0 {
+                showAlter(title: "The image will be deleted", message: "Are you sure?", confirm: "OK", cancel: "Cancel", confirmComp: { (_) in
+                    ZLPhotoModel.removeAllModel { (_) in
+                        self.dismiss(animated: true, completion: nil)
+                    }
+                }) { (_) in
+                    ZLScanCaptureSession.current.isEditing = false
+                    self.quadView.removeQuadrilateral()
+                    self.captureSessionManager?.start()
                 }
-            }) { (_) in
-                ZLScanCaptureSession.current.isEditing = false
-                self.quadView.removeQuadrilateral()
-                self.captureSessionManager?.start()
+            } else {
+                dismiss(animated: true, completion: nil)
             }
         }
     }
@@ -380,13 +419,6 @@ extension ZLScannerViewController: ZLPhotoWaterFallViewProtocol {
     }
     
     func selectedItem(_ models: [ZLPhotoModel], index: Int) {
-        if  isFromEdit {
-            if let callBack = dismissCallBackIndex {
-                callBack(index)
-            }
-            dismiss(animated: true, completion: nil)
-            return
-        }
         let vc = ZLPhotoEditorController.init(nibName: "ZLPhotoEditorController", bundle: Bundle(for: self.classForCoder))
         vc.photoModels = models
         vc.currentIndex = IndexPath(item: index, section: 0)
@@ -396,7 +428,6 @@ extension ZLScannerViewController: ZLPhotoWaterFallViewProtocol {
         vc.dismissCallBack = { (pdfPath) in
             if let callBack = self.dismissWithPDFPath { callBack(pdfPath) }
         }
-        captureSessionManager?.stop()
         navigationController?.pushViewController(vc, animated: true)
     }
 }

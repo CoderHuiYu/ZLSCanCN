@@ -13,11 +13,10 @@ class ZLPhotoEditingController: ZLScannerBasicViewController {
     var saveModelCallBack: ((_ model: ZLPhotoModel)->Void)?
     @IBOutlet weak var imageView: UIImageView!
     
-    @IBOutlet weak var retakeButton: UIButton!
-    @IBOutlet weak var rotateButton: UIButton!
-    @IBOutlet weak var cropButton: UIButton!
-    @IBOutlet weak var enhanceButton: UIButton!
-    @IBOutlet weak var deleteButton: UIButton!
+    @IBOutlet weak var rotateButton: ZLCustomButton!
+    @IBOutlet weak var cropButton: ZLCustomButton!
+    @IBOutlet weak var enhanceButton: ZLCustomButton!
+    @IBOutlet weak var deleteButton: ZLCustomButton!
     
     var model: ZLPhotoModel?
     
@@ -32,6 +31,15 @@ class ZLPhotoEditingController: ZLScannerBasicViewController {
         enhanceButton.isSelected = model.isEnhanced
     }
     
+    lazy var leftButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Retake", for: .normal)
+        button.setTitleColor(globalColor, for: .normal)
+        button.tag = 0
+        button.addTarget(self, action: #selector(itemButtonAction(_:)), for: .touchUpInside)
+        return button
+    }()
+    
     lazy var rightButton: UIButton = {
         let button = UIButton()
         button.setTitle("Save", for: .normal)
@@ -41,10 +49,10 @@ class ZLPhotoEditingController: ZLScannerBasicViewController {
     }()
     
     func setupUI() {
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftButton)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightButton)
         imageView.image = model?.enhancedImage
     }
-   
 }
 
 // MARK: - Event
@@ -60,12 +68,11 @@ extension ZLPhotoEditingController {
         }
     }
     
-    @IBAction func itemButtonAction(_ sender: UIButton) {
+    @objc @IBAction func itemButtonAction(_ sender: UIButton) {
         // update UI
         switch sender.tag {
         case 0: // retake
             retake()
-            navigationController?.popViewController(animated: true)
             break
         case 1: // rotate
             rotate()
@@ -88,7 +95,18 @@ extension ZLPhotoEditingController {
 // MARK: -
 extension ZLPhotoEditingController {
     fileprivate func retake() {
-        
+        let vc = ZLScannerViewController()
+        vc.isFromEdit = true
+        vc.captureImageCallBack = { [weak self] (result) in
+            self?.model?.originalImage = result.originalImage
+            self?.model?.enhancedImage = result.enhancedImage ?? result.scannedImage
+            self?.model?.scannedImage = result.scannedImage
+            self?.model?.detectedRectangle = result.detectedRectangle
+            self?.model?.isEnhanced = true
+            self?.enhanceButton.isSelected = true
+            self?.imageView.image = self?.model?.enhancedImage
+        }
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     fileprivate func rotate() {
@@ -102,9 +120,9 @@ extension ZLPhotoEditingController {
     
     fileprivate func crop() {
         guard let model = model else { return }
-        let editVC = ZLEditScanViewController(image: model.originalImage.applyingPortraitOrientation(), quad: model.detectedRectangle)
-        editVC.editCompletion = { [weak self] (result, rect) in
-            model.replace(result.originalImage, result.scannedImage, result.scannedImage, model.isEnhanced, rect, handle: { (isSuccess, model) in
+        let editVC = ZLEditScanViewController(image: model.originalImage, quad: model.detectedRectangle)
+        editVC.editCompletion = { [weak self] (result) in
+            model.replace(result.originalImage, result.scannedImage, result.scannedImage, model.isEnhanced, result.detectedRectangle, handle: { (isSuccess, model) in
                 if isSuccess {
                     guard let m = model else { return }
                     self?.imageView.image = m.enhancedImage
