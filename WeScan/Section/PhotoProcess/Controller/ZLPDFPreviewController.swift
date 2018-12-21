@@ -9,7 +9,7 @@
 import UIKit
 import QuickLook
 
-class ZLPDFPreviewController: ZLScannerBasicViewController, QLPreviewControllerDelegate,QLPreviewControllerDataSource{
+class ZLPDFPreviewController: ZLScannerBasicViewController, QLPreviewControllerDelegate,QLPreviewControllerDataSource, ZLPDFMenuViewProtocol{
     
     private var pdfPath: String?
     private lazy var preview: QLPreviewController = {
@@ -25,6 +25,7 @@ class ZLPDFPreviewController: ZLScannerBasicViewController, QLPreviewControllerD
     init(pdfPath: String){
         super.init(nibName: nil, bundle: nil)
         self.pdfPath = pdfPath
+        menuView.delegate = self
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -48,7 +49,6 @@ class ZLPDFPreviewController: ZLScannerBasicViewController, QLPreviewControllerD
     func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
         return 1
     }
-    
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
         return URL.init(fileURLWithPath: pdfPath!) as QLPreviewItem
     }
@@ -57,5 +57,29 @@ class ZLPDFPreviewController: ZLScannerBasicViewController, QLPreviewControllerD
     }
     override func rBtnClick() {
         menuView.showMenuView()
+    }
+    func menuDidSelected(_ index: Int) {
+        switch index {
+        case 0:
+            sharePDF()
+        case 1:
+            let vc = ZLPhotoEditorController.init(nibName: "ZLPhotoEditorController", bundle: Bundle(for: ZLPhotoEditorController.self))
+            vc.isNeedLoadPDF = true
+            navigationController?.pushViewController(vc, animated: true)
+            break
+        case 2:
+            break
+        case 3:
+            break
+        default:
+            break
+        }
+    }
+    func sharePDF() {
+        let text = "test"
+        let shareUrl = URL(fileURLWithPath: pdfPath!)
+        let items: [Any] = [text, shareUrl]
+        let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        present(activityVC, animated: true, completion: nil)
     }
 }
