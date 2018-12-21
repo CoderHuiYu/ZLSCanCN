@@ -238,7 +238,18 @@ extension ZLScannerViewController: ZLScanRectangleDetectionDelegateProtocol {
 }
 extension ZLScannerViewController{
     @objc private func captureImage(_ sender: UIButton) {
-//        navigationController?.pushViewController(ZLScanSortViewController(), animated: true)
+        captureSessionManager?.capturePhoto()
+//        guard let model = model else { return }
+//        let editVC = ZLEditScanViewController(image: model.originalImage.applyingPortraitOrientation(), quad: model.detectedRectangle)
+//        editVC.editCompletion = { [weak self] (result, rect) in
+//            model.replace(result.originalImage, result.scannedImage, result.scannedImage, model.isEnhanced, rect, handle: { (isSuccess, model) in
+//                if isSuccess {
+//                    guard let m = model else { return }
+//                    self?.imageView.image = m.enhancedImage
+//                }
+//            })
+//        }
+//        navigationController?.pushViewController(editVC, animated: true)
     }
     
     @discardableResult func toggleTorch(toOn: Bool) -> ZLScanFlashResult {

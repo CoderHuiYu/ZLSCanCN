@@ -111,8 +111,7 @@ extension ZLPhotoEditingController {
                 }
             })
         }
-        let navigationController = UINavigationController(rootViewController: editVC)
-        present(navigationController, animated: true)
+        navigationController?.pushViewController(editVC, animated: true)
     }
     
     fileprivate func enhance() {

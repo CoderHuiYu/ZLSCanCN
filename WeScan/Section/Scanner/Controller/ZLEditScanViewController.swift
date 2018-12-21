@@ -34,14 +34,14 @@ final class ZLEditScanViewController: UIViewController {
     private lazy var cancelButton: UIBarButtonItem = {
         let title = "Cancel"
         let button = UIBarButtonItem(title: title, style: .plain, target: self, action: #selector(navigationControllerPop))
-        button.tintColor = navigationController?.navigationBar.tintColor
+        button.tintColor = globalColor
         return button
     }()
     
     private lazy var saveButton: UIBarButtonItem = {
         let title = "Save"
         let button = UIBarButtonItem(title: title, style: .plain, target: self, action: #selector(finishEditing))
-        button.tintColor = navigationController?.navigationBar.tintColor
+        button.tintColor = globalColor
         return button
     }()
     
