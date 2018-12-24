@@ -34,6 +34,7 @@ class ZLPDFMenuView: UIView {
         menuTableView.layer.cornerRadius = 5.0
         menuTableView.rowHeight = 42
         menuTableView.separatorStyle = .none
+        menuTableView.register(ZLPDFMenuViewCell.self, forCellReuseIdentifier: ZLPDFMenuViewCell.ZlPDFMenuViewCellID)
         return menuTableView
     }()
     private var selectIndex : Int?
@@ -61,11 +62,13 @@ extension ZLPDFMenuView: UITableViewDelegate, UITableViewDataSource{
         return titleArray.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "")
-        cell.selectionStyle = .none
-        cell.textLabel?.text = titleArray[indexPath.row]
-        cell.textLabel?.font = UIFont.systemFont(ofSize: 12)
-        cell.imageView?.image = UIImage(named: imageArray[indexPath.row], in: Bundle.init(for: self.classForCoder), compatibleWith: nil)
+        let cell = ZLPDFMenuViewCell(style: .default, reuseIdentifier: ZLPDFMenuViewCell.ZlPDFMenuViewCellID)
+        cell.modelConfig(UIImage(named: imageArray[indexPath.item], in: Bundle.init(for: self.classForCoder), compatibleWith: nil)!, text: titleArray[indexPath.item])
+//        let cell = UITableViewCell(style: .default, reuseIdentifier: "")
+//        cell.selectionStyle = .none
+//        cell.textLabel?.text = titleArray[indexPath.row]
+//        cell.textLabel?.font = UIFont.systemFont(ofSize: 12)
+//        cell.imageView?.image = UIImage(named: imageArray[indexPath.row], in: Bundle.init(for: self.classForCoder), compatibleWith: nil)
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

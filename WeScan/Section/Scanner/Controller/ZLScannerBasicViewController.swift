@@ -34,6 +34,7 @@ class ZLScannerBasicViewController: UIViewController {
 //        rBtn.setTitle("···", for: .normal)
 //        rBtn.setTitleColor(globalColor, for: .normal)
         rBtn.setImage(UIImage(named: "zl_pdf_more2", in: Bundle.init(for: self.classForCoder), compatibleWith: nil), for: .normal)
+        rBtn.imageEdgeInsets = UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 0)
         rBtn.addTarget(self, action: #selector(rBtnClick), for: .touchUpInside)
         return rBtn
     }()
