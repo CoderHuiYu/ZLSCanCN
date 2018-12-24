@@ -34,5 +34,5 @@ func GlobalColor() -> UIColor{
     return COLORFROMHEX(0x18acf8)
 }
 func globalFont() -> UIFont{
-    return UIFont.systemFont(ofSize: 16)
+    return UIFont.systemFont(ofSize: 14)
 }

@@ -38,6 +38,7 @@ class ZLScanSortViewController: ZLScannerBasicViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         creatCollectionView()
+        NotificationCenter.default.addObserver(self, selector: #selector(changeTitle(_:)), name: NSNotification.Name(rawValue:"ZLScanDeleteItem"), object: nil)
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -57,21 +58,20 @@ class ZLScanSortViewController: ZLScannerBasicViewController {
         
         collectionView.photoModels = models
         view.addSubview(collectionView)
-//        bottomBtn.frame = CGRect(x: 0, y: kScreenHeight-100-kNavHeight, width: kScreenWidth, height: 100)
-//        bottomBtn.setTitle("Save", for: .normal)
-//        view.addSubview(bottomBtn)
         let rightBtn = UIButton ()
+        rightBtn.titleLabel?.font = basicFont
         rightBtn.setTitle("Delete", for: .normal)
         rightBtn.setTitleColor(globalColor, for: .normal)
         rightBtn.addTarget(self, action: #selector(deleteBtnClick(_:)), for: .touchUpInside)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBtn)
+        view.addSubview(bottomView(title: "Save"))
     }
     override func backBtnClick() {
         navigationController?.popViewController(animated: true)
     }
     @objc func deleteBtnClick(_ sender: UIButton){
         if collectionView.deleteModels.count == 0 { return }
-        showAlter(title: "", message: "Do you want to delete the selected pages ?", confirm: "Delete", cancel: "Cancel", confirmComp: { [weak self] (_) in
+        showAlter(title: "Do you want to delete the selected pages ?", message: "", confirm: "Delete", cancel: "Cancel", confirmComp: { [weak self] (_) in
             guard let self = self else { return }
             for m in self.collectionView.deleteModels{
                 self.collectionView.photoModels = self.collectionView.photoModels.filter({$0 != m})
@@ -86,6 +86,14 @@ class ZLScanSortViewController: ZLScannerBasicViewController {
         if delegate != nil {
         delegate?.sortDidFinished(collectionView.photoModels)}
         navigationController?.popViewController(animated: true)
+    }
+    @objc func changeTitle(_ not: Notification){
+        guard let selectedCount = not.object as? Int else { return }
+        if selectedCount == 0 {
+            title = "Sort"
+        }else {
+            title = "\(selectedCount) Photos Selected"
+        }
     }
 }
 

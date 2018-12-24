@@ -21,7 +21,7 @@ class ZLScanAllpagesViewController: ZLScannerBasicViewController, Convertable{
         let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: kScreenWidth, height: kScreenHeight), collectionViewLayout: layout)
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.backgroundColor = COLORFROMHEX(0xd8d8d8)
+        collectionView.backgroundColor = RGBColor(r: 247, g: 247, b: 247)
         collectionView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
         collectionView.register(ZLSortCollectionViewCell.self, forCellWithReuseIdentifier: ZLSortCollectionViewCell.ZLSortCollectionViewCellID)
 
@@ -58,11 +58,12 @@ class ZLScanAllpagesViewController: ZLScannerBasicViewController, Convertable{
     private func viewConfig(){
         view.addSubview(sortCollectionView)
         let rightBtn = UIButton ()
+        rightBtn.titleLabel?.font = basicFont
         rightBtn.setTitle("Edit", for: .normal)
         rightBtn.setTitleColor(globalColor, for: .normal)
         rightBtn.addTarget(self, action: #selector(rightBtnClick(_:)), for: .touchUpInside)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBtn)
-        view.addSubview(bottomView(title: "Save"))
+        view.addSubview(bottomView(title: "Done"))
     }
 }
 extension ZLScanAllpagesViewController: UICollectionViewDelegate, UICollectionViewDataSource, ZLScanSortViewControllerProtocol{

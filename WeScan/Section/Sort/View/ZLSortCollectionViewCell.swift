@@ -26,21 +26,24 @@ class ZLSortCollectionViewCell: UICollectionViewCell {
         iconimageView.contentMode = .scaleAspectFill
         iconimageView.isUserInteractionEnabled = false
         iconimageView.clipsToBounds = true
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(tapCell(_:)))
-//        iconimageView.addGestureRecognizer(tap)
         return iconimageView
     }()
-    
+    lazy var coverView: UIView = {
+        let coverView = UIView()
+        coverView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
+        coverView.isHidden = true
+        return coverView
+    }()
     private lazy var imaginaryLine: UIImageView = {
         let imaginaryLine = UIImageView()
         return imaginaryLine
     }()
     lazy var numberBtn: UIButton = {
         let numberBtn = UIButton()
-        numberBtn.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
-        numberBtn.layer.cornerRadius = 10.0
+        numberBtn.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        numberBtn.layer.cornerRadius = 20.0
         numberBtn.setTitle("2", for: .normal)
-        numberBtn.backgroundColor = .orange
+        numberBtn.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
         iconimageView.addSubview(numberBtn)
         return numberBtn
     }()
@@ -67,6 +70,7 @@ class ZLSortCollectionViewCell: UICollectionViewCell {
         contentView.backgroundColor = UIColor.clear
         contentView.addSubview(imaginaryLine)
         contentView.addSubview(iconimageView)
+        iconimageView.addSubview(coverView)
     }
     private func addImaginaryLine(_ frame: CGRect){
         imaginaryLine.layer.sublayers?.removeAll()
@@ -87,20 +91,25 @@ class ZLSortCollectionViewCell: UICollectionViewCell {
         self.style = style
         let itemWidth = frame.width - 20
         let size = iconImage.size
-        var heigh = itemWidth * size.height / size.width
-        if heigh > frame.height - 20  {
-            heigh = frame.height - 20
+        var height = itemWidth * size.height / size.width
+        if height > frame.height - 20  {
+            height = frame.height - 20
         }
         
-        let gap = (frame.height - heigh)/2
-        iconimageView.frame = CGRect(x: 10, y: gap, width: itemWidth, height:heigh)
+        let gap = (frame.height - height)/2
+        iconimageView.frame = CGRect(x: 10, y: gap, width: itemWidth, height:height)
         iconimageView.image = iconImage
         
         switch style {
         case .editing:
-            imaginaryLine.frame = CGRect(x: 10, y: gap, width: itemWidth, height: heigh)
+            imaginaryLine.frame = CGRect(x: 10, y: gap, width: itemWidth, height: height)
             addImaginaryLine(iconimageView.frame)
-            numberBtn.backgroundColor = .orange
+            numberBtn.frame = CGRect(x: itemWidth/2-20, y: height/2-20, width: 40, height: 40)
+            numberBtn.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
+            coverView.frame = iconimageView.bounds
+            coverView.isHidden = true
+            iconimageView.layer.borderColor = UIColor.clear.cgColor
+            iconimageView.layer.borderWidth = 0
             break
         default:
             break

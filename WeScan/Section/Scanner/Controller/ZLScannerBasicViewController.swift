@@ -13,19 +13,27 @@ class ZLScannerBasicViewController: UIViewController {
     var dismissWithPDFPath: ((_ pdfPath: String)->())?
     var dismissCallBackIndex: ((_ index: Int?)->())?
     var dismissCallBack: ((String)->())?
-    private lazy var backBtn: UIButton = {
-        let backBtn = UIButton()
-        backBtn.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
-        backBtn.setTitleColor(globalColor, for: .normal)
-        backBtn.setTitle("Back", for: .normal)
-        backBtn.addTarget(self, action: #selector(backBtnClick), for: .touchUpInside)
-        return backBtn
+    private lazy var backButton: UIBarButtonItem = {
+        let backButton = UIButton(frame: CGRect(origin: .zero, size: CGSize(width: 64, height: 32)))
+        backButton.addTarget(self, action: #selector(backBtnClick), for: .touchUpInside)
+        backButton.setTitle("Back", for: .normal)
+        backButton.setTitleColor(globalColor, for: .normal)
+        backButton.titleLabel!.font = basicFont
+        backButton.setImage(UIImage(named: "zl_nav_blue", in: Bundle.init(for: self.classForCoder), compatibleWith: nil), for: .normal)
+        backButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
+        backButton.adjustsImageWhenHighlighted = false
+        let backButtonWrapper = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 64, height: 32)))
+        backButtonWrapper.addSubview(backButton)
+        backButton.transform = CGAffineTransform(translationX: -12, y: 0)
+        return UIBarButtonItem(customView: backButtonWrapper)
     }()
     lazy var rBtn: UIButton = {
         let rBtn = UIButton()
         rBtn.frame = CGRect(x: kScreenWidth-44, y: 0, width: 44, height: 44)
-        rBtn.setTitle("Edit", for: .normal)
-        rBtn.setTitleColor(globalColor, for: .normal)
+//        rBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+//        rBtn.setTitle("···", for: .normal)
+//        rBtn.setTitleColor(globalColor, for: .normal)
+        rBtn.setImage(UIImage(named: "zl_pdf_more2", in: Bundle.init(for: self.classForCoder), compatibleWith: nil), for: .normal)
         rBtn.addTarget(self, action: #selector(rBtnClick), for: .touchUpInside)
         return rBtn
     }()
@@ -38,7 +46,8 @@ class ZLScannerBasicViewController: UIViewController {
     func bottomView(title: String) -> UIView {
         let bottomView = UIView()
         bottomView.backgroundColor = .white
-        bottomView.frame = CGRect(x: 0, y: kScreenHeight-80-kNavHeight, width: kScreenWidth, height: 80)
+        let bottomSpace: CGFloat = iPhoneX ? 34 : 0
+        bottomView.frame = CGRect(x: 0, y: kScreenHeight-80-kNavHeight-bottomSpace, width: kScreenWidth, height: 80)
         let bottomBtn = UIButton()
         bottomBtn.frame = CGRect(x: 15, y: 15, width: kScreenWidth-30 , height: 50)
         bottomBtn.setTitle(title, for: .normal)
@@ -46,12 +55,17 @@ class ZLScannerBasicViewController: UIViewController {
         bottomBtn.addTarget(self, action: #selector(bottomBtnClick), for: .touchUpInside)
         bottomBtn.layer.cornerRadius = 5.0
         bottomBtn.layer.masksToBounds = true
+        bottomBtn.titleLabel?.font = UIFont.systemFont(ofSize: 17)
         bottomBtn.getGradientColor()
         bottomView.addSubview(bottomBtn)
+        let lineView = UIView()
+        lineView.backgroundColor = COLORFROMHEX(0xdddddd)
+        lineView.frame = CGRect(x: 0, y: 0, width: kScreenWidth, height: 0.5)
+        bottomView.addSubview(lineView)
         return bottomView
     }
     private func addBackBtn(){
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backBtn)
+        navigationItem.leftBarButtonItem = backButton
     }
 }
 extension ZLScannerBasicViewController {

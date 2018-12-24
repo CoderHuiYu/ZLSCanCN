@@ -176,13 +176,11 @@ extension ZLScannerViewController: ZLScanRectangleDetectionDelegateProtocol {
     }
     
     func didStartCapturingPicture(for captureSessionManager: CaptureSessionManager) {
-        promptView.scanningNoticeImageView.stopAnimating()
         promptView.isHidden = true
     }
     
     func captureSessionManager(_ captureSessionManager: CaptureSessionManager, didCapturePicture picture: UIImage, withQuad quad: ZLQuadrilateral?) {
         shutterButton.isUserInteractionEnabled = false
-        promptView.scanningNoticeImageView.stopAnimating()
         promptView.isHidden = true
         
         DispatchQueue.global().async {
@@ -247,18 +245,16 @@ extension ZLScannerViewController: ZLScanRectangleDetectionDelegateProtocol {
             return
         }
         promptView.isHidden = !isAutoCapture
-        promptView.scanningNoticeImageView.stopAnimating()
         quadView.drawQuadrilateral(quad: getQuadrilateral(quad, imageSize: imageSize), animated: true)
     }
     
     func startShowingScanningNotice(noRectangle: Int) {
         guard isAutoCapture else { return }
         promptView.isHidden = false
-        promptView.scanningNoticeImageView.startAnimating()
         if noRectangle < 200 {
-            promptView.scanningNoticeLabel.text = "Looking for Document"
+            promptView.scanningNoticeLabel.text = "Position the document in view."
         }else {
-            promptView.scanningNoticeLabel.text = "Position the document in view"
+            promptView.scanningNoticeLabel.text = "Move camera closer."
         }
         
     }
@@ -375,7 +371,6 @@ extension ZLScannerViewController: ZLPhotoWaterFallViewProtocol {
                 self.photoCollectionView.completeButtonIsHidden = true
                 
                 self.promptView.isHidden = true
-                self.promptView.scanningNoticeImageView.stopAnimating()
             }
             
             break

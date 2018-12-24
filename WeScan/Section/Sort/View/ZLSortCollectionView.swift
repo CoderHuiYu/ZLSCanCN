@@ -21,6 +21,7 @@ class ZLSortCollectionView: UICollectionView{
     private var moveOffsetY: CGFloat = 0.0
     private var topGap: CGFloat = 20.0
     private var transY: CGFloat = 10.0
+    private var selectedCount: Int = 0
     
     private lazy var dragCell : UIImageView = {
         let dragCell = UIImageView()
@@ -187,11 +188,23 @@ extension ZLSortCollectionView: UICollectionViewDelegate,UICollectionViewDataSou
         var model = photoModels[indexPath.item]
         model.isSelected = !model.isSelected
         if model.isSelected {
-            cell.numberBtn.backgroundColor = .blue
+            cell.numberBtn.backgroundColor = globalColor
             deleteModels.append(model)
+            cell.coverView.isHidden = false
+            cell.iconimageView.layer.borderColor = globalColor.cgColor
+            cell.iconimageView.layer.borderWidth = 2
+            selectedCount += 1
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue:"ZLScanDeleteItem"), object: selectedCount)
+
         }else{
-            cell.numberBtn.backgroundColor = .orange
+            cell.numberBtn.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
             deleteModels = deleteModels.filter({$0.originalImagePath != model.originalImagePath})
+            cell.coverView.isHidden = true
+            cell.iconimageView.layer.borderColor = UIColor.clear.cgColor
+            cell.iconimageView.layer.borderWidth = 0
+            selectedCount -= 1
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue:"ZLScanDeleteItem"), object: selectedCount)
+            
         }
         photoModels[indexPath.item] = model
     }

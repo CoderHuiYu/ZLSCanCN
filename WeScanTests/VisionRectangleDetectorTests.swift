@@ -44,10 +44,8 @@ final class VisionRectangleDetectorTests: FBSnapshotTestCase {
     let quad = VisionRectangleDetector.rectangle(forImage: ciImage) { (quad) in
       
       DispatchQueue.main.async {
-        
         let resultView = UIView(frame: containerLayer.frame)
         resultView.layer.addSublayer(containerLayer)
-        
         let quadView = QuadrilateralView(frame: resultView.bounds)
         quadView.drawQuadrilateral(quad: quad!, animated: false)
         quadView.backgroundColor = UIColor.red

@@ -25,6 +25,7 @@ class ZLPhotoEditorController: ZLScannerBasicViewController, EmitterAnimate, Con
     
     fileprivate lazy var rightButton: UIButton = {
         let rightBtn = UIButton ()
+        rightBtn.titleLabel?.font = basicFont
         rightBtn.setTitle("All Photos", for: .normal)
         rightBtn.setTitleColor(globalColor, for: .normal)
         rightBtn.addTarget(self, action: #selector(rightButtonAction(_:)), for: .touchUpInside)
@@ -70,6 +71,7 @@ extension ZLPhotoEditorController {
         collectionView.register(UINib(nibName: "ZLPhotoCell", bundle: Bundle(for: type(of: self))), forCellWithReuseIdentifier: .kCollectionCellIdentifier)
         collectionView.collectionViewLayout = layout
         collectionView.decelerationRate = .fast
+        view.addSubview(bottomView(title: "Done"))
         
         guard let currentIndex = currentIndex else {
             return

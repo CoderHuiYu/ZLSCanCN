@@ -27,7 +27,7 @@ class ZLPhotoWaterFallView: UIView {
         }
     }
     
-    var completeButtonIsHidden : Bool = false {
+    var completeButtonIsHidden: Bool = false {
         didSet {
             if photoModels.count <= 0 {
                 completeButton.isHidden = true

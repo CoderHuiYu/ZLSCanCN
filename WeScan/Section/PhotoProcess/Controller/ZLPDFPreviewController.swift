@@ -17,7 +17,8 @@ class ZLPDFPreviewController: ZLScannerBasicViewController, QLPreviewControllerD
         preview.delegate = self
         preview.dataSource = self
         preview.currentPreviewItemIndex = 1
-        preview.view.frame = CGRect(x: 0, y: 0, width: kScreenWidth, height: kScreenHeight-kNavHeight)
+        let spaceY: CGFloat = iPhoneX ? -30 : 0
+        preview.view.frame = CGRect(x: 0, y: spaceY, width: kScreenWidth, height: kScreenHeight)
         return preview
     }()
     private let menuView = ZLPDFMenuView()
@@ -85,13 +86,14 @@ class ZLPDFPreviewController: ZLScannerBasicViewController, QLPreviewControllerD
         navigationController?.pushViewController(vc, animated: true)
     }
     private func deletePDF() {
-        showAlter(title: "", message: "Do you want to delete this file?", confirm: "Delete", cancel: "Cancel", confirmComp: { (_) in
+        showAlter(title: "Do you want to delete this file?", message: "", confirm: "Delete", cancel: "Cancel", confirmComp: { (_) in
             
         }) { (_) in }
     }
     private func renamePDF() {
+        let fileName = pdfPath?.components(separatedBy: "/").last?.components(separatedBy: ".").first
         let alter = UIAlertController(style: .actionSheet)
-        alter.addScanRenameViewController()
+        alter.addScanRenameViewController(fileName ?? "")
         alter.show(vc: self.navigationController)
     }
 }

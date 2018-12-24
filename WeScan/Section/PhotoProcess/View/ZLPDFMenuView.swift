@@ -13,16 +13,17 @@ protocol ZLPDFMenuViewProtocol: NSObjectProtocol {
 }
 
 class ZLPDFMenuView: UIView {
-    private var imageArray = [String]()
+    private var imageArray = ["zl_share_m","zl_edit_m","zl_rename_m","zl_delete_m"]
     private var titleArray = ["Share","Edit","Rename","Delete"]
     
     weak var delegate: ZLPDFMenuViewProtocol?
     
     lazy var menuTableView: UITableView = {
-        let menuTableView = UITableView(frame: CGRect(x: kScreenWidth-200, y: kNavHeight, width: 180, height: 200), style: .plain)
+        let menuTableView = UITableView(frame: CGRect(x: kScreenWidth-180, y: kNavHeight, width: 130, height: 168), style: .plain)
         menuTableView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
         menuTableView.layer.anchorPoint = CGPoint(x: 1, y: 0)
-        menuTableView.layer.position = CGPoint(x: 360, y: 90 )
+        let spaceY: CGFloat = iPhoneX ? 90 : 70
+        menuTableView.layer.position = CGPoint(x: 360, y: spaceY)
         menuTableView.showsVerticalScrollIndicator = false;
         menuTableView.bounces = false
         menuTableView.delegate = self
@@ -31,7 +32,7 @@ class ZLPDFMenuView: UIView {
         menuTableView.layer.borderColor = UIColor.lightGray.cgColor
         menuTableView.layer.borderWidth = 0.5
         menuTableView.layer.cornerRadius = 5.0
-        menuTableView.rowHeight = 50
+        menuTableView.rowHeight = 42
         menuTableView.separatorStyle = .none
         return menuTableView
     }()
@@ -63,11 +64,12 @@ extension ZLPDFMenuView: UITableViewDelegate, UITableViewDataSource{
         let cell = UITableViewCell(style: .default, reuseIdentifier: "")
         cell.selectionStyle = .none
         cell.textLabel?.text = titleArray[indexPath.row]
-        cell.textLabel?.font = UIFont.systemFont(ofSize: 16)
+        cell.textLabel?.font = UIFont.systemFont(ofSize: 12)
+        cell.imageView?.image = UIImage(named: imageArray[indexPath.row], in: Bundle.init(for: self.classForCoder), compatibleWith: nil)
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        return 42
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
         selectIndex = indexPath.row
