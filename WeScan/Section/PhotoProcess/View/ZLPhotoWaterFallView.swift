@@ -14,6 +14,7 @@ private let kToolBarViewHeight: CGFloat = 64
 protocol ZLPhotoWaterFallViewProtocol: NSObjectProtocol {
     func selectedItem(_ models: [ZLPhotoModel], index: Int)
     func itemBeginDrag(_ status: DragStatus)
+    func doneAction()
 }
 class ZLPhotoWaterFallView: UIView {
     weak var delegate: ZLPhotoWaterFallViewProtocol?
@@ -230,6 +231,7 @@ extension ZLPhotoWaterFallView {
                 photoModels.remove(at: indexPath.row)
                 updateCompletionButton(count: photoModels.count)
                 collectionView.reloadData()
+                NotificationCenter.default.post(name: NSNotification.Name.init(kZLDeleteItemNotificationName), object: indexPath.row)
             }
         }
     }
@@ -240,7 +242,8 @@ extension ZLPhotoWaterFallView {
 extension ZLPhotoWaterFallView {
     // ccompletion
     @objc fileprivate func completeButtonAction() {
-        delegate?.selectedItem(photoModels, index: 0)
+        // done
+        delegate?.doneAction()
     }
 }
 

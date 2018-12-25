@@ -9,7 +9,6 @@
 import UIKit
 
 class ZLPhotoEditingController: ZLScannerBasicViewController {
-    var deleteModelCallBack: (()->Void)?
     var saveModelCallBack: ((_ model: ZLPhotoModel)->Void)?
     @IBOutlet weak var imageView: UIImageView!
     
@@ -19,6 +18,7 @@ class ZLPhotoEditingController: ZLScannerBasicViewController {
     @IBOutlet weak var deleteButton: ZLCustomButton!
     
     var model: ZLPhotoModel?
+    var index: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -155,10 +155,8 @@ extension ZLPhotoEditingController {
     fileprivate func delete() {
         model?.remove(handle: { (isSuccess) in
             if isSuccess {
-                if let callBack = deleteModelCallBack {
-                    callBack()
-                    navigationController?.popViewController(animated: true)
-                }
+                NotificationCenter.default.post(name: NSNotification.Name.init(kZLDeleteItemNotificationName), object: index)
+                navigationController?.popViewController(animated: true)
             }
         })
     }
