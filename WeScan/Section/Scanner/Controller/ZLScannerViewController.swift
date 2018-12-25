@@ -149,8 +149,6 @@ class ZLScannerViewController: ZLScannerBasicViewController {
     }
     
     deinit {
-        ZLPhotoModel.removeAllModel { (_) in
-        }
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -171,6 +169,7 @@ class ZLScannerViewController: ZLScannerBasicViewController {
         
         updateAutoCaptureAlertLabel(on: true)
     }
+    
     private func setupConstraints() {
         shutterButton.translatesAutoresizingMaskIntoConstraints = false
         if isFromEdit {
@@ -193,8 +192,14 @@ class ZLScannerViewController: ZLScannerBasicViewController {
                                      promptView.bottomAnchor.constraint(equalTo: shutterButton.topAnchor, constant: -20)])
         
         autoFlashButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([autoFlashButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-                                     autoFlashButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20.0)])
+        if #available(iOS 11.0, *) {
+            NSLayoutConstraint.activate([autoFlashButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+                                         autoFlashButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20.0)])
+        } else {
+            // Fallback on earlier versions
+            NSLayoutConstraint.activate([autoFlashButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
+                                         autoFlashButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20.0)])
+        }
         
         autoCaptureButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([autoCaptureButton.topAnchor.constraint(equalTo: autoFlashButton.topAnchor, constant: 0),
@@ -207,10 +212,20 @@ class ZLScannerViewController: ZLScannerBasicViewController {
                                      autoCaptureAlertLabel.heightAnchor.constraint(equalToConstant: 22)])
         
         deleteShadowView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([deleteShadowView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
-                                     deleteShadowView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0),
-                                     deleteShadowView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
-                                     deleteShadowView.bottomAnchor.constraint(equalTo: photoCollectionView.topAnchor, constant: 64)])
+        if #available(iOS 11.0, *) {
+            NSLayoutConstraint.activate([deleteShadowView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+                                         deleteShadowView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0),
+                                         deleteShadowView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
+                                         deleteShadowView.bottomAnchor.constraint(equalTo: photoCollectionView.topAnchor, constant: 64)])
+        } else {
+            // Fallback on earlier versions
+            NSLayoutConstraint.activate([deleteShadowView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+                                         deleteShadowView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0),
+                                         deleteShadowView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
+                                         deleteShadowView.bottomAnchor.constraint(equalTo: photoCollectionView.topAnchor, constant: 64)])
+        }
+        
+        
     }
     
     func updateAutoCaptureAlertLabel(on: Bool) {
@@ -506,7 +521,9 @@ extension ZLScannerViewController: ZLPhotoWaterFallViewProtocol {
     }
     
     func doneAction() {
-        dismiss(animated: true, completion: nil)
+        ZLPhotoModel.removeAllModel { (_) in
+            dismiss(animated: true, completion: nil)
+        }
     }
 }
 //MARK: GET Quadrilateral

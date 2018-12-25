@@ -13,7 +13,6 @@
 		74F7D03A211ACC4B0046AF7E /* UIImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F7D039211ACC4B0046AF7E /* UIImageTests.swift */; };
 		74F7D03C211ACC6B0046AF7E /* CGAffineTransformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F7D03B211ACC6B0046AF7E /* CGAffineTransformTests.swift */; };
 		74F7D03E211ACC890046AF7E /* AVCaptureVideoOrientationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F7D03D211ACC890046AF7E /* AVCaptureVideoOrientationTests.swift */; };
-		93061F7021BA2FAE008A78BE /* ZLColorAsset.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93061F6F21BA2FAE008A78BE /* ZLColorAsset.xcassets */; };
 		935F91CD21D1D30400250534 /* ZLPhotoAsset.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18EB1C6721B10717001CEA1E /* ZLPhotoAsset.xcassets */; };
 		93C0BEC221CA45B200D6ACD5 /* ZLPhotoEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0BEC021CA45B200D6ACD5 /* ZLPhotoEditingController.swift */; };
 		93C0BEC321CA45B200D6ACD5 /* ZLPhotoEditingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93C0BEC121CA45B200D6ACD5 /* ZLPhotoEditingController.xib */; };
@@ -172,7 +171,6 @@
 		74F7D039211ACC4B0046AF7E /* UIImageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageTests.swift; sourceTree = "<group>"; };
 		74F7D03B211ACC6B0046AF7E /* CGAffineTransformTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGAffineTransformTests.swift; sourceTree = "<group>"; };
 		74F7D03D211ACC890046AF7E /* AVCaptureVideoOrientationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVCaptureVideoOrientationTests.swift; sourceTree = "<group>"; };
-		93061F6F21BA2FAE008A78BE /* ZLColorAsset.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ZLColorAsset.xcassets; sourceTree = "<group>"; };
 		93C0BEC021CA45B200D6ACD5 /* ZLPhotoEditingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLPhotoEditingController.swift; sourceTree = "<group>"; };
 		93C0BEC121CA45B200D6ACD5 /* ZLPhotoEditingController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ZLPhotoEditingController.xib; sourceTree = "<group>"; };
 		A11C5CD820495EA1005075FE /* RectangleFeaturesFunnelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RectangleFeaturesFunnelTests.swift; sourceTree = "<group>"; };
@@ -575,7 +573,6 @@
 			isa = PBXGroup;
 			children = (
 				A1D4BCEF202C4F4100FCDDEC /* WeScan.h */,
-				93061F6F21BA2FAE008A78BE /* ZLColorAsset.xcassets */,
 				18EB1C6721B10717001CEA1E /* ZLPhotoAsset.xcassets */,
 			);
 			path = Resource;
@@ -760,7 +757,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				935F91CD21D1D30400250534 /* ZLPhotoAsset.xcassets in Resources */,
-				93061F7021BA2FAE008A78BE /* ZLColorAsset.xcassets in Resources */,
 				FEE9FDD021C8977C0065E87B /* ZLPhotoEditorController.xib in Resources */,
 				FEE9FDE221C8977C0065E87B /* ZLPhotoCell.xib in Resources */,
 				93C0BEC321CA45B200D6ACD5 /* ZLPhotoEditingController.xib in Resources */,
@@ -1034,7 +1030,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4TJ7K2DH6D;
 				INFOPLIST_FILE = WeScanSampleProject/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ZK.ZLHome;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1051,7 +1047,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4TJ7K2DH6D;
 				INFOPLIST_FILE = WeScanSampleProject/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ZK.ZLHome;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1074,7 +1070,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = WeScan/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = WeTransfer.WeScan;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -1101,7 +1097,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = WeScan/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = WeTransfer.WeScan;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
