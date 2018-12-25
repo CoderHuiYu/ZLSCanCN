@@ -34,7 +34,8 @@ class ZLScannerViewController: ZLScannerBasicViewController {
     private var isTouchShutter: Bool = false
     private var isAutoCapture: Bool = true {
         didSet {
-            promptView.isHidden = !isAutoCapture
+            quadView.removeQuadrilateral()
+//            promptView.isHidden = !isAutoCapture
             captureSessionManager?.autoCapture = isAutoCapture
         }
     }
@@ -48,10 +49,21 @@ class ZLScannerViewController: ZLScannerBasicViewController {
         return button
     }()
     
+    private lazy var autoCaptureAlertLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 13)
+        label.layer.cornerRadius = 4
+        label.layer.masksToBounds = true
+        return label
+    }()
+    
     private lazy var autoFlashButton: UIButton = {
-        let image = UIImage(named: "flash", in: Bundle(for: ZLScannerViewController.self), compatibleWith: nil)
+        let image = UIImage(named: "zl_flashon", in: Bundle(for: ZLScannerViewController.self), compatibleWith: nil)
+        let imageS = UIImage(named: "zl_flashoff", in: Bundle(for: ZLScannerViewController.self), compatibleWith: nil)
         let button = UIButton()
         button.setImage(image, for: .normal)
+        button.setImage(imageS, for: .selected)
         button.addTarget(self, action: #selector(flashActionToggle(_:)), for: .touchUpInside)
         return button
     }()
@@ -89,12 +101,14 @@ class ZLScannerViewController: ZLScannerBasicViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Scanning"
+        NotificationCenter.default.addObserver(self, selector: #selector(appTerminateAction), name: UIApplication.willTerminateNotification, object: nil)
         setupViews()
         setupConstraints()
         captureSessionManager = CaptureSessionManager(videoPreviewLayer: videoPreviewlayer)
         captureSessionManager?.autoCapture = isAutoCapture
         captureSessionManager?.delegate = self
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         disappear = false
@@ -104,6 +118,7 @@ class ZLScannerViewController: ZLScannerBasicViewController {
         captureSessionManager?.start()
         UIApplication.shared.isIdleTimerDisabled = true
     }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if isFromEdit {
@@ -114,12 +129,26 @@ class ZLScannerViewController: ZLScannerBasicViewController {
             quadView.frame = CGRect(x: 0, y: 0, width: kScreenWidth, height: view.layer.bounds.height - photoCollectionView.collectionHeight - kBottomGap)
         }
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         disappear = true
         UIApplication.shared.isIdleTimerDisabled = false
         closeFlash()
         captureSessionManager?.stop()
+    }
+    
+    @objc private func appTerminateAction() {
+        // app is killed
+        ZLPhotoModel.removeAllModel { (isSuccess) in
+            if isSuccess {
+                print("remove success")
+            }
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     private func setupViews() {
@@ -130,11 +159,14 @@ class ZLScannerViewController: ZLScannerBasicViewController {
         view.addSubview(quadView)
         view.addSubview(autoFlashButton)
         view.addSubview(autoCaptureButton)
+        view.addSubview(autoCaptureAlertLabel)
         view.addSubview(promptView)
         view.addSubview(previewImageView)
         view.addSubview(deleteShadowView)
         view.addSubview(photoCollectionView)
         view.addSubview(shutterButton)
+        
+        updateAutoCaptureAlertLabel(on: true)
     }
     private func setupConstraints() {
         shutterButton.translatesAutoresizingMaskIntoConstraints = false
@@ -151,6 +183,12 @@ class ZLScannerViewController: ZLScannerBasicViewController {
                                          shutterButton.heightAnchor.constraint(equalToConstant: 60.0)])
         }
         
+        promptView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([promptView.heightAnchor.constraint(equalToConstant: 30),
+                                     promptView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 70),
+                                     promptView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -70),
+                                     promptView.bottomAnchor.constraint(equalTo: shutterButton.topAnchor, constant: -20)])
+        
         autoFlashButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([autoFlashButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
                                      autoFlashButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20.0)])
@@ -159,11 +197,34 @@ class ZLScannerViewController: ZLScannerBasicViewController {
         NSLayoutConstraint.activate([autoCaptureButton.topAnchor.constraint(equalTo: autoFlashButton.topAnchor, constant: 0),
                                      autoCaptureButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20)])
         
+        autoCaptureAlertLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([autoCaptureAlertLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                                     autoCaptureAlertLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
+                                     autoCaptureAlertLabel.widthAnchor.constraint(equalToConstant: 130),
+                                     autoCaptureAlertLabel.heightAnchor.constraint(equalToConstant: 22)])
+        
         deleteShadowView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([deleteShadowView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
                                      deleteShadowView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0),
                                      deleteShadowView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
                                      deleteShadowView.bottomAnchor.constraint(equalTo: photoCollectionView.topAnchor, constant: 64)])
+    }
+    
+    func updateAutoCaptureAlertLabel(on: Bool) {
+        autoCaptureButton.isUserInteractionEnabled = false
+        autoCaptureAlertLabel.alpha = 1.0
+        autoCaptureAlertLabel.isHidden = false
+        autoCaptureAlertLabel.backgroundColor = on ? globalColor : .white
+        autoCaptureAlertLabel.text = on ? "Auto Shutter On" : "Auto Shutter Off"
+        autoCaptureAlertLabel.textColor = on ? .white : .black
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+            UIView.animate(withDuration: 0.25, animations: {
+                self.autoCaptureAlertLabel.alpha = 0.1
+            }, completion: { (_) in
+                self.autoCaptureAlertLabel.isHidden = true
+                self.autoCaptureButton.isUserInteractionEnabled = true
+            })
+        }
     }
 }
 extension ZLScannerViewController: ZLScanRectangleDetectionDelegateProtocol {
@@ -409,9 +470,11 @@ extension ZLScannerViewController: ZLPhotoWaterFallViewProtocol {
     @objc func autoCaptureAction(_ button: UIButton) {
         button.isSelected = !button.isSelected
         if button.isSelected {
-            self.isAutoCapture = false
+            isAutoCapture = false
+            updateAutoCaptureAlertLabel(on: false)
         } else {
-            self.isAutoCapture = true
+            isAutoCapture = true
+            updateAutoCaptureAlertLabel(on: true)
         }
     }
     
