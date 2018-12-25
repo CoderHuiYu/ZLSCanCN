@@ -13,13 +13,13 @@ protocol ZLPDFMenuViewProtocol: NSObjectProtocol {
 }
 
 class ZLPDFMenuView: UIView {
-    private var imageArray = ["zl_share_m","zl_edit_m","zl_rename_m","zl_delete_m"]
-    private var titleArray = ["Share","Edit","Rename","Delete"]
+    private var imageArray = ["zilly-scan-edit","zilly-scan-rename","zilly-scan-delete"]
+    private var titleArray = ["Edit","Rename","Delete"]
     
     weak var delegate: ZLPDFMenuViewProtocol?
     
     lazy var menuTableView: UITableView = {
-        let menuTableView = UITableView(frame: CGRect(x: kScreenWidth-180, y: kNavHeight, width: 130, height: 168), style: .plain)
+        let menuTableView = UITableView(frame: CGRect(x: kScreenWidth-180, y: kNavHeight, width: 130, height: 126), style: .plain)
         menuTableView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
         menuTableView.layer.anchorPoint = CGPoint(x: 1, y: 0)
         let spaceY: CGFloat = iPhoneX ? 90 : 70
@@ -64,11 +64,6 @@ extension ZLPDFMenuView: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = ZLPDFMenuViewCell(style: .default, reuseIdentifier: ZLPDFMenuViewCell.ZlPDFMenuViewCellID)
         cell.modelConfig(UIImage(named: imageArray[indexPath.item], in: Bundle.init(for: self.classForCoder), compatibleWith: nil)!, text: titleArray[indexPath.item])
-//        let cell = UITableViewCell(style: .default, reuseIdentifier: "")
-//        cell.selectionStyle = .none
-//        cell.textLabel?.text = titleArray[indexPath.row]
-//        cell.textLabel?.font = UIFont.systemFont(ofSize: 12)
-//        cell.imageView?.image = UIImage(named: imageArray[indexPath.row], in: Bundle.init(for: self.classForCoder), compatibleWith: nil)
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
