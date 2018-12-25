@@ -49,7 +49,7 @@ class ZLScanToast: NSObject {
         self.duration = duration
     }
     
-    private func showAnimation(){
+    private func showAnimation() {
         UIView.beginAnimations("show", context: nil)
         UIView.setAnimationCurve(UIView.AnimationCurve.easeIn)
         UIView.setAnimationDuration(0.3)
@@ -57,26 +57,22 @@ class ZLScanToast: NSObject {
         UIView.commitAnimations()
     }
     
-    private func show(){
+    private func show() {
         let window: UIWindow = UIApplication.shared.windows.last!
-        //        _contentView.center = window.center //中间
-        //        _contentView.center = CGPoint(x: window.center.x, y: window.frame.size.height - (100 + _contentView.frame.size.height/2)) //下边
-        //上面
         contentView.center = CGPoint(x: window.center.x, y: 100 + contentView.frame.size.height/2)
         window.addSubview(contentView)
         self.showAnimation()
         self.perform(#selector(hideAnimation), with: nil, afterDelay: TimeInterval(duration))
     }
-    
-    @objc private func toastTaped(){
+    @objc private func toastTaped() {
         self.hideAnimation()
     }
 
-    @objc private func dismissToast(){
+    @objc private func dismissToast() {
         contentView.removeFromSuperview()
     }
     
-    @objc private func hideAnimation(){
+    @objc private func hideAnimation() {
         UIView.beginAnimations("hide", context: nil)
         UIView.setAnimationCurve(UIView.AnimationCurve.easeOut)
         UIView.setAnimationDelegate(self)

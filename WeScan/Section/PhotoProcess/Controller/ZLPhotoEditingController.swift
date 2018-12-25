@@ -40,7 +40,7 @@ class ZLPhotoEditingController: ZLScannerBasicViewController {
         return button
     }()
     
-    lazy var rightButton: UIButton = {
+    private lazy var rightButton: UIButton = {
         let button = UIButton()
         button.setTitle("Save", for: .normal)
         button.setTitleColor(globalColor, for: .normal)
@@ -57,7 +57,7 @@ class ZLPhotoEditingController: ZLScannerBasicViewController {
 
 // MARK: - Event
 extension ZLPhotoEditingController {
-    override func backBtnClick() {
+    override func backBtnClicked() {
         navigationController?.popViewController(animated: true)
     }
     
@@ -106,6 +106,10 @@ extension ZLPhotoEditingController {
             self?.enhanceButton.isSelected = true
             self?.imageView.image = self?.model?.enhancedImage
         }
+        ZLScanCaptureSession.current.isPreviewing = false
+        ZLScanCaptureSession.current.isEditing = false
+        ZLScanCaptureSession.current.autoScanEnabled = true
+        ZLScanCaptureSession.current.editImageOrientation = .up
         navigationController?.pushViewController(vc, animated: true)
     }
     

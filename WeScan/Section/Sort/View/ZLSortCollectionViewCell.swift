@@ -21,12 +21,12 @@ class ZLSortCollectionViewCell: UICollectionViewCell {
         case editing
     }
     
-    lazy var iconimageView: UIImageView = {
-        let iconimageView = UIImageView()
-        iconimageView.contentMode = .scaleAspectFill
-        iconimageView.isUserInteractionEnabled = false
-        iconimageView.clipsToBounds = true
-        return iconimageView
+    lazy var iconImageView: UIImageView = {
+        let iconImageView = UIImageView()
+        iconImageView.contentMode = .scaleAspectFill
+        iconImageView.isUserInteractionEnabled = false
+        iconImageView.clipsToBounds = true
+        return iconImageView
     }()
     lazy var coverView: UIView = {
         let coverView = UIView()
@@ -44,7 +44,7 @@ class ZLSortCollectionViewCell: UICollectionViewCell {
         numberBtn.layer.cornerRadius = 20.0
         numberBtn.setTitle("2", for: .normal)
         numberBtn.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
-        iconimageView.addSubview(numberBtn)
+        iconImageView.addSubview(numberBtn)
         return numberBtn
     }()
     var style: SortStyle = .normal {
@@ -66,13 +66,13 @@ class ZLSortCollectionViewCell: UICollectionViewCell {
         setupView()
     }
     
-    private func setupView(){        
+    private func setupView() {
         contentView.backgroundColor = UIColor.clear
         contentView.addSubview(imaginaryLine)
-        contentView.addSubview(iconimageView)
-        iconimageView.addSubview(coverView)
+        contentView.addSubview(iconImageView)
+        iconImageView.addSubview(coverView)
     }
-    private func addImaginaryLine(_ frame: CGRect){
+    private func addImaginaryLine(_ frame: CGRect) {
         imaginaryLine.layer.sublayers?.removeAll()
         
         let border = CAShapeLayer()
@@ -87,7 +87,7 @@ class ZLSortCollectionViewCell: UICollectionViewCell {
         imaginaryLine.layer.addSublayer(border)
     }
     
-    func configImage(iconImage: UIImage, style: SortStyle){
+    func imageConfig(iconImage: UIImage, style: SortStyle) {
         self.style = style
         let itemWidth = frame.width - 20
         let size = iconImage.size
@@ -97,19 +97,19 @@ class ZLSortCollectionViewCell: UICollectionViewCell {
         }
         
         let gap = (frame.height - height)/2
-        iconimageView.frame = CGRect(x: 10, y: gap, width: itemWidth, height:height)
-        iconimageView.image = iconImage
+        iconImageView.frame = CGRect(x: 10, y: gap, width: itemWidth, height:height)
+        iconImageView.image = iconImage
         
         switch style {
         case .editing:
             imaginaryLine.frame = CGRect(x: 10, y: gap, width: itemWidth, height: height)
-            addImaginaryLine(iconimageView.frame)
+            addImaginaryLine(iconImageView.frame)
             numberBtn.frame = CGRect(x: itemWidth/2-20, y: height/2-20, width: 40, height: 40)
             numberBtn.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
-            coverView.frame = iconimageView.bounds
+            coverView.frame = iconImageView.bounds
             coverView.isHidden = true
-            iconimageView.layer.borderColor = UIColor.clear.cgColor
-            iconimageView.layer.borderWidth = 0
+            iconImageView.layer.borderColor = UIColor.clear.cgColor
+            iconImageView.layer.borderWidth = 0
             break
         default:
             break
@@ -119,36 +119,14 @@ class ZLSortCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 }
-//MARK: -- Action and Notification
+//MARK: - Action
 extension ZLSortCollectionViewCell{
     @objc private func delBtnClicked(_ btn: UIButton){
         guard let delegate = delegate else { return }
         delegate.deleteItem(self)
     }
-    
-    @objc private func dragBegin(){
-    
-    }
-    
-    @objc private func endDrag(){
-   
-    }
-    
-//    @objc private func tapCell(_ ges: UITapGestureRecognizer){
-//        UIView.animate(withDuration: 0.5, animations: {
-//            self.iconimageView.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
-//            self.iconimageView.layer.shadowColor = UIColor.black.cgColor
-//            self.iconimageView.layer.shadowRadius = 5
-//            self.iconimageView.layer.shadowOpacity = 0.5
-//        }) { (isFinished) in
-//            UIView.animate(withDuration: 0.5, animations: {
-//                self.iconimageView.transform = CGAffineTransform.identity
-//                self.iconimageView.layer.shadowColor = UIColor.clear.cgColor
-//                self.iconimageView.layer.shadowRadius = 0
-//                self.iconimageView.layer.shadowOpacity = 0
-//            }, completion: nil)
-//        }
-//    }
+    @objc private func dragBegin() {}
+    @objc private func endDrag() {}
 }
 
 

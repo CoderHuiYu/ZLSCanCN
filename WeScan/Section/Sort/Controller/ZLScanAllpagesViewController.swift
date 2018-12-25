@@ -14,17 +14,17 @@ class ZLScanAllpagesViewController: ZLScannerBasicViewController, Convertable{
     
     private lazy var sortCollectionView: UICollectionView = {
         let itemWidth = (kScreenWidth) / 3
-        let itemHeith = itemWidth * 1.3
+        let itemHeight = itemWidth * 1.3
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: itemWidth, height: itemHeith )
+        layout.itemSize = CGSize(width: itemWidth, height: itemHeight)
         layout.minimumInteritemSpacing = 0.0
+        
         let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: kScreenWidth, height: kScreenHeight), collectionViewLayout: layout)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = RGBColor(r: 247, g: 247, b: 247)
         collectionView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
         collectionView.register(ZLSortCollectionViewCell.self, forCellWithReuseIdentifier: ZLSortCollectionViewCell.ZLSortCollectionViewCellID)
-
         return collectionView
     }()
     
@@ -39,15 +39,11 @@ class ZLScanAllpagesViewController: ZLScannerBasicViewController, Convertable{
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "All Pages"
-        
-        viewConfig()
+        viewConfigs()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let fromAnimation = AnimationType.from(direction: .bottom, offset: 50.0)
-//        let zoomAnimation = AnimationType.zoom(scale: 0.8)
-//        let rotateAnimation = AnimationType.rotate(angle: CGFloat.pi/6)
-
         sortCollectionView.reloadData()
         sortCollectionView.performBatchUpdates({
             UIView.animate(views: sortCollectionView.orderedVisibleCells,
@@ -55,7 +51,7 @@ class ZLScanAllpagesViewController: ZLScannerBasicViewController, Convertable{
             })
         }, completion: nil)
     }
-    private func viewConfig(){
+    private func viewConfigs() {
         view.addSubview(sortCollectionView)
         let rightBtn = UIButton ()
         rightBtn.titleLabel?.font = basicFont
@@ -72,7 +68,7 @@ extension ZLScanAllpagesViewController: UICollectionViewDelegate, UICollectionVi
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ZLSortCollectionViewCell.ZLSortCollectionViewCellID, for: indexPath) as! ZLSortCollectionViewCell
-        cell.configImage(iconImage: models[indexPath.item].enhancedImage, style: .normal)
+        cell.imageConfig(iconImage: models[indexPath.item].enhancedImage, style: .normal)
         return cell
     }
     func sortDidFinished(_ photoModels: [ZLPhotoModel]) {
@@ -89,7 +85,7 @@ extension ZLScanAllpagesViewController: UICollectionViewDelegate, UICollectionVi
     }
 }
 extension ZLScanAllpagesViewController{
-    override func backBtnClick() {
+    override func backBtnClicked() {
         navigationController?.popViewController(animated: true)
     }
     @objc func rightBtnClick(_ sender: UIButton){
@@ -97,7 +93,7 @@ extension ZLScanAllpagesViewController{
         sortVC.delegate = self
         navigationController?.pushViewController(sortVC, animated: true)
     }
-    override func bottomBtnClick() {
+    override func bottomBtnClicked() {
         //convertToPDF
         let  pdfpath = convertPDF(models, fileName: "temporary.pdf")
         ZLPhotoModel.removeAllModel { (isSuccess) in

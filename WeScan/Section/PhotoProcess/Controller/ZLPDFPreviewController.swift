@@ -12,23 +12,21 @@ import QuickLook
 class ZLPDFPreviewController: ZLScannerBasicViewController, QLPreviewControllerDelegate,QLPreviewControllerDataSource, ZLPDFMenuViewProtocol{
     
     private var pdfPath: String?
-    private lazy var preview: QLPreviewController = {
-        let preview = QLPreviewController()
-        preview.delegate = self
-        preview.dataSource = self
-        preview.currentPreviewItemIndex = 1
-        let spaceY: CGFloat = iPhoneX ? -30 : 0
-        preview.view.frame = CGRect(x: 0, y: spaceY, width: kScreenWidth, height: kScreenHeight)
-        return preview
-    }()
     private let menuView = ZLPDFMenuView()
-    
+    private lazy var previewController: QLPreviewController = {
+        let previewController = QLPreviewController()
+        previewController.delegate = self
+        previewController.dataSource = self
+        previewController.currentPreviewItemIndex = 1
+        let spaceY: CGFloat = iPhoneX ? -30 : 0
+        previewController.view.frame = CGRect(x: 0, y: spaceY, width: kScreenWidth, height: kScreenHeight)
+        return previewController
+    }()
     init(pdfPath: String){
         super.init(nibName: nil, bundle: nil)
         self.pdfPath = pdfPath
         menuView.delegate = self
     }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -41,10 +39,10 @@ class ZLPDFPreviewController: ZLScannerBasicViewController, QLPreviewControllerD
     }
     private func viewConfigs() {
         title = pdfPath?.components(separatedBy: "/").last
-        addChild(preview)
-        view.addSubview(preview.view)
-        preview.didMove(toParent: self)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rBtn)
+        addChild(previewController)
+        view.addSubview(previewController.view)
+        previewController.didMove(toParent: self)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightNavButton)
     }
     // MARK: Delegate
     func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
@@ -53,10 +51,11 @@ class ZLPDFPreviewController: ZLScannerBasicViewController, QLPreviewControllerD
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
         return URL.init(fileURLWithPath: pdfPath!) as QLPreviewItem
     }
-    override func backBtnClick() {
+    // MARK: Action
+    override func backBtnClicked() {
         navigationController?.dismiss(animated: true, completion: nil)
     }
-    override func rBtnClick() {
+    override func rightNavButtonClicked() {
         menuView.showMenuView()
     }
     func menuDidSelected(_ index: Int) {
@@ -87,7 +86,7 @@ class ZLPDFPreviewController: ZLScannerBasicViewController, QLPreviewControllerD
     }
     private func deletePDF() {
         showAlter(title: "Do you want to delete this file?", message: "", confirm: "Delete", cancel: "Cancel", confirmComp: { (_) in
-            
+            //confirm delete PDF file
         }) { (_) in }
     }
     private func renamePDF() {

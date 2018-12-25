@@ -82,7 +82,7 @@ extension ZLPDFMenuView: UITableViewDelegate, UITableViewDataSource{
     @objc func hideMenu() {
         hideMenuView()
     }
-    func showMenuView(){
+    func showMenuView() {
         menuTableView.reloadData()
         let window = UIApplication.shared.keyWindow
         window!.addSubview(self)
@@ -93,7 +93,7 @@ extension ZLPDFMenuView: UITableViewDelegate, UITableViewDataSource{
             
         })
     }
-    private func hideMenuView(){
+    private func hideMenuView() {
         UIView.animate(withDuration: 0.3, animations: {
             self.menuTableView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
         }, completion: {

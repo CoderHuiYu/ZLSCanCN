@@ -104,7 +104,7 @@ final class HomeViewController: UIViewController {
         }
         present(scannerVC, animated: true, completion: nil)
     }
-    @objc func editPDF(){
+    @objc func editPDF() {
         let path = Bundle.main.path(forResource: "testA", ofType: "pdf")
         let scannerVC = ZLImageScannerController(withOriginalPdfPath: path) { (pdfPath) in
             print(pdfPath)

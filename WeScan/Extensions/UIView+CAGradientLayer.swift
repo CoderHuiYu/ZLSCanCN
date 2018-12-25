@@ -9,7 +9,7 @@
 import UIKit
 
 extension UIView {
-    func getGradientColor(){
+    func getGradientColor() {
         let gradient = CAGradientLayer()
         gradient.frame = self.bounds
         gradient.colors = [COLORFROMHEX(0x18acf8).cgColor,COLORFROMHEX(0x006ea6).cgColor]

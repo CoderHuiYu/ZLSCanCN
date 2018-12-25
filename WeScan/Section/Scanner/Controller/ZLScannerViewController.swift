@@ -99,6 +99,7 @@ class ZLScannerViewController: ZLScannerBasicViewController {
         super.viewWillAppear(animated)
         disappear = false
         ZLScanCaptureSession.current.isEditing = false
+        ZLScanCaptureSession.current.isPreviewing = false
         quadView.removeQuadrilateral()
         captureSessionManager?.start()
         UIApplication.shared.isIdleTimerDisabled = true
@@ -107,6 +108,7 @@ class ZLScannerViewController: ZLScannerBasicViewController {
         super.viewDidLayoutSubviews()
         if isFromEdit {
             videoPreviewlayer.frame = view.layer.bounds
+            quadView.frame = CGRect(x: 0, y: 0, width: kScreenWidth, height: view.layer.bounds.height - kBottomGap)
         } else {
             videoPreviewlayer.frame = CGRect(x: 0, y: 0, width: kScreenWidth, height: view.layer.bounds.height - photoCollectionView.collectionHeight - kBottomGap)
             quadView.frame = CGRect(x: 0, y: 0, width: kScreenWidth, height: view.layer.bounds.height - photoCollectionView.collectionHeight - kBottomGap)
@@ -325,7 +327,7 @@ extension ZLScannerViewController{
         }
     }
     
-    override func backBtnClick() {
+    override func backBtnClicked() {
         self.captureSessionManager?.stop()
         if isFromEdit {
             self.navigationController?.popViewController(animated: true)

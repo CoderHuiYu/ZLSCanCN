@@ -16,7 +16,7 @@ class ZLSortCollectionView: UICollectionView{
     private var cell: ZLSortCollectionViewCell?
     private var dragingIndexPath: IndexPath?
     private var targetIndexPath: IndexPath?
-    private var playTimer: Timer?
+    private var pressTimer: Timer?
     
     private var moveOffsetY: CGFloat = 0.0
     private var topGap: CGFloat = 20.0
@@ -75,13 +75,13 @@ extension ZLSortCollectionView : UIGestureRecognizerDelegate{
         targetIndexPath  = indexPath
         NotificationCenter.default.post(name: NSNotification.Name(rawValue:"ZLScanBeginDrag"), object: nil)
         let cell = self.cellForItem(at: dragingIndexPath! ) as! ZLSortCollectionViewCell
-        cell.iconimageView.isHidden = true
-        dragCell.frame = cell.iconimageView.frame
+        cell.iconImageView.isHidden = true
+        dragCell.frame = cell.iconImageView.frame
         dragCell.isHidden = false
         dragCell.center = point
         dragCell.image = photoModels[(dragingIndexPath?.row)!].enhancedImage
         dragCell.transform = CGAffineTransform.identity
-        playTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countPressTime), userInfo: nil, repeats: true)
+        pressTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(pressAnimation), userInfo: nil, repeats: true)
     }
     private func dragChange(_ point: CGPoint){
         if dragingIndexPath == nil {return}
@@ -108,7 +108,7 @@ extension ZLSortCollectionView : UIGestureRecognizerDelegate{
             }
         }
         if dragingIndexPath != nil && targetIndexPath != nil{
-            rankImageMutableArr()
+            updatePhotoModels()
             self.moveItem(at: dragingIndexPath!, to: targetIndexPath!)
             //update cell's title text
             let currentCell = self.cellForItem(at: dragingIndexPath!) as! ZLSortCollectionViewCell
@@ -139,21 +139,20 @@ extension ZLSortCollectionView : UIGestureRecognizerDelegate{
         dragCell.transform = CGAffineTransform.identity
         
         UIView.animate(withDuration: 0.3, animations: {
-            self.dragCell.frame = CGRect(x: cell.frame.origin.x + 20, y: cell.frame.origin.y + cell.iconimageView.frame.origin.y, width: cell.iconimageView.frame.width, height: cell.iconimageView.frame.height)
+            self.dragCell.frame = CGRect(x: cell.frame.origin.x + 20, y: cell.frame.origin.y + cell.iconImageView.frame.origin.y, width: cell.iconImageView.frame.width, height: cell.iconImageView.frame.height)
         }) { (finished) in
             self.dragCell.isHidden = true
-            cell.iconimageView.isHidden = false
+            cell.iconImageView.isHidden = false
             
         }
         cancelPress()
     }
-    private func rankImageMutableArr(){
-        //update Models
+    private func updatePhotoModels() {
         let cell = photoModels[(dragingIndexPath?.row)!]
         photoModels.remove(at: (dragingIndexPath?.row)!)
         photoModels.insert(cell, at: (targetIndexPath?.row)!)
     }
-    @objc private func countPressTime(){
+    @objc private func pressAnimation() {
         // dragging animate
         UIView.animate(withDuration: 0.7, animations: {
             self.dragCell.transform = CGAffineTransform(scaleX: 1.03, y: 1.03)
@@ -164,10 +163,10 @@ extension ZLSortCollectionView : UIGestureRecognizerDelegate{
         }
     }
     // removeTimer
-    private func cancelPress(){
-        if (playTimer != nil) {
-            playTimer?.invalidate()
-            playTimer = nil
+    private func cancelPress() {
+        if pressTimer != nil {
+            pressTimer?.invalidate()
+            pressTimer = nil
         }
     }
 }
@@ -178,7 +177,7 @@ extension ZLSortCollectionView: UICollectionViewDelegate,UICollectionViewDataSou
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ZLSortCollectionViewCell.ZLSortCollectionViewCellID, for: indexPath) as! ZLSortCollectionViewCell
-        cell.configImage(iconImage: photoModels[indexPath.item].enhancedImage, style: .editing)
+        cell.imageConfig(iconImage: photoModels[indexPath.item].enhancedImage, style: .editing)
         cell.numberBtn.setTitle(String(indexPath.item + 1), for: .normal)
         cell.delegate = self
         return cell
@@ -191,8 +190,8 @@ extension ZLSortCollectionView: UICollectionViewDelegate,UICollectionViewDataSou
             cell.numberBtn.backgroundColor = globalColor
             deleteModels.append(model)
             cell.coverView.isHidden = false
-            cell.iconimageView.layer.borderColor = globalColor.cgColor
-            cell.iconimageView.layer.borderWidth = 2
+            cell.iconImageView.layer.borderColor = globalColor.cgColor
+            cell.iconImageView.layer.borderWidth = 2
             selectedCount += 1
             NotificationCenter.default.post(name: NSNotification.Name(rawValue:"ZLScanDeleteItem"), object: selectedCount)
 
@@ -200,8 +199,8 @@ extension ZLSortCollectionView: UICollectionViewDelegate,UICollectionViewDataSou
             cell.numberBtn.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
             deleteModels = deleteModels.filter({$0.originalImagePath != model.originalImagePath})
             cell.coverView.isHidden = true
-            cell.iconimageView.layer.borderColor = UIColor.clear.cgColor
-            cell.iconimageView.layer.borderWidth = 0
+            cell.iconImageView.layer.borderColor = UIColor.clear.cgColor
+            cell.iconImageView.layer.borderWidth = 0
             selectedCount -= 1
             NotificationCenter.default.post(name: NSNotification.Name(rawValue:"ZLScanDeleteItem"), object: selectedCount)
             

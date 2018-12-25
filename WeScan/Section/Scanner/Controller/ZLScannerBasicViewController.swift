@@ -15,7 +15,7 @@ class ZLScannerBasicViewController: UIViewController {
     var dismissCallBack: ((String)->())?
     private lazy var backButton: UIBarButtonItem = {
         let backButton = UIButton(frame: CGRect(origin: .zero, size: CGSize(width: 64, height: 32)))
-        backButton.addTarget(self, action: #selector(backBtnClick), for: .touchUpInside)
+        backButton.addTarget(self, action: #selector(backBtnClicked), for: .touchUpInside)
         backButton.setTitle("Back", for: .normal)
         backButton.setTitleColor(globalColor, for: .normal)
         backButton.titleLabel!.font = basicFont
@@ -27,16 +27,13 @@ class ZLScannerBasicViewController: UIViewController {
         backButton.transform = CGAffineTransform(translationX: -12, y: 0)
         return UIBarButtonItem(customView: backButtonWrapper)
     }()
-    lazy var rBtn: UIButton = {
-        let rBtn = UIButton()
-        rBtn.frame = CGRect(x: kScreenWidth-44, y: 0, width: 44, height: 44)
-//        rBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-//        rBtn.setTitle("···", for: .normal)
-//        rBtn.setTitleColor(globalColor, for: .normal)
-        rBtn.setImage(UIImage(named: "zl_pdf_more2", in: Bundle.init(for: self.classForCoder), compatibleWith: nil), for: .normal)
-        rBtn.imageEdgeInsets = UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 0)
-        rBtn.addTarget(self, action: #selector(rBtnClick), for: .touchUpInside)
-        return rBtn
+    lazy var rightNavButton: UIButton = {
+        let rightNavButton = UIButton()
+        rightNavButton.frame = CGRect(x: kScreenWidth-44, y: 0, width: 44, height: 44)
+        rightNavButton.setImage(UIImage(named: "zl_pdf_more2", in: Bundle.init(for: self.classForCoder), compatibleWith: nil), for: .normal)
+        rightNavButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 0)
+        rightNavButton.addTarget(self, action: #selector(rightNavButtonClicked), for: .touchUpInside)
+        return rightNavButton
     }()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +50,7 @@ class ZLScannerBasicViewController: UIViewController {
         bottomBtn.frame = CGRect(x: 15, y: 15, width: kScreenWidth-30 , height: 50)
         bottomBtn.setTitle(title, for: .normal)
         bottomBtn.setTitleColor(.white, for: .normal)
-        bottomBtn.addTarget(self, action: #selector(bottomBtnClick), for: .touchUpInside)
+        bottomBtn.addTarget(self, action: #selector(bottomBtnClicked), for: .touchUpInside)
         bottomBtn.layer.cornerRadius = 5.0
         bottomBtn.layer.masksToBounds = true
         bottomBtn.titleLabel?.font = UIFont.systemFont(ofSize: 17)
@@ -65,14 +62,14 @@ class ZLScannerBasicViewController: UIViewController {
         bottomView.addSubview(lineView)
         return bottomView
     }
-    private func addBackBtn(){
+    private func addBackBtn() {
         navigationItem.leftBarButtonItem = backButton
     }
 }
 extension ZLScannerBasicViewController {
-    @objc func backBtnClick() {}
-    @objc func bottomBtnClick() {}
-    @objc func rBtnClick() {}
+    @objc func backBtnClicked() {}
+    @objc func bottomBtnClicked() {}
+    @objc func rightNavButtonClicked() {}
     
     func showAlter(title: String, message: String, confirm: String, cancel: String,confirmComp:@escaping ((UIAlertAction)->()),cancelComp:@escaping ((UIAlertAction)->())){
         let confirmAlt = UIAlertAction(title: confirm, style: .default, handler: confirmComp)

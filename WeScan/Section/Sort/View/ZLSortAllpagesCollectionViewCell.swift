@@ -40,7 +40,7 @@ class ZLSortAllpagesCollectionViewCell: UICollectionViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    private func setupView(){
+    private func setupView() {
         contentView.backgroundColor = UIColor.clear
         contentView.addSubview(iconimageView)
     }

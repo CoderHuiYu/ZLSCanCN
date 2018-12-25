@@ -23,7 +23,7 @@ class ZLPhotoEditorController: ZLScannerBasicViewController, EmitterAnimate, Con
     @IBOutlet weak var toolBarView: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
     
-    fileprivate lazy var rightButton: UIButton = {
+    private lazy var rightButton: UIButton = {
         let rightBtn = UIButton ()
         rightBtn.titleLabel?.font = basicFont
         rightBtn.setTitle("All Photos", for: .normal)
@@ -146,7 +146,7 @@ extension ZLPhotoEditorController: UICollectionViewDelegate, UICollectionViewDat
 // MARK: - Event
 extension ZLPhotoEditorController {
     // nav leftbutton action
-    override func backBtnClick() {
+    override func backBtnClicked() {
         if isNeedLoadPDF {
             showAlter(title: "The image will be deleted", message: "Are you sure?", confirm: "OK", cancel: "Cancel", confirmComp: { (_) in
                 ZLPhotoModel.removeAllModel { [weak self] (_) in

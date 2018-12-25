@@ -79,7 +79,7 @@ class ZLScanRenameViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
     }
-    @objc func cancelBtnClick(){
+    @objc func cancelBtnClick() {
         dismiss(animated: true, completion: nil)
     }
     @objc func saveBtnClick() {

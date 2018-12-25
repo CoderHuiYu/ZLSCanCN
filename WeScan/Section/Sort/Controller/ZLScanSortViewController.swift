@@ -18,9 +18,9 @@ class ZLScanSortViewController: ZLScannerBasicViewController {
     private var models = [ZLPhotoModel]()
     private var collectionView: ZLSortCollectionView = {
         let itemWidth = (kScreenWidth) / 3
-        let itemHeith = itemWidth * 1.3
+        let itemHeight = itemWidth * 1.3
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: itemWidth, height: itemHeith )
+        layout.itemSize = CGSize(width: itemWidth, height: itemHeight )
         layout.minimumInteritemSpacing = 0.0
         let collectionView = ZLSortCollectionView(frame: CGRect(x: 0, y: 0, width: kScreenWidth, height: kScreenHeight), collectionViewLayout: layout)
         collectionView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
@@ -52,9 +52,9 @@ class ZLScanSortViewController: ZLScannerBasicViewController {
         }, completion: nil)
     }
 
-    private func creatCollectionView(){
+    private func creatCollectionView() {
         title = "Sort"
-        view.backgroundColor = UIColor.white
+        view.backgroundColor = .white
         
         collectionView.photoModels = models
         view.addSubview(collectionView)
@@ -62,14 +62,14 @@ class ZLScanSortViewController: ZLScannerBasicViewController {
         rightBtn.titleLabel?.font = basicFont
         rightBtn.setTitle("Delete", for: .normal)
         rightBtn.setTitleColor(globalColor, for: .normal)
-        rightBtn.addTarget(self, action: #selector(deleteBtnClick(_:)), for: .touchUpInside)
+        rightBtn.addTarget(self, action: #selector(deleteBtnClicked(_:)), for: .touchUpInside)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBtn)
         view.addSubview(bottomView(title: "Save"))
     }
-    override func backBtnClick() {
+    override func backBtnClicked() {
         navigationController?.popViewController(animated: true)
     }
-    @objc func deleteBtnClick(_ sender: UIButton){
+    @objc func deleteBtnClicked(_ sender: UIButton) {
         if collectionView.deleteModels.count == 0 { return }
         showAlter(title: "Do you want to delete the selected pages ?", message: "", confirm: "Delete", cancel: "Cancel", confirmComp: { [weak self] (_) in
             guard let self = self else { return }
@@ -82,7 +82,7 @@ class ZLScanSortViewController: ZLScannerBasicViewController {
             
         }
     }
-    override func bottomBtnClick() {
+    override func bottomBtnClicked() {
         if delegate != nil {
         delegate?.sortDidFinished(collectionView.photoModels)}
         navigationController?.popViewController(animated: true)
