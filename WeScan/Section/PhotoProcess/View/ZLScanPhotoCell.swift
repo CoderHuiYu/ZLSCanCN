@@ -1,5 +1,5 @@
 //
-//  ZLPhotoCell.swift
+//  ZLScanPhotoCell.swift
 //  WaterFallCollection
 //
 //  Created by apple on 2018/11/29.
@@ -10,19 +10,19 @@ import UIKit
 
 private let kPhotoCellAnimateDuration: TimeInterval = 0.3
 
-enum ZLPhotoCellType {
+enum ZLScanPhotoCellType {
     case normal
     case edit
 }
 
 enum DragStatus {
-    case begin(_ cell: ZLPhotoCell)
-    case changed(_ cell: ZLPhotoCell, _ offset: CGFloat)
-    case end(_ cell: ZLPhotoCell)
+    case begin(_ cell: ZLScanPhotoCell)
+    case changed(_ cell: ZLScanPhotoCell, _ offset: CGFloat)
+    case end(_ cell: ZLScanPhotoCell)
 }
 
-class ZLPhotoCell: UICollectionViewCell {
-    var itemDidRemove:((_ cell: ZLPhotoCell)->())?
+class ZLScanPhotoCell: UICollectionViewCell {
+    var itemDidRemove:((_ cell: ZLScanPhotoCell)->())?
     var itemBeginDrag:((_ status: DragStatus)->())?
     
     var photoModel: ZLPhotoModel? {
@@ -33,7 +33,7 @@ class ZLPhotoCell: UICollectionViewCell {
         }
     }
     
-    var cellType: ZLPhotoCellType = .normal {
+    var cellType: ZLScanPhotoCellType = .normal {
         didSet {
             switch cellType {
             case .edit:
@@ -71,7 +71,7 @@ class ZLPhotoCell: UICollectionViewCell {
 }
 
 // MARK: - Gesture
-extension ZLPhotoCell: UIGestureRecognizerDelegate {
+extension ZLScanPhotoCell: UIGestureRecognizerDelegate {
     @objc fileprivate func panGestureAction(_ ges: UIPanGestureRecognizer) {
         // drag begin
         if ges.state == .began {
@@ -111,7 +111,7 @@ extension ZLPhotoCell: UIGestureRecognizerDelegate {
 }
 
 // MARK: - updateUI
-extension ZLPhotoCell {
+extension ZLScanPhotoCell {
     fileprivate func updateLayout(_ offSet: CGFloat) {
         imageViewBottomCons.constant = offSet
     }

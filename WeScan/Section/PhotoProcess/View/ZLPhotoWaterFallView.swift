@@ -89,7 +89,7 @@ class ZLPhotoWaterFallView: UIView {
         collectionView.dataSource = self
         collectionView.clipsToBounds = false
         collectionView.contentInset = UIEdgeInsets(top: insetHeght, left: 0, bottom: 0, right: 0)
-        collectionView.register(UINib(nibName: "ZLPhotoCell", bundle: Bundle(for: type(of: self))), forCellWithReuseIdentifier: ZLPhotoWaterFallView.kCellIdentifier)
+        collectionView.register(UINib(nibName: "ZLScanPhotoCell", bundle: Bundle(for: type(of: self))), forCellWithReuseIdentifier: ZLPhotoWaterFallView.kCellIdentifier)
         return collectionView
     }()
     
@@ -164,7 +164,7 @@ extension ZLPhotoWaterFallView: UICollectionViewDataSource, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ZLPhotoWaterFallView.kCellIdentifier, for: indexPath) as! ZLPhotoCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ZLPhotoWaterFallView.kCellIdentifier, for: indexPath) as! ZLScanPhotoCell
         cell.cellType = .normal
         cell.photoModel = photoModels[indexPath.row]
         cell.itemDidRemove = { [weak self] (item) in
@@ -224,7 +224,7 @@ extension ZLPhotoWaterFallView {
         }
     }
     
-    fileprivate func removeItem(_ cell: ZLPhotoCell) {
+    fileprivate func removeItem(_ cell: ZLScanPhotoCell) {
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
         photoModels[indexPath.row].remove { (isSuccess) in
             if isSuccess {
@@ -272,5 +272,5 @@ class ZLCustomButton: UIButton {
 }
 
 extension ZLPhotoWaterFallView {
-    static let kCellIdentifier = "ZLPhotoCellIdentifier"
+    static let kCellIdentifier = "ZLScanPhotoCellIdentifier"
 }

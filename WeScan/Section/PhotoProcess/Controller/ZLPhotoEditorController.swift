@@ -92,7 +92,7 @@ extension ZLPhotoEditorController {
         layout.minimumLineSpacing = 10
         layout.sectionInset = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 40)
         layout.dataSource = self
-        collectionView.register(UINib(nibName: "ZLPhotoCell", bundle: Bundle(for: type(of: self))), forCellWithReuseIdentifier: .kCollectionCellIdentifier)
+        collectionView.register(UINib(nibName: "ZLScanPhotoCell", bundle: Bundle(for: type(of: self))), forCellWithReuseIdentifier: .kCollectionCellIdentifier)
         collectionView.collectionViewLayout = layout
         collectionView.decelerationRate = .fast
         
@@ -136,7 +136,7 @@ extension ZLPhotoEditorController: UICollectionViewDelegate, UICollectionViewDat
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: .kCollectionCellIdentifier, for: indexPath) as! ZLPhotoCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: .kCollectionCellIdentifier, for: indexPath) as! ZLScanPhotoCell
         cell.cellType = .edit
         cell.photoModel = photoModels[indexPath.row]
         return cell
@@ -231,7 +231,7 @@ extension ZLPhotoEditorController {
         }
     }
     
-    fileprivate func removeItem(_ cell: ZLPhotoCell) {
+    fileprivate func removeItem(_ cell: ZLScanPhotoCell) {
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
         photoModels[indexPath.row].remove { (isSuccess) in
             if isSuccess {
