@@ -235,7 +235,7 @@ extension ZLPhotoEditorController {
     }
 }
 
-extension ZLPhotoEditorController: ZLScanSortViewControllerProtocol{
+extension ZLPhotoEditorController: ZLScanSortViewControllerProtocol {
     func sortDidFinished(_ photoModels: [ZLPhotoModel]) {
         ZLPhotoModel.sortAllModel(photoModels) { [weak self] (isSuccess) in
             if isSuccess {
@@ -265,6 +265,7 @@ extension ZLPhotoEditorController: ZLPhotoWaterFallLayoutDataSource {
         return imageSize.height * itemWidth / imageSize.width
     }
 }
+
 
 fileprivate extension String {
     static let kCollectionCellIdentifier = "kCollectionCellIdentifier"

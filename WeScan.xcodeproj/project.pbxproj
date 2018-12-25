@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		18EB1C6821B10717001CEA1E /* ZLPhotoAsset.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18EB1C6721B10717001CEA1E /* ZLPhotoAsset.xcassets */; };
 		74F7D034211ACBD90046AF7E /* CIRectangleDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F7D033211ACBD90046AF7E /* CIRectangleDetectorTests.swift */; };
 		74F7D036211ACBEE0046AF7E /* CaptureSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F7D035211ACBEE0046AF7E /* CaptureSessionTests.swift */; };
 		74F7D038211ACBF90046AF7E /* VisionRectangleDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F7D037211ACBF90046AF7E /* VisionRectangleDetectorTests.swift */; };
@@ -15,6 +14,7 @@
 		74F7D03C211ACC6B0046AF7E /* CGAffineTransformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F7D03B211ACC6B0046AF7E /* CGAffineTransformTests.swift */; };
 		74F7D03E211ACC890046AF7E /* AVCaptureVideoOrientationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F7D03D211ACC890046AF7E /* AVCaptureVideoOrientationTests.swift */; };
 		93061F7021BA2FAE008A78BE /* ZLColorAsset.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93061F6F21BA2FAE008A78BE /* ZLColorAsset.xcassets */; };
+		935F91CD21D1D30400250534 /* ZLPhotoAsset.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18EB1C6721B10717001CEA1E /* ZLPhotoAsset.xcassets */; };
 		93C0BEC221CA45B200D6ACD5 /* ZLPhotoEditingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0BEC021CA45B200D6ACD5 /* ZLPhotoEditingController.swift */; };
 		93C0BEC321CA45B200D6ACD5 /* ZLPhotoEditingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93C0BEC121CA45B200D6ACD5 /* ZLPhotoEditingController.xib */; };
 		A11C5CD920495EA1005075FE /* RectangleFeaturesFunnelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11C5CD820495EA1005075FE /* RectangleFeaturesFunnelTests.swift */; };
@@ -674,7 +674,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = WeTransfer;
 				TargetAttributes = {
 					A1D4BCB6202C4F3800FCDDEC = {
@@ -768,10 +768,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				18EB1C6821B10717001CEA1E /* ZLPhotoAsset.xcassets in Resources */,
+				935F91CD21D1D30400250534 /* ZLPhotoAsset.xcassets in Resources */,
 				93061F7021BA2FAE008A78BE /* ZLColorAsset.xcassets in Resources */,
 				FEE9FDD021C8977C0065E87B /* ZLPhotoEditorController.xib in Resources */,
-				18EB1C6821B10717001CEA1E /* ZLPhotoAsset.xcassets in Resources */,
 				FEE9FDE221C8977C0065E87B /* ZLPhotoCell.xib in Resources */,
 				93C0BEC321CA45B200D6ACD5 /* ZLPhotoEditingController.xib in Resources */,
 			);
@@ -1045,7 +1044,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = A5X7BL9CZV;
+				DEVELOPMENT_TEAM = 4TJ7K2DH6D;
 				INFOPLIST_FILE = WeScanSampleProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1062,7 +1061,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = A5X7BL9CZV;
+				DEVELOPMENT_TEAM = 4TJ7K2DH6D;
 				INFOPLIST_FILE = WeScanSampleProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
