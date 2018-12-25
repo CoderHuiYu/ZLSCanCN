@@ -27,7 +27,7 @@ class ZLScanSortViewController: ZLScannerBasicViewController {
         return collectionView
     }()
     
-    init(_ models: [ZLPhotoModel]){
+    init(_ models: [ZLPhotoModel]) {
         super.init(nibName: nil, bundle: nil)
         self.models = models
     }
@@ -87,7 +87,7 @@ class ZLScanSortViewController: ZLScannerBasicViewController {
         delegate?.sortDidFinished(collectionView.photoModels)}
         navigationController?.popViewController(animated: true)
     }
-    @objc func changeTitle(_ not: Notification){
+    @objc func changeTitle(_ not: Notification) {
         guard let selectedCount = not.object as? Int else { return }
         if selectedCount == 0 {
             title = "Sort"

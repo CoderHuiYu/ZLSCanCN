@@ -121,7 +121,7 @@ class ZLSortCollectionViewCell: UICollectionViewCell {
 }
 //MARK: - Action
 extension ZLSortCollectionViewCell{
-    @objc private func delBtnClicked(_ btn: UIButton){
+    @objc private func delBtnClicked(_ btn: UIButton) {
         guard let delegate = delegate else { return }
         delegate.deleteItem(self)
     }

@@ -22,7 +22,7 @@ class ZLPDFPreviewController: ZLScannerBasicViewController, QLPreviewControllerD
         previewController.view.frame = CGRect(x: 0, y: spaceY, width: kScreenWidth, height: kScreenHeight)
         return previewController
     }()
-    init(pdfPath: String){
+    init(pdfPath: String) {
         super.init(nibName: nil, bundle: nil)
         self.pdfPath = pdfPath
         menuView.delegate = self

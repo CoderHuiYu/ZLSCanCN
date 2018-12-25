@@ -326,7 +326,7 @@ extension ZLScannerViewController: ZLScanRectangleDetectionDelegateProtocol {
         if brightValue < brightValueOpen { openFlash() }
         if brightValue > brightValueClose { closeFlash() }
     }
-    func previewAnimate(_ complete:@escaping (()->())){
+    func previewAnimate(_ complete:@escaping (()->())) {
         UIView.animate(withDuration: 0.5, animations: {
             self.previewImageView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
             self.previewImageView.center = self.view.center

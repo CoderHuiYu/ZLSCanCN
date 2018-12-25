@@ -54,7 +54,7 @@ extension Convertable {
     }
     private func creatPDFFolder() {
         let fileManager = FileManager.default
-        if !fileManager.fileExists(atPath: pdfSaveFolder()){
+        if !fileManager.fileExists(atPath: pdfSaveFolder()) {
             do{
                 try fileManager.createDirectory(atPath: pdfSaveFolder(), withIntermediateDirectories: true, attributes: nil)
             }catch _{

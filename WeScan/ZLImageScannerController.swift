@@ -17,7 +17,7 @@ public final class ZLImageScannerController: UINavigationController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    public required init(withOriginalPdfPath pdfPath: String?, handle:@escaping (_ pdfPath: String)->()){
+    public required init(withOriginalPdfPath pdfPath: String?, handle:@escaping (_ pdfPath: String)->()) {
         if let path = pdfPath {
             let vc = ZLPDFPreviewController(pdfPath: path)
 //            let vc = ZLPhotoEditorController.init(nibName: "ZLPhotoEditorController", bundle: Bundle(for: ZLPhotoEditorController.self))

@@ -85,7 +85,7 @@ class ZLScanRenameViewController: UIViewController {
     @objc func saveBtnClick() {
         dismiss(animated: true, completion: nil)
     }
-    @objc func textFieldDidChange(_ textFied: UITextField){
+    @objc func textFieldDidChange(_ textFied: UITextField) {
         let width = getTexWidth(textStr: textFied.text!, font: UIFont.boldSystemFont(ofSize: 38), height: 50)
         textFied.frame = CGRect(x: (kScreenWidth-width)/2, y: 150, width: width, height: 38)
         if width == kScreenWidth {

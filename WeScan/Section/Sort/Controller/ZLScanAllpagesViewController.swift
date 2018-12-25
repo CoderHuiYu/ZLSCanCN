@@ -28,7 +28,7 @@ class ZLScanAllpagesViewController: ZLScannerBasicViewController, Convertable{
         return collectionView
     }()
     
-    init(_ models: [ZLPhotoModel]){
+    init(_ models: [ZLPhotoModel]) {
         super.init(nibName: nil, bundle: nil)
         self.models = models
     }
@@ -88,7 +88,7 @@ extension ZLScanAllpagesViewController{
     override func backBtnClicked() {
         navigationController?.popViewController(animated: true)
     }
-    @objc func rightBtnClick(_ sender: UIButton){
+    @objc func rightBtnClick(_ sender: UIButton) {
         let sortVC = ZLScanSortViewController(models)
         sortVC.delegate = self
         navigationController?.pushViewController(sortVC, animated: true)
