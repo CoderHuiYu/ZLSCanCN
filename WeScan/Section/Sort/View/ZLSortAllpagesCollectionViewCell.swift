@@ -44,7 +44,7 @@ class ZLSortAllpagesCollectionViewCell: UICollectionViewCell {
         contentView.backgroundColor = UIColor.clear
         contentView.addSubview(iconimageView)
     }
-    func configImage(iconImage: UIImage, style: SortStyle){
+    func configImage(iconImage: UIImage, style: SortStyle) {
         let itemWidth = frame.width - 20
         let size = iconImage.size
         var heigh = itemWidth * size.height / size.width

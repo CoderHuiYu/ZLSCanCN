@@ -56,7 +56,7 @@ class ZLScanShareFlowLayout: UICollectionViewFlowLayout {
         }
         return attributes
     }
-    func setCellFrame(with layoutAttributes : [UICollectionViewLayoutAttributes]){
+    func setCellFrame(with layoutAttributes : [UICollectionViewLayoutAttributes]) {
         var nowWidth : CGFloat = sectionInset.left
         for attributes in layoutAttributes{
             var nowFrame = attributes.frame

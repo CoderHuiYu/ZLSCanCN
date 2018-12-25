@@ -56,7 +56,7 @@ class ZLSortCollectionView: UICollectionView{
 }
 //MARK: UIGestureRecognizerDelegate
 extension ZLSortCollectionView : UIGestureRecognizerDelegate{
-    @objc private func longPressMethod(_ press: UILongPressGestureRecognizer){
+    @objc private func longPressMethod(_ press: UILongPressGestureRecognizer) {
         let point = press.location(in: self)
         switch press.state {
         case .began :
@@ -69,7 +69,7 @@ extension ZLSortCollectionView : UIGestureRecognizerDelegate{
             print("")
         }
     }
-    private func dragBegin(_ point: CGPoint){
+    private func dragBegin(_ point: CGPoint) {
         guard let indexPath = self.indexPathForItem(at: point) else {return}
         dragingIndexPath = indexPath
         targetIndexPath  = indexPath
@@ -83,7 +83,7 @@ extension ZLSortCollectionView : UIGestureRecognizerDelegate{
         dragCell.transform = CGAffineTransform.identity
         pressTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(pressAnimation), userInfo: nil, repeats: true)
     }
-    private func dragChange(_ point: CGPoint){
+    private func dragChange(_ point: CGPoint) {
         if dragingIndexPath == nil {return}
         dragCell.center = point
         let indexPath = self.indexPathForItem(at: point)
@@ -131,7 +131,7 @@ extension ZLSortCollectionView : UIGestureRecognizerDelegate{
             dragingIndexPath = targetIndexPath
         }
     }
-    private func dragEnd(_ point: CGPoint){
+    private func dragEnd(_ point: CGPoint) {
         guard let _ = dragingIndexPath else { return }
         NotificationCenter.default.post(name: NSNotification.Name(rawValue:"ZLScanEndDrag"), object: nil)
         

@@ -35,17 +35,17 @@ class ZLScanToast: NSObject {
         contentView.addTarget(self, action: #selector(toastTaped), for: .touchDown)
     }
     
-    class func showText(_ text: String){
+    class func showText(_ text: String) {
         let toast: ZLScanToast = ZLScanToast(text: text)
         toast.setDuration(duration: ToastDispalyDuration)
         toast.show()
     }
     
-    private func deviceOrientationDidChanged(notify: Notification){
+    private func deviceOrientationDidChanged(notify: Notification) {
         self.hideAnimation()
     }
     
-    private func setDuration(duration: CGFloat){
+    private func setDuration(duration: CGFloat) {
         self.duration = duration
     }
     

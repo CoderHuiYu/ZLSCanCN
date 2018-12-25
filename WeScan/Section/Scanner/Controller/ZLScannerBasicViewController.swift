@@ -71,7 +71,7 @@ extension ZLScannerBasicViewController {
     @objc func bottomBtnClicked() {}
     @objc func rightNavButtonClicked() {}
     
-    func showAlter(title: String, message: String, confirm: String, cancel: String,confirmComp:@escaping ((UIAlertAction)->()),cancelComp:@escaping ((UIAlertAction)->())){
+    func showAlter(title: String, message: String, confirm: String, cancel: String,confirmComp:@escaping ((UIAlertAction)->()),cancelComp:@escaping ((UIAlertAction)->())) {
         let confirmAlt = UIAlertAction(title: confirm, style: .default, handler: confirmComp)
         let cancelAlt  = UIAlertAction(title: cancel, style: .default, handler: cancelComp)
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -80,7 +80,7 @@ extension ZLScannerBasicViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    func showAlterO(title: String ,confirmComp: @escaping ((UIAlertAction)->())){
+    func showAlterO(title: String ,confirmComp: @escaping ((UIAlertAction)->())) {
         let confirAlt = UIAlertAction(title: "OK", style: .cancel, handler: confirmComp)
         let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
         alert.addAction(confirAlt)
