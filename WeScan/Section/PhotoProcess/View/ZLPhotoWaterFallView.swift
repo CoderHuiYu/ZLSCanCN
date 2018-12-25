@@ -71,7 +71,7 @@ class ZLPhotoWaterFallView: UIView {
     
     fileprivate lazy var shadowImageView: UIImageView = {
         let shadowImageView = UIImageView(frame: CGRect(x: self.collectionView.frame.origin.x + 15, y: self.collectionView.frame.origin.y + 10, width: self.collectionView.frame.size.width - 15 * 2, height: self.collectionView.frame.size .height - 10 * 2))
-        shadowImageView.image = UIImage(named: "zl_cattips", in: Bundle.init(for: self.classForCoder), compatibleWith: nil)
+        shadowImageView.image = UIImage(named: "zilly-scan-cattips", in: Bundle.init(for: self.classForCoder), compatibleWith: nil)
         shadowImageView.contentMode = .scaleAspectFit
         return shadowImageView
     }()

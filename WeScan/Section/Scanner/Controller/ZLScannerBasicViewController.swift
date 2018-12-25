@@ -19,7 +19,7 @@ class ZLScannerBasicViewController: UIViewController {
         backButton.setTitle("Back", for: .normal)
         backButton.setTitleColor(globalColor, for: .normal)
         backButton.titleLabel!.font = basicFont
-        backButton.setImage(UIImage(named: "zl_nav_blue", in: Bundle.init(for: self.classForCoder), compatibleWith: nil), for: .normal)
+        backButton.setImage(UIImage(named: "zilly-scan-nav", in: Bundle.init(for: self.classForCoder), compatibleWith: nil), for: .normal)
         backButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
         backButton.adjustsImageWhenHighlighted = false
         let backButtonWrapper = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 64, height: 32)))
@@ -30,7 +30,7 @@ class ZLScannerBasicViewController: UIViewController {
     lazy var rightNavButton: UIButton = {
         let rightNavButton = UIButton()
         rightNavButton.frame = CGRect(x: kScreenWidth-44, y: 0, width: 44, height: 44)
-        rightNavButton.setImage(UIImage(named: "zl_pdf_more2", in: Bundle.init(for: self.classForCoder), compatibleWith: nil), for: .normal)
+        rightNavButton.setImage(UIImage(named: "zilly-scan-more", in: Bundle.init(for: self.classForCoder), compatibleWith: nil), for: .normal)
         rightNavButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 0)
         rightNavButton.addTarget(self, action: #selector(rightNavButtonClicked), for: .touchUpInside)
         return rightNavButton

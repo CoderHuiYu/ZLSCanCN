@@ -59,8 +59,8 @@ class ZLScannerViewController: ZLScannerBasicViewController {
     }()
     
     private lazy var autoFlashButton: UIButton = {
-        let image = UIImage(named: "zl_flashon", in: Bundle(for: ZLScannerViewController.self), compatibleWith: nil)
-        let imageS = UIImage(named: "zl_flashoff", in: Bundle(for: ZLScannerViewController.self), compatibleWith: nil)
+        let image = UIImage(named: "zilly-scan-flashOn", in: Bundle(for: ZLScannerViewController.self), compatibleWith: nil)
+        let imageS = UIImage(named: "zilly-scan-flashOff", in: Bundle(for: ZLScannerViewController.self), compatibleWith: nil)
         let button = UIButton()
         button.setImage(image, for: .normal)
         button.setImage(imageS, for: .selected)

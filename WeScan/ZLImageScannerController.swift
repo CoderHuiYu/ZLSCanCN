@@ -20,12 +20,6 @@ public final class ZLImageScannerController: UINavigationController {
     public required init(withOriginalPdfPath pdfPath: String?, handle:@escaping (_ pdfPath: String)->()) {
         if let path = pdfPath {
             let vc = ZLPDFPreviewController(pdfPath: path)
-//            let vc = ZLPhotoEditorController.init(nibName: "ZLPhotoEditorController", bundle: Bundle(for: ZLPhotoEditorController.self))
-//            vc.isNeedLoadPDF = true
-//            vc.dismissCallBack = { path in
-//                handle(path)
-//            }
-//            vc.navigationController?.navigationBar.isHidden = true
             super.init(rootViewController: vc)
         }else{
             let scannerViewController = ZLScannerViewController()

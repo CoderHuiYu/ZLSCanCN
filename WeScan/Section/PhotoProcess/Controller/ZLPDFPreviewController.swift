@@ -61,23 +61,14 @@ class ZLPDFPreviewController: ZLScannerBasicViewController, QLPreviewControllerD
     func menuDidSelected(_ index: Int) {
         switch index {
         case 0:
-            sharePDF()
-        case 1:
             editPDF()
-        case 2:
+        case 1:
             renamePDF()
-        case 3:
+        case 2:
             deletePDF()
         default:
             break
         }
-    }
-    private func sharePDF() {
-        let text = "test"
-        let shareUrl = URL(fileURLWithPath: pdfPath!)
-        let items: [Any] = [text, shareUrl]
-        let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
-        present(activityVC, animated: true, completion: nil)
     }
     private func editPDF() {
         let vc = ZLPhotoEditorController.init(nibName: "ZLPhotoEditorController", bundle: Bundle(for: ZLPhotoEditorController.self))
