@@ -16,6 +16,8 @@ class ZLPDFMenuView: UIView {
     private var imageArray = ["zilly-scan-edit","zilly-scan-rename","zilly-scan-delete"]
     private var titleArray = ["Edit","Rename","Delete"]
     
+    private var selectIndex: Int = 0
+    
     weak var delegate: ZLPDFMenuViewProtocol?
     
     lazy var menuTableView: UITableView = {
@@ -37,46 +39,51 @@ class ZLPDFMenuView: UIView {
         menuTableView.register(ZLPDFMenuViewCell.self, forCellReuseIdentifier: ZLPDFMenuViewCell.ZlPDFMenuViewCellID)
         return menuTableView
     }()
-    private var selectIndex : Int?
-    private var blackClick : UIButton?
     
     override init(frame: CGRect) {
         let mainFrame = CGRect(x:0,y: 0,width: kScreenWidth, height:kScreenHeight )
         super.init(frame: mainFrame)
-        viewConfigs()
+        viewConfig()
     }
+    
+    private func viewConfig() {
+        backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
+        selectIndex = 0
+        let blackClick: UIButton = UIButton(frame:self.frame)
+        blackClick.addTarget(self, action:  #selector(ZLPDFMenuView.hideMenu), for: .touchUpInside)
+        self.addSubview(blackClick)
+        self.addSubview(menuTableView)
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    private func viewConfigs() {
-        selectIndex = 0
-        blackClick = UIButton(frame:self.frame)
-        blackClick!.addTarget(self, action:  #selector(ZLPDFMenuView.hideMenu), for: .touchUpInside)
-        self.addSubview(blackClick!)
-        backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
-        self.addSubview(menuTableView)
     }
 }
 extension ZLPDFMenuView: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return titleArray.count
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = ZLPDFMenuViewCell(style: .default, reuseIdentifier: ZLPDFMenuViewCell.ZlPDFMenuViewCellID)
         cell.modelConfig(UIImage(named: imageArray[indexPath.item], in: Bundle.init(for: self.classForCoder), compatibleWith: nil)!, text: titleArray[indexPath.item])
         return cell
     }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 42
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectIndex = indexPath.row
         hideMenuView()
-        delegate?.menuDidSelected(selectIndex!)
+        delegate?.menuDidSelected(selectIndex)
     }
+    
     @objc func hideMenu() {
         hideMenuView()
     }
+    
     func showMenuView() {
         menuTableView.reloadData()
         let window = UIApplication.shared.keyWindow
@@ -88,6 +95,7 @@ extension ZLPDFMenuView: UITableViewDelegate, UITableViewDataSource{
             
         })
     }
+    
     private func hideMenuView() {
         UIView.animate(withDuration: 0.3, animations: {
             self.menuTableView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)

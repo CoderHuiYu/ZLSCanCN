@@ -32,12 +32,12 @@ class ZLPDFPreviewController: ZLScannerBasicViewController, QLPreviewControllerD
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewConfigs()
+        viewConfig()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
-    private func viewConfigs() {
+    private func viewConfig() {
         title = pdfPath?.components(separatedBy: "/").last
         addChild(previewController)
         view.addSubview(previewController.view)

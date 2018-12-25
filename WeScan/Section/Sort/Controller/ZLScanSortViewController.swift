@@ -31,15 +31,13 @@ class ZLScanSortViewController: ZLScannerBasicViewController {
         super.init(nibName: nil, bundle: nil)
         self.models = models
     }
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         creatCollectionView()
         NotificationCenter.default.addObserver(self, selector: #selector(changeTitle(_:)), name: NSNotification.Name(rawValue:"ZLScanDeleteItem"), object: nil)
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let fromAnimation = AnimationType.from(direction: .right, offset: 50.0)
@@ -66,9 +64,11 @@ class ZLScanSortViewController: ZLScannerBasicViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBtn)
         view.addSubview(bottomView(title: "Save"))
     }
+    
     override func backBtnClicked() {
         navigationController?.popViewController(animated: true)
     }
+    
     @objc func deleteBtnClicked(_ sender: UIButton) {
         if collectionView.deleteModels.count == 0 { return }
         showAlter(title: "Do you want to delete the selected pages ?", message: "", confirm: "Delete", cancel: "Cancel", confirmComp: { [weak self] (_) in
@@ -82,11 +82,13 @@ class ZLScanSortViewController: ZLScannerBasicViewController {
             
         }
     }
+    
     override func bottomBtnClicked() {
         if delegate != nil {
         delegate?.sortDidFinished(collectionView.photoModels)}
         navigationController?.popViewController(animated: true)
     }
+    
     @objc func changeTitle(_ not: Notification) {
         guard let selectedCount = not.object as? Int else { return }
         if selectedCount == 0 {
@@ -94,6 +96,14 @@ class ZLScanSortViewController: ZLScannerBasicViewController {
         }else {
             title = "\(selectedCount) Photos Selected"
         }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 

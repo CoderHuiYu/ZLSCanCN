@@ -55,7 +55,6 @@ final class ZLEditScanViewController: UIViewController {
     
     // MARK: - Life Cycle
     init(image: UIImage, quad: ZLQuadrilateral?) {
-//        self.image = image.applyingPortraitOrientation()
         self.image = image
         self.quad = quad ?? ZLEditScanViewController.defaultQuad(forImage: image)
         super.init(nibName: nil, bundle: nil)

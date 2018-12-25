@@ -13,6 +13,7 @@ class ZLScannerBasicViewController: UIViewController {
     var dismissWithPDFPath: ((_ pdfPath: String)->())?
     var dismissCallBackIndex: ((_ index: Int?)->())?
     var dismissCallBack: ((String)->())?
+    
     private lazy var backButton: UIBarButtonItem = {
         let backButton = UIButton(frame: CGRect(origin: .zero, size: CGSize(width: 64, height: 32)))
         backButton.addTarget(self, action: #selector(backBtnClicked), for: .touchUpInside)
@@ -27,6 +28,7 @@ class ZLScannerBasicViewController: UIViewController {
         backButton.transform = CGAffineTransform(translationX: -12, y: 0)
         return UIBarButtonItem(customView: backButtonWrapper)
     }()
+    
     lazy var rightNavButton: UIButton = {
         let rightNavButton = UIButton()
         rightNavButton.frame = CGRect(x: kScreenWidth-44, y: 0, width: 44, height: 44)
@@ -35,12 +37,14 @@ class ZLScannerBasicViewController: UIViewController {
         rightNavButton.addTarget(self, action: #selector(rightNavButtonClicked), for: .touchUpInside)
         return rightNavButton
     }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
         navigationController?.navigationBar.isTranslucent = false
         addBackBtn()
     }
+    
     func bottomView(title: String) -> UIView {
         let bottomView = UIView()
         bottomView.backgroundColor = .white
@@ -62,6 +66,7 @@ class ZLScannerBasicViewController: UIViewController {
         bottomView.addSubview(lineView)
         return bottomView
     }
+    
     private func addBackBtn() {
         navigationItem.leftBarButtonItem = backButton
     }

@@ -11,7 +11,7 @@ import CoreGraphics
 import Photos
 
 private let kCollectionBottomConsValue: CGFloat = 130
-class ZLPhotoEditorController: ZLScannerBasicViewController, EmitterAnimate, Convertable {
+class ZLPhotoEditorController: ZLScannerBasicViewController, Convertable {
     var photoModels = [ZLPhotoModel]()
     var currentIndex: IndexPath?
     
