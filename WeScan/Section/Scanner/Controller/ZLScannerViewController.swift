@@ -538,11 +538,11 @@ fileprivate extension ZLScannerViewController {
             didSet {
                 deleteImageView.alpha = process
                 if process >= 1.0 {
-                    let imageN = UIImage(named: "zl_deletebluebig", in: Bundle(for: ZLScannerViewController.self), compatibleWith: nil)
+                    let imageN = UIImage(named: "zilly-scan-garbageCanBlue", in: Bundle(for: ZLScannerViewController.self), compatibleWith: nil)
                     deleteImageView.image = imageN
                     lineView.backgroundColor = COLORFROMHEX(0x18ACF8)
                 } else {
-                    let imageN = UIImage(named: "zl_graydeletegbig", in: Bundle(for: ZLScannerViewController.self), compatibleWith: nil)
+                    let imageN = UIImage(named: "zilly-scan-garbageCanGray", in: Bundle(for: ZLScannerViewController.self), compatibleWith: nil)
                     deleteImageView.image = imageN
                     lineView.backgroundColor = COLORFROMHEX(0x979797)
                 }
@@ -557,7 +557,7 @@ fileprivate extension ZLScannerViewController {
         
         private lazy var deleteImageView: UIImageView = {
             let view = UIImageView()
-            let imageN = UIImage(named: "zl_graydeletegbig", in: Bundle(for: ZLScannerViewController.self), compatibleWith: nil)
+            let imageN = UIImage(named: "zilly-scan-garbageCanGray", in: Bundle(for: ZLScannerViewController.self), compatibleWith: nil)
             view.image = imageN
             return view
         }()
