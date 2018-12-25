@@ -24,6 +24,7 @@ enum ZLScanFlashResult {
 
 class ZLScannerViewController: ZLScannerBasicViewController {
     var isFromEdit = false
+    weak var fromController: UIViewController?
     var captureImageCallBack: ((_ result: ZLImageScannerResults)->Void)?
     private var captureSessionManager: CaptureSessionManager?
     private let videoPreviewlayer = AVCaptureVideoPreviewLayer()
@@ -148,6 +149,8 @@ class ZLScannerViewController: ZLScannerBasicViewController {
     }
     
     deinit {
+        ZLPhotoModel.removeAllModel { (_) in
+        }
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -319,13 +322,14 @@ extension ZLScannerViewController: ZLScanRectangleDetectionDelegateProtocol {
         }else {
             promptView.scanningNoticeLabel.text = "Move camera closer."
         }
-        
     }
+    
     func captureSessionManager(_ captureSessionManager: CaptureSessionManager, brightValueDidChange brightValue: Double) {
         if banTriggerFlash == true { return }
         if brightValue < brightValueOpen { openFlash() }
         if brightValue > brightValueClose { closeFlash() }
     }
+    
     func previewAnimate(_ complete:@escaping (()->())) {
         UIView.animate(withDuration: 0.5, animations: {
             self.previewImageView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
@@ -347,6 +351,7 @@ extension ZLScannerViewController: ZLScanRectangleDetectionDelegateProtocol {
         }
     }
 }
+
 extension ZLScannerViewController{
     @objc private func captureImage(_ sender: UIButton) {
         self.isTouchShutter = true
@@ -392,19 +397,23 @@ extension ZLScannerViewController{
         self.captureSessionManager?.stop()
         if isFromEdit {
             self.navigationController?.popViewController(animated: true)
-        }else{
-            if photoCollectionView.photoCount > 0 {
-                showAlter(title: "The image will be deleted", message: "Are you sure?", confirm: "OK", cancel: "Cancel", confirmComp: { (_) in
-                    ZLPhotoModel.removeAllModel { (_) in
-                        self.dismiss(animated: true, completion: nil)
-                    }
-                }) { (_) in
-                    ZLScanCaptureSession.current.isEditing = false
-                    self.quadView.removeQuadrilateral()
-                    self.captureSessionManager?.start()
-                }
+        } else {
+            if let _ = fromController {
+                self.navigationController?.popViewController(animated: true)
             } else {
-                dismiss(animated: true, completion: nil)
+                if photoCollectionView.photoCount > 0 {
+                    showAlter(title: "The image will be deleted", message: "Are you sure?", confirm: "OK", cancel: "Cancel", confirmComp: { (_) in
+                        ZLPhotoModel.removeAllModel { (_) in
+                            self.dismiss(animated: true, completion: nil)
+                        }
+                    }) { (_) in
+                        ZLScanCaptureSession.current.isEditing = false
+                        self.quadView.removeQuadrilateral()
+                        self.captureSessionManager?.start()
+                    }
+                } else {
+                    dismiss(animated: true, completion: nil)
+                }
             }
         }
     }
@@ -479,6 +488,11 @@ extension ZLScannerViewController: ZLPhotoWaterFallViewProtocol {
     }
     
     func selectedItem(_ models: [ZLPhotoModel], index: Int) {
+        if let from = fromController as? ZLPhotoEditorController {
+            from.scrollToIndex(index: index)
+            navigationController?.popViewController(animated: true)
+            return
+        }
         let vc = ZLPhotoEditorController.init(nibName: "ZLPhotoEditorController", bundle: Bundle(for: self.classForCoder))
         vc.photoModels = models
         vc.currentIndex = IndexPath(item: index, section: 0)
@@ -489,6 +503,10 @@ extension ZLScannerViewController: ZLPhotoWaterFallViewProtocol {
             if let callBack = self.dismissWithPDFPath { callBack(pdfPath) }
         }
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func doneAction() {
+        dismiss(animated: true, completion: nil)
     }
 }
 //MARK: GET Quadrilateral
@@ -519,24 +537,34 @@ fileprivate extension ZLScannerViewController {
         var process: CGFloat = 0 {
             didSet {
                 deleteImageView.alpha = process
+                if process >= 1.0 {
+                    let imageN = UIImage(named: "zl_deletebluebig", in: Bundle(for: ZLScannerViewController.self), compatibleWith: nil)
+                    deleteImageView.image = imageN
+                    lineView.backgroundColor = COLORFROMHEX(0x18ACF8)
+                } else {
+                    let imageN = UIImage(named: "zl_graydeletegbig", in: Bundle(for: ZLScannerViewController.self), compatibleWith: nil)
+                    deleteImageView.image = imageN
+                    lineView.backgroundColor = COLORFROMHEX(0x979797)
+                }
             }
         }
         
         private lazy var lineView: UIView = {
             let view = UIView()
-            view.backgroundColor = UIColor.white
+            view.backgroundColor = COLORFROMHEX(0x979797)
             return view
         }()
         
         private lazy var deleteImageView: UIImageView = {
             let view = UIImageView()
-            view.backgroundColor = UIColor.orange
+            let imageN = UIImage(named: "zl_graydeletegbig", in: Bundle(for: ZLScannerViewController.self), compatibleWith: nil)
+            view.image = imageN
             return view
         }()
         
         init() {
             super.init(frame: CGRect.zero)
-            backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+            backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
             addSubview(lineView)
             addSubview(deleteImageView)
             setupFrame()

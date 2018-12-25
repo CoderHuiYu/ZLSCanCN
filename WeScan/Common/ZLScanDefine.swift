@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+let kZLDeleteItemNotificationName: String = "kZLDeleteItemNotificationName"
+
 let kZLScanPathDocument = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true).first!
 let kZLScanPhotoModelDataPath = "\(kZLScanPathDocument)/ZLScanData.plist"
 let kZLScanPhotoFileDataPath = "\(kZLScanPathDocument)/ZLScanPhotoImage"

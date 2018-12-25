@@ -21,6 +21,10 @@ class ZLPhotoEditorController: ZLScannerBasicViewController, Convertable {
     var updataCallBack: (()->())?
     
     @IBOutlet weak var toolBarView: UIView!
+    @IBOutlet weak var doneButton: UIButton!
+    @IBOutlet weak var toolBarViewPDF: UIView!
+    @IBOutlet weak var keepScanButton: UIButton!
+    @IBOutlet weak var doneButton1: UIButton!
     @IBOutlet weak var collectionView: UICollectionView!
     
     private lazy var rightButton: UIButton = {
@@ -35,6 +39,7 @@ class ZLPhotoEditorController: ZLScannerBasicViewController, Convertable {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        NotificationCenter.default.addObserver(self, selector: #selector(itemDidRemove), name: NSNotification.Name.init(kZLDeleteItemNotificationName), object: nil)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightButton)
         setupUI()
         if isNeedLoadPDF {
@@ -43,6 +48,11 @@ class ZLPhotoEditorController: ZLScannerBasicViewController, Convertable {
                 self.collectionView.reloadData()
                 self.title = "\(1)/\(models.count)"
             }
+            toolBarViewPDF.isHidden = false
+            toolBarView.isHidden = true
+        } else {
+            toolBarViewPDF.isHidden = true
+            toolBarView.isHidden = false
         }
     }
     
@@ -53,11 +63,25 @@ class ZLPhotoEditorController: ZLScannerBasicViewController, Convertable {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 // MARK: - UI
 extension ZLPhotoEditorController {
-    
     fileprivate func setupUI() {
+        keepScanButton.layer.borderColor = COLORFROMHEX(0x787878).cgColor
+        keepScanButton.layer.cornerRadius = 4
+        keepScanButton.layer.borderWidth = 2
+        keepScanButton.layer.masksToBounds = true
+        doneButton.layer.cornerRadius = 4
+        doneButton.layer.masksToBounds = true
+        doneButton.getGradientColor()
+        doneButton1.layer.cornerRadius = 4
+        doneButton1.layer.masksToBounds = true
+        doneButton1.getGradientColor()
+        
         view.backgroundColor = UIColor.white
         if let currentIndex = currentIndex {
             title = "\(currentIndex.row + 1)/\(photoModels.count)"
@@ -71,7 +95,6 @@ extension ZLPhotoEditorController {
         collectionView.register(UINib(nibName: "ZLPhotoCell", bundle: Bundle(for: type(of: self))), forCellWithReuseIdentifier: .kCollectionCellIdentifier)
         collectionView.collectionViewLayout = layout
         collectionView.decelerationRate = .fast
-        view.addSubview(bottomView(title: "Done"))
         
         guard let currentIndex = currentIndex else {
             return
@@ -82,17 +105,27 @@ extension ZLPhotoEditorController {
             collectionView.scrollToItem(at: currentIndex, at: UICollectionView.ScrollPosition.centeredHorizontally, animated: true)
         }
     }
-
-    fileprivate func updateTitle() {
-        let cells = collectionView.visibleCells
-        let centerCells = cells.filter({
-            let cellCenter = collectionView.convert($0.center, to: view)
-            return cellCenter.x == view.center.x
-        })
+    
+    func scrollToIndex(index: Int) {
+        currentIndex = IndexPath(item: index, section: 0)
+        if index > 0 {
+            collectionView.layoutIfNeeded()
+            collectionView.scrollToItem(at: currentIndex!, at: UICollectionView.ScrollPosition.centeredHorizontally, animated: true)
+        }
+    }
+    
+    @objc fileprivate func itemDidRemove(_ notification: Notification) {
+        guard let index = notification.object as? Int else {
+            return
+        }
+        photoModels.remove(at: index)
+        collectionView.reloadData()
+        collectionView.layoutIfNeeded()
+        updateTitle()
         
-        guard let centerCell = centerCells.first else { return }
-        guard let indexPath = collectionView.indexPath(for: centerCell) else { return }
-        title = "\(indexPath.row + 1)/\(photoModels.count)"
+        if let callBack = self.updataCallBack {
+            callBack()
+        }
     }
 }
 
@@ -117,10 +150,7 @@ extension ZLPhotoEditorController: UICollectionViewDelegate, UICollectionViewDat
             let model = photoModels[indexPath.row]
             let vc = ZLPhotoEditingController.init(nibName: "ZLPhotoEditingController", bundle: Bundle(for: self.classForCoder))
             vc.model = model
-            vc.deleteModelCallBack = { [weak self] in
-                self?.photoModels.remove(at: indexPath.row)
-                self?.collectionView.reloadData()
-            }
+            vc.index = indexPath.row
             vc.saveModelCallBack = { [weak self] (model) in
                 self?.replaceModel(model)
             }
@@ -142,9 +172,32 @@ extension ZLPhotoEditorController: UICollectionViewDelegate, UICollectionViewDat
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         updateTitle()
     }
+    
+    fileprivate func updateTitle() {
+        let cells = collectionView.visibleCells
+        let centerCells = cells.filter({
+            let cellCenter = collectionView.convert($0.center, to: view)
+            return cellCenter.x == view.center.x
+        })
+        
+        guard let centerCell = centerCells.first else { return }
+        guard let indexPath = collectionView.indexPath(for: centerCell) else { return }
+        title = "\(indexPath.row + 1)/\(photoModels.count)"
+    }
 }
 // MARK: - Event
 extension ZLPhotoEditorController {
+    @IBAction func doneAction(_ sender: Any) {
+        // completion
+        print("completion")
+    }
+    
+    @IBAction func keepScanAction(_ sender: Any) {
+        let vc = ZLScannerViewController()
+        vc.fromController = self
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     // nav leftbutton action
     override func backBtnClicked() {
         if isNeedLoadPDF {
