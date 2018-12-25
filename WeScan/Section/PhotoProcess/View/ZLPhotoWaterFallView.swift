@@ -62,14 +62,17 @@ class ZLPhotoWaterFallView: UIView {
         completeButton.layer.cornerRadius = 4
         completeButton.layer.masksToBounds = true
         completeButton.setTitle("Done", for: .normal)
+        completeButton.isHidden = true
+        completeButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         completeButton.setTitleColor(UIColor.black, for: .normal)
         completeButton.addTarget(self, action: #selector(completeButtonAction), for: .touchUpInside)
         return completeButton
     }()
     
     fileprivate lazy var shadowImageView: UIImageView = {
-        let shadowImageView = UIImageView(frame: self.collectionView.frame)
-        shadowImageView.image = UIImage(named: "zl_balloon", in: Bundle.init(for: self.classForCoder), compatibleWith: nil)
+        let shadowImageView = UIImageView(frame: CGRect(x: self.collectionView.frame.origin.x + 15, y: self.collectionView.frame.origin.y + 10, width: self.collectionView.frame.size.width - 15 * 2, height: self.collectionView.frame.size .height - 10 * 2))
+        shadowImageView.image = UIImage(named: "zl_cattips", in: Bundle.init(for: self.classForCoder), compatibleWith: nil)
+        shadowImageView.contentMode = .scaleAspectFit
         return shadowImageView
     }()
     
@@ -261,7 +264,7 @@ class ZLCustomButton: UIButton {
             return
         }
         self.imageView?.frame = CGRect(x: (frame.size.width - imageView.frame.size.width) * 0.5, y: 20, width: imageView.frame.size.width, height: imageView.frame.size.height)
-        self.titleLabel?.frame = CGRect(x: 0, y: imageView.frame.maxY + 10, width: frame.size.width, height: titleLabel.frame.size.height)
+        self.titleLabel?.frame = CGRect(x: 0, y: frame.size.height - titleLabel.frame.size.height - 20, width: frame.size.width, height: titleLabel.frame.size.height)
     }
 }
 

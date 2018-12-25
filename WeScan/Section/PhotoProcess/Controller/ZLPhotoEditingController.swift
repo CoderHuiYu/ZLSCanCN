@@ -35,6 +35,7 @@ class ZLPhotoEditingController: ZLScannerBasicViewController {
         let button = UIButton()
         button.setTitle("Retake", for: .normal)
         button.setTitleColor(globalColor, for: .normal)
+        button.titleLabel?.font = basicFont
         button.tag = 0
         button.addTarget(self, action: #selector(itemButtonAction(_:)), for: .touchUpInside)
         return button
@@ -44,6 +45,7 @@ class ZLPhotoEditingController: ZLScannerBasicViewController {
         let button = UIButton()
         button.setTitle("Save", for: .normal)
         button.setTitleColor(globalColor, for: .normal)
+        button.titleLabel?.font = basicFont
         button.addTarget(self, action: #selector(saveAction), for: .touchUpInside)
         return button
     }()
