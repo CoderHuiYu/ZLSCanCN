@@ -69,11 +69,11 @@ extension ZLSortCollectionView : UIGestureRecognizerDelegate{
             print("")
         }
     }
+    
     private func dragBegin(_ point: CGPoint) {
         guard let indexPath = self.indexPathForItem(at: point) else {return}
         dragingIndexPath = indexPath
         targetIndexPath  = indexPath
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue:"ZLScanBeginDrag"), object: nil)
         let cell = self.cellForItem(at: dragingIndexPath! ) as! ZLSortCollectionViewCell
         cell.iconImageView.isHidden = true
         dragCell.frame = cell.iconImageView.frame
@@ -83,6 +83,7 @@ extension ZLSortCollectionView : UIGestureRecognizerDelegate{
         dragCell.transform = CGAffineTransform.identity
         pressTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(pressAnimation), userInfo: nil, repeats: true)
     }
+    
     private func dragChange(_ point: CGPoint) {
         if dragingIndexPath == nil {return}
         dragCell.center = point
@@ -131,10 +132,9 @@ extension ZLSortCollectionView : UIGestureRecognizerDelegate{
             dragingIndexPath = targetIndexPath
         }
     }
+    
     private func dragEnd(_ point: CGPoint) {
         guard let _ = dragingIndexPath else { return }
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue:"ZLScanEndDrag"), object: nil)
-        
         let cell = self.cellForItem(at: self.dragingIndexPath! as IndexPath) as! ZLSortCollectionViewCell
         dragCell.transform = CGAffineTransform.identity
         
@@ -147,11 +147,13 @@ extension ZLSortCollectionView : UIGestureRecognizerDelegate{
         }
         cancelPress()
     }
+    
     private func updatePhotoModels() {
         let cell = photoModels[(dragingIndexPath?.row)!]
         photoModels.remove(at: (dragingIndexPath?.row)!)
         photoModels.insert(cell, at: (targetIndexPath?.row)!)
     }
+    
     @objc private func pressAnimation() {
         // dragging animate
         UIView.animate(withDuration: 0.7, animations: {
@@ -162,6 +164,7 @@ extension ZLSortCollectionView : UIGestureRecognizerDelegate{
             }, completion: nil)
         }
     }
+    
     // removeTimer
     private func cancelPress() {
         if pressTimer != nil {
@@ -175,6 +178,7 @@ extension ZLSortCollectionView: UICollectionViewDelegate,UICollectionViewDataSou
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return photoModels.count
     }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ZLSortCollectionViewCell.ZLSortCollectionViewCellID, for: indexPath) as! ZLSortCollectionViewCell
         cell.imageConfig(iconImage: photoModels[indexPath.item].enhancedImage, style: .editing)
@@ -182,6 +186,7 @@ extension ZLSortCollectionView: UICollectionViewDelegate,UICollectionViewDataSou
         cell.delegate = self
         return cell
     }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! ZLSortCollectionViewCell
         var model = photoModels[indexPath.item]

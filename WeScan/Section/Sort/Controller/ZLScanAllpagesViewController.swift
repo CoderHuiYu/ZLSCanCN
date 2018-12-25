@@ -32,15 +32,13 @@ class ZLScanAllpagesViewController: ZLScannerBasicViewController, Convertable{
         super.init(nibName: nil, bundle: nil)
         self.models = models
     }
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "All Pages"
-        viewConfigs()
+        viewConfig()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let fromAnimation = AnimationType.from(direction: .bottom, offset: 50.0)
@@ -51,7 +49,8 @@ class ZLScanAllpagesViewController: ZLScannerBasicViewController, Convertable{
             })
         }, completion: nil)
     }
-    private func viewConfigs() {
+    
+    private func viewConfig() {
         view.addSubview(sortCollectionView)
         let rightBtn = UIButton ()
         rightBtn.titleLabel?.font = basicFont
@@ -61,16 +60,22 @@ class ZLScanAllpagesViewController: ZLScannerBasicViewController, Convertable{
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBtn)
         view.addSubview(bottomView(title: "Done"))
     }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 extension ZLScanAllpagesViewController: UICollectionViewDelegate, UICollectionViewDataSource, ZLScanSortViewControllerProtocol{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return models.count
     }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ZLSortCollectionViewCell.ZLSortCollectionViewCellID, for: indexPath) as! ZLSortCollectionViewCell
         cell.imageConfig(iconImage: models[indexPath.item].enhancedImage, style: .normal)
         return cell
     }
+    
     func sortDidFinished(_ photoModels: [ZLPhotoModel]) {
         ZLPhotoModel.sortAllModel(photoModels) { [weak self] (isSuccess) in
             if isSuccess {
@@ -88,11 +93,13 @@ extension ZLScanAllpagesViewController{
     override func backBtnClicked() {
         navigationController?.popViewController(animated: true)
     }
+    
     @objc func rightBtnClick(_ sender: UIButton) {
         let sortVC = ZLScanSortViewController(models)
         sortVC.delegate = self
         navigationController?.pushViewController(sortVC, animated: true)
     }
+    
     override func bottomBtnClicked() {
         //convertToPDF
         let  pdfpath = convertPDF(models, fileName: "temporary.pdf")
@@ -102,7 +109,6 @@ extension ZLScanAllpagesViewController{
                     callBack(pdfpath ?? "")
                 }
                 navigationController?.dismiss(animated: true, completion: nil)
-    
             }
         }
     }

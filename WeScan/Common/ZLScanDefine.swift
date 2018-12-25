@@ -17,7 +17,7 @@ let kScreenWidth = UIScreen.main.bounds.size.width
 let kScreenHeight = UIScreen.main.bounds.size.height
 
 let globalColor = GlobalColor()
-let basicFont = globalFont()
+let basicFont = GlobalFont()
 
 let iPhoneX = UIScreen.main.bounds.size.height >= 812 ? true : false
 let kNavHeight: CGFloat = iPhoneX ? 88.0 : 64.0
@@ -33,6 +33,6 @@ func COLORFROMHEX(_ h:Int) ->UIColor {
 func GlobalColor() -> UIColor{
     return COLORFROMHEX(0x18acf8)
 }
-func globalFont() -> UIFont{
+func GlobalFont() -> UIFont{
     return UIFont.systemFont(ofSize: 14)
 }

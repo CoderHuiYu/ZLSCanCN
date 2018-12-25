@@ -17,6 +17,7 @@ class ZLPDFMenuViewCell: UITableViewCell {
         iconImageView.contentMode = .scaleAspectFit
         return iconImageView
     }()
+    
     private lazy var itemLabel: UILabel = {
         let itemLabel = UILabel()
         itemLabel.frame = CGRect(x: 54, y: 10, width: 100, height: 22)
@@ -28,17 +29,20 @@ class ZLPDFMenuViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
-        viewConfigs()
+        viewConfig()
     }
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    private func viewConfigs() {
+
+    private func viewConfig() {
         contentView.addSubview(iconImageView)
         contentView.addSubview(itemLabel)
     }
+    
     func modelConfig(_ image: UIImage, text: String) {
         iconImageView.image = image
         itemLabel.text = text
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

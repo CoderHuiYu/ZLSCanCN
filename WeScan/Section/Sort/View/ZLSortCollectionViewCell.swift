@@ -61,8 +61,6 @@ class ZLSortCollectionViewCell: UICollectionViewCell {
     }
     override init(frame: CGRect) {
         super.init(frame: frame)
-        NotificationCenter.default.addObserver(self, selector: #selector(dragBegin), name: NSNotification.Name(rawValue:"ZLScanBeginDrag"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(endDrag), name: NSNotification.Name(rawValue:"ZLScanEndDrag"), object: nil)
         setupView()
     }
     
@@ -118,15 +116,6 @@ class ZLSortCollectionViewCell: UICollectionViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-}
-//MARK: - Action
-extension ZLSortCollectionViewCell{
-    @objc private func delBtnClicked(_ btn: UIButton) {
-        guard let delegate = delegate else { return }
-        delegate.deleteItem(self)
-    }
-    @objc private func dragBegin() {}
-    @objc private func endDrag() {}
 }
 
 
