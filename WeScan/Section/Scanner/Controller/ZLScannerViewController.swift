@@ -36,7 +36,6 @@ class ZLScannerViewController: ZLScannerBasicViewController {
     private var isAutoCapture: Bool = true {
         didSet {
             quadView.removeQuadrilateral()
-//            promptView.isHidden = !isAutoCapture
             captureSessionManager?.autoCapture = isAutoCapture
         }
     }
@@ -77,6 +76,7 @@ class ZLScannerViewController: ZLScannerBasicViewController {
     
     private lazy var promptView: ZLScanningPromptView = {
         let promptView = ZLScanningPromptView(frame: .zero)
+        promptView.isHidden = true
         return promptView
     }()
     
@@ -257,7 +257,7 @@ extension ZLScannerViewController: ZLScanRectangleDetectionDelegateProtocol {
     }
     
     func didStartCapturingPicture(for captureSessionManager: CaptureSessionManager) {
-        promptView.isHidden = true
+//        promptView.isHidden = true
     }
     
     func captureSessionManager(_ captureSessionManager: CaptureSessionManager, didCapturePicture picture: UIImage, withQuad quad: ZLQuadrilateral?) {
@@ -335,7 +335,7 @@ extension ZLScannerViewController: ZLScanRectangleDetectionDelegateProtocol {
         if noRectangle < 200 {
             promptView.scanningNoticeLabel.text = "Position the document in view."
         }else {
-            promptView.scanningNoticeLabel.text = "Move camera closer."
+            promptView.scanningNoticeLabel.text = "Position the document in view."
         }
     }
     

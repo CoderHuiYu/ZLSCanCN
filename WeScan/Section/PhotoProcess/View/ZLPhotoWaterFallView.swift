@@ -97,6 +97,18 @@ class ZLPhotoWaterFallView: UIView {
         super.init(frame: frame)
         setupUI()
         getData()
+        
+        if photoModels.count == 0 {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+                UIView.animate(withDuration: 0.25, animations: {
+                    self.shadowImageView.alpha = 0.1
+                }, completion: { _ in
+                    self.shadowImageView.isHidden = true
+                })
+            }
+        } else {
+            shadowImageView.isHidden = true
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -126,13 +138,6 @@ extension ZLPhotoWaterFallView {
         toolBarView.addSubview(completeButton)
         addSubview(collectionView)
         addSubview(shadowImageView)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
-            UIView.animate(withDuration: 0.25, animations: {
-                self.shadowImageView.alpha = 0.1
-            }, completion: { _ in
-                self.shadowImageView.isHidden = true
-            })
-        }
     }
     
     fileprivate func updateCompletionButton(count: Int) {

@@ -190,6 +190,7 @@ extension ZLPhotoEditorController {
     @IBAction func doneAction(_ sender: Any) {
         // completion
         print("completion")
+        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func keepScanAction(_ sender: Any) {

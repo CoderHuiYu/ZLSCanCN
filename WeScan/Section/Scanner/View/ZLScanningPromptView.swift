@@ -12,7 +12,6 @@ class ZLScanningPromptView: UIView {
 
     lazy var scanningNoticeLabel: UILabel = {
         let scanningNoticeLabel = UILabel()
-        scanningNoticeLabel.text = "Move camera closer."
         scanningNoticeLabel.font = UIFont.systemFont(ofSize: 16)
         scanningNoticeLabel.textColor = UIColor.white
         scanningNoticeLabel.textAlignment = .center
