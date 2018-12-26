@@ -231,7 +231,7 @@
 		FEE9FDB521C8977C0065E87B /* ZLScanCaptureSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLScanCaptureSessionManager.swift; sourceTree = "<group>"; };
 		FEE9FDB721C8977C0065E87B /* ZLPhotoWaterFallLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLPhotoWaterFallLayout.swift; sourceTree = "<group>"; };
 		FEE9FDB821C8977C0065E87B /* ZLQuadrilateral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLQuadrilateral.swift; sourceTree = "<group>"; };
-		FEE9FDB921C8977C0065E87B /* ZLScanningPromptView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLScanningPromptView.swift; sourceTree = "<group>"; };
+		FEE9FDB921C8977C0065E87B /* ZLScanningPromptView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLScanningPromptView.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		FEE9FDBA21C8977C0065E87B /* ZLPhotoWaterFallView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLPhotoWaterFallView.swift; sourceTree = "<group>"; };
 		FEE9FDBB21C8977C0065E87B /* ZLScanRoundedProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLScanRoundedProgressView.swift; sourceTree = "<group>"; };
 		FEE9FDBD21C8977C0065E87B /* ZLScanPhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZLScanPhotoCell.swift; sourceTree = "<group>"; };
