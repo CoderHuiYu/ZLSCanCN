@@ -46,6 +46,10 @@ class ZLPhotoWaterFallView: UIView {
         return collectionView.frame.size.height
     }
     
+    var getPhotoModels: [ZLPhotoModel] {
+        return photoModels
+    }
+    
     fileprivate var photoModels = [ZLPhotoModel]()
     
     // tool bar UI
