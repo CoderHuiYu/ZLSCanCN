@@ -41,7 +41,7 @@ class ZLSortAllpagesCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     private func setupView() {
-        contentView.backgroundColor = UIColor.clear
+        contentView.backgroundColor = .clear
         contentView.addSubview(iconimageView)
     }
     func configImage(iconImage: UIImage, style: SortStyle) {

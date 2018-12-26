@@ -41,13 +41,13 @@ class ZLScanAllpagesViewController: ZLScannerBasicViewController, Convertable{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let fromAnimation = AnimationType.from(direction: .bottom, offset: 50.0)
-        sortCollectionView.reloadData()
-        sortCollectionView.performBatchUpdates({
-            UIView.animate(views: sortCollectionView.orderedVisibleCells,
-                           animations: [fromAnimation], completion: {
-            })
-        }, completion: nil)
+//        let fromAnimation = AnimationType.from(direction: .bottom, offset: 50.0)
+//        sortCollectionView.reloadData()
+//        sortCollectionView.performBatchUpdates({
+//            UIView.animate(views: sortCollectionView.orderedVisibleCells,
+//                           animations: [fromAnimation], completion: {
+//            })
+//        }, completion: nil)
     }
     
     private func viewConfig() {

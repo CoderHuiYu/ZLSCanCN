@@ -43,14 +43,6 @@
 		B9274D3A219B951000F9FCD1 /* CIImage+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9274D39219B951000F9FCD1 /* CIImage+Utils.swift */; };
 		C3789C9B20CC69AD001B423F /* QuadrilateralViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3789C9A20CC69AD001B423F /* QuadrilateralViewTests.swift */; };
 		C3E2EB8E20B8970800A42E58 /* UIImage+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E2EB8D20B8970800A42E58 /* UIImage+Utils.swift */; };
-		FE15D3A421C23578000AD056 /* ViewAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE15D3A321C23578000AD056 /* ViewAnimator.swift */; };
-		FE15D3A621C235B2000AD056 /* ViewAnimatorConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE15D3A521C235B2000AD056 /* ViewAnimatorConfig.swift */; };
-		FE15D3AC21C2367D000AD056 /* UICollectionView+ViewAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE15D3AB21C2367D000AD056 /* UICollectionView+ViewAnimator.swift */; };
-		FE15D3AE21C2369B000AD056 /* UITableView+Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE15D3AD21C2369B000AD056 /* UITableView+Animator.swift */; };
-		FE15D3B021C236BD000AD056 /* AnimatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE15D3AF21C236BD000AD056 /* AnimatorType.swift */; };
-		FE15D3B221C236E4000AD056 /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE15D3B121C236E4000AD056 /* Direction.swift */; };
-		FE15D3B421C23708000AD056 /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE15D3B321C23708000AD056 /* Animation.swift */; };
-		FE15D3B621C2374A000AD056 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE15D3B521C2374A000AD056 /* Utilities.swift */; };
 		FEE6A0E821B7780400C2CEC3 /* Convertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE6A0E721B7780400C2CEC3 /* Convertable.swift */; };
 		FEE6A0EF21B8C94700C2CEC3 /* testA.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEE6A0EE21B8C94600C2CEC3 /* testA.pdf */; };
 		FEE9FD6421C789730065E87B /* ZLTransformable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE9FD6321C789730065E87B /* ZLTransformable.swift */; };
@@ -204,14 +196,6 @@
 		B97B49D5216C6FF600B2235B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C3789C9A20CC69AD001B423F /* QuadrilateralViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuadrilateralViewTests.swift; sourceTree = "<group>"; };
 		C3E2EB8D20B8970800A42E58 /* UIImage+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Utils.swift"; sourceTree = "<group>"; };
-		FE15D3A321C23578000AD056 /* ViewAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAnimator.swift; sourceTree = "<group>"; };
-		FE15D3A521C235B2000AD056 /* ViewAnimatorConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAnimatorConfig.swift; sourceTree = "<group>"; };
-		FE15D3AB21C2367D000AD056 /* UICollectionView+ViewAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+ViewAnimator.swift"; sourceTree = "<group>"; };
-		FE15D3AD21C2369B000AD056 /* UITableView+Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Animator.swift"; sourceTree = "<group>"; };
-		FE15D3AF21C236BD000AD056 /* AnimatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorType.swift; sourceTree = "<group>"; };
-		FE15D3B121C236E4000AD056 /* Direction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
-		FE15D3B321C23708000AD056 /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
-		FE15D3B521C2374A000AD056 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		FEE6A0E721B7780400C2CEC3 /* Convertable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Convertable.swift; sourceTree = "<group>"; };
 		FEE6A0EE21B8C94600C2CEC3 /* testA.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = testA.pdf; sourceTree = "<group>"; };
 		FEE9FD6321C789730065E87B /* ZLTransformable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZLTransformable.swift; sourceTree = "<group>"; };
@@ -414,7 +398,6 @@
 		A1DF90F720371A0800841A11 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				FE15D3A221C2354D000AD056 /* Animate */,
 				FEE9FDF221C89F330065E87B /* ZLScanToast.swift */,
 				FEE9FD8121C7A2E20065E87B /* ZLScanError.swift */,
 				FEE9FDFC21C8A88F0065E87B /* ZLScanCIRectangleDetector.swift */,
@@ -422,21 +405,6 @@
 				FEE9FDF821C8A7E80065E87B /* ZLScanDefine.swift */,
 			);
 			path = Common;
-			sourceTree = "<group>";
-		};
-		FE15D3A221C2354D000AD056 /* Animate */ = {
-			isa = PBXGroup;
-			children = (
-				FE15D3A321C23578000AD056 /* ViewAnimator.swift */,
-				FE15D3A521C235B2000AD056 /* ViewAnimatorConfig.swift */,
-				FE15D3AB21C2367D000AD056 /* UICollectionView+ViewAnimator.swift */,
-				FE15D3AD21C2369B000AD056 /* UITableView+Animator.swift */,
-				FE15D3AF21C236BD000AD056 /* AnimatorType.swift */,
-				FE15D3B121C236E4000AD056 /* Direction.swift */,
-				FE15D3B321C23708000AD056 /* Animation.swift */,
-				FE15D3B521C2374A000AD056 /* Utilities.swift */,
-			);
-			path = Animate;
 			sourceTree = "<group>";
 		};
 		FEE9FDA521C8977B0065E87B /* Section */ = {
@@ -792,7 +760,6 @@
 				FEE9FDCF21C8977C0065E87B /* ZLScanSortViewController.swift in Sources */,
 				A11C5CDB20495EC9005075FE /* AVCaptureVideoOrientation+Utils.swift in Sources */,
 				FEE9FDF721C8A48F0065E87B /* ZLScanCaptureSession.swift in Sources */,
-				FE15D3A621C235B2000AD056 /* ViewAnimatorConfig.swift in Sources */,
 				FEE9FDCB21C8977C0065E87B /* ZLScannerBasicViewController.swift in Sources */,
 				FEE9FDD321C8977C0065E87B /* ZLPhotoModel.swift in Sources */,
 				FEE9FE3921CCADFF0065E87B /* ZLScanRenameViewController.swift in Sources */,
@@ -816,20 +783,15 @@
 				FEE9FDD121C8977C0065E87B /* ZLScanRectangleFeaturesFunnel.swift in Sources */,
 				FEE9FE0521C8EEC80065E87B /* ZLScanAllpagesViewController.swift in Sources */,
 				FEE9FDFB21C8A83B0065E87B /* ZLScanVisionRectangleDetector.swift in Sources */,
-				FE15D3B621C2374A000AD056 /* Utilities.swift in Sources */,
-				FE15D3A421C23578000AD056 /* ViewAnimator.swift in Sources */,
 				FEE9FE0D21CA4B050065E87B /* ZLPDFMenuView.swift in Sources */,
 				FEE9FDD221C8977C0065E87B /* ZLPhotoManager.swift in Sources */,
 				FEE9FE1221CB8DAE0065E87B /* ZLScanShareViewController.swift in Sources */,
 				FEE9FDC721C8977C0065E87B /* ZLEditScanViewController.swift in Sources */,
-				FE15D3B421C23708000AD056 /* Animation.swift in Sources */,
-				FE15D3B021C236BD000AD056 /* AnimatorType.swift in Sources */,
 				FEE9FE3B21CCE0C20065E87B /* UIView+CAGradientLayer.swift in Sources */,
 				C3E2EB8E20B8970800A42E58 /* UIImage+Utils.swift in Sources */,
 				FEE9FDCE21C8977C0065E87B /* ZLImageScannerController.swift in Sources */,
 				FEE9FDF521C8A39C0065E87B /* ZLScanEidtCornerView.swift in Sources */,
 				A1F22EA5202DB3AA001723AD /* CGPoint+Utils.swift in Sources */,
-				FE15D3AE21C2369B000AD056 /* UITableView+Animator.swift in Sources */,
 				93C0BEC221CA45B200D6ACD5 /* ZLPhotoEditingController.swift in Sources */,
 				FEE9FDF321C89F330065E87B /* ZLScanToast.swift in Sources */,
 				B9274D3A219B951000F9FCD1 /* CIImage+Utils.swift in Sources */,
@@ -840,12 +802,10 @@
 				FEE9FE6721D104710065E87B /* ZLPDFMenuViewCell.swift in Sources */,
 				FEE9FDDC21C8977C0065E87B /* ZLSortCollectionViewCell.swift in Sources */,
 				FEE9FE1421CB8E5C0065E87B /* UIAlertController+Extension.swift in Sources */,
-				FE15D3AC21C2367D000AD056 /* UICollectionView+ViewAnimator.swift in Sources */,
 				FEE9FDDD21C8977C0065E87B /* ZLSortCollectionView.swift in Sources */,
 				A1DF90F62037187500841A11 /* UIImage+Orientation.swift in Sources */,
 				FEE9FD8221C7A2E20065E87B /* ZLScanError.swift in Sources */,
 				FEE6A0E821B7780400C2CEC3 /* Convertable.swift in Sources */,
-				FE15D3B221C236E4000AD056 /* Direction.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1028,7 +988,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4TJ7K2DH6D;
+				DEVELOPMENT_TEAM = A5X7BL9CZV;
 				INFOPLIST_FILE = WeScanSampleProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1045,7 +1005,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4TJ7K2DH6D;
+				DEVELOPMENT_TEAM = A5X7BL9CZV;
 				INFOPLIST_FILE = WeScanSampleProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1064,7 +1024,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 4TJ7K2DH6D;
+				DEVELOPMENT_TEAM = A5X7BL9CZV;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -1091,7 +1051,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 4TJ7K2DH6D;
+				DEVELOPMENT_TEAM = A5X7BL9CZV;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
