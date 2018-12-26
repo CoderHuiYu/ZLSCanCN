@@ -9,11 +9,6 @@
 import UIKit
 
 class ZLScannerBasicViewController: UIViewController {
-    //compeleteHandle
-    var dismissWithPDFPath: ((_ pdfPath: String)->())?
-    var dismissCallBackIndex: ((_ index: Int?)->())?
-    var dismissCallBack: ((String)->())?
-    
     private lazy var backButton: UIBarButtonItem = {
         let backButton = UIButton(frame: CGRect(origin: .zero, size: CGSize(width: 64, height: 32)))
         backButton.addTarget(self, action: #selector(backBtnClicked), for: .touchUpInside)

@@ -105,9 +105,7 @@ extension ZLScanAllpagesViewController{
         let  pdfpath = convertPDF(models, fileName: "temporary.pdf")
         ZLPhotoModel.removeAllModel { (isSuccess) in
             if isSuccess {
-                if let callBack = self.dismissCallBack {
-                    callBack(pdfpath ?? "")
-                }
+                NotificationCenter.default.post(name: NSNotification.Name.init(kZLSavePDFSuccessNotificationName), object: NSData())
                 navigationController?.dismiss(animated: true, completion: nil)
             }
         }

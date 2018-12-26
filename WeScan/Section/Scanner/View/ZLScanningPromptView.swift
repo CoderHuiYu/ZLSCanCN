@@ -15,6 +15,7 @@ class ZLScanningPromptView: UIView {
         scanningNoticeLabel.font = UIFont.systemFont(ofSize: 16)
         scanningNoticeLabel.textColor = UIColor.white
         scanningNoticeLabel.textAlignment = .center
+        scanningNoticeLabel.text = "Position the document in view."
         scanningNoticeLabel.sizeToFit()
         return scanningNoticeLabel
     }()

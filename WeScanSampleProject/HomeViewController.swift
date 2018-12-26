@@ -99,15 +99,15 @@ final class HomeViewController: UIViewController {
     // MARK: - Actions
     
     @objc func presentScanController(_ sender: UIButton) {
-        let scannerVC = ZLImageScannerController(withOriginalPdfPath: nil) { (pdfPath) in
-            print(pdfPath)
+        let scannerVC = ZLImageScannerController(withOriginalPdfPath: nil) { (pdfData) in
+            print(pdfData)
         }
         present(scannerVC, animated: true, completion: nil)
     }
     @objc func editPDF() {
         let path = Bundle.main.path(forResource: "testA", ofType: "pdf")
-        let scannerVC = ZLImageScannerController(withOriginalPdfPath: path) { (pdfPath) in
-            print(pdfPath)
+        let scannerVC = ZLImageScannerController(withOriginalPdfPath: path) { (pdfData) in
+            print(pdfData)
         }
         present(scannerVC, animated: true, completion: nil)
     }

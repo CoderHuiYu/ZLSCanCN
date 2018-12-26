@@ -514,15 +514,16 @@ extension ZLScannerViewController: ZLPhotoWaterFallViewProtocol {
         vc.updataCallBack = {
             self.photoCollectionView.getData()
         }
-        vc.dismissCallBack = { (pdfPath) in
-            if let callBack = self.dismissWithPDFPath { callBack(pdfPath) }
-        }
         navigationController?.pushViewController(vc, animated: true)
     }
     
     func doneAction() {
-        ZLPhotoModel.removeAllModel { (_) in
-            dismiss(animated: true, completion: nil)
+//        pdfpath = convertPDF(photoModels, fileName: "temporary.pdf")
+        ZLPhotoModel.removeAllModel { (isSuccess) in
+            if isSuccess {
+                NotificationCenter.default.post(name: NSNotification.Name.init(kZLSavePDFSuccessNotificationName), object: NSData())
+                self.dismiss(animated: true, completion: nil)
+            }
         }
     }
 }

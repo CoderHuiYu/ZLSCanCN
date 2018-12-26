@@ -9,7 +9,7 @@
 import UIKit
 
 public final class ZLImageScannerController: UINavigationController {
-    
+    private var handleCallBack: ((NSData)->())?
     internal let blackFlashView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(white: 0.0, alpha: 0.5)
@@ -17,21 +17,24 @@ public final class ZLImageScannerController: UINavigationController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    public required init(withOriginalPdfPath pdfPath: String?, handle:@escaping (_ pdfPath: String)->()) {
+    public required init(withOriginalPdfPath pdfPath: String?, handle: @escaping (_ pdfData: NSData)->()) {
+        // accept data notification
         if let path = pdfPath {
             let vc = ZLPDFPreviewController(pdfPath: path)
             super.init(rootViewController: vc)
         }else{
             let scannerViewController = ZLScannerViewController()
-            scannerViewController.dismissWithPDFPath = { path in
-                handle(path)
-            }
             super.init(rootViewController: scannerViewController)
             navigationBar.tintColor = .black
             navigationBar.isTranslucent = false
             self.view.addSubview(blackFlashView)
             setupConstraints()
         }
+        NotificationCenter.default.addObserver(self, selector: #selector(receivedPDFData(_:)), name: NSNotification.Name.init(kZLSavePDFSuccessNotificationName), object: nil)
+        handleCallBack = handle
+    }
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -61,6 +64,15 @@ public final class ZLImageScannerController: UINavigationController {
         let flashDuration = DispatchTime.now() + 0.05
         DispatchQueue.main.asyncAfter(deadline: flashDuration) {
             self.blackFlashView.isHidden = true
+        }
+    }
+    
+    @objc private func receivedPDFData(_ info: Notification) {
+        guard let data = info.object as? NSData else {
+            return
+        }
+        if let callBack = handleCallBack {
+            callBack(data)
         }
     }
 }

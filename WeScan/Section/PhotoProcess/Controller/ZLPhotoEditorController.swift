@@ -188,9 +188,13 @@ extension ZLPhotoEditorController: UICollectionViewDelegate, UICollectionViewDat
 // MARK: - Event
 extension ZLPhotoEditorController {
     @IBAction func doneAction(_ sender: Any) {
-        // completion
-        print("completion")
-        dismiss(animated: true, completion: nil)
+        pdfpath = convertPDF(photoModels, fileName: "temporary.pdf")
+        ZLPhotoModel.removeAllModel { (isSuccess) in
+            if isSuccess {
+                NotificationCenter.default.post(name: NSNotification.Name.init(kZLSavePDFSuccessNotificationName), object: NSData())
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
     }
     
     @IBAction func keepScanAction(_ sender: Any) {
@@ -222,49 +226,6 @@ extension ZLPhotoEditorController {
             strongSelf.collectionView.reloadData()
         }
         navigationController?.pushViewController(allPagesVC, animated: true)
-    }
-    
-    func saveToPhotoLibrary(_ sender: Any) {
-        let selectedModels = photoModels.filter({return $0.isSelected == true})
-        selectedModels.forEach { (model) in
-            let image = UIImage.init(contentsOfFile: kZLScanPhotoFileDataPath + "/\(model.enhancedImagePath)")
-            UIImageWriteToSavedPhotosAlbum(image!, self, #selector(image(image:didFinishSavingWithError:contextInfo:)), nil)
-        }
-    }
-    
-    fileprivate func removeItem(_ cell: ZLScanPhotoCell) {
-        guard let indexPath = collectionView.indexPath(for: cell) else { return }
-        photoModels[indexPath.row].remove { (isSuccess) in
-            if isSuccess {
-                photoModels.remove(at: indexPath.row)
-                collectionView.reloadData()
-            }
-        }
-    }
-}
-extension ZLPhotoEditorController{
-    func sendButtonAction(_ sender: Any) {
-        pdfpath = convertPDF(photoModels, fileName: "temporary.pdf")
-        ZLPhotoModel.removeAllModel { (isSuccess) in
-            if isSuccess {
-                if let callBack = self.dismissCallBack {
-                    callBack(pdfpath ?? "")
-                }
-                if isNeedLoadPDF {
-                    self.dismiss(animated: true, completion: nil)
-                } else {
-                    navigationController?.dismiss(animated: true, completion: nil)
-                }
-            }
-        }
-    }
-    
-    @objc func image(image:UIImage,didFinishSavingWithError error:NSError?,contextInfo:AnyObject) {
-        if error != nil {
-            ZLScanToast.showText("save failed!")
-        }else{
-            ZLScanToast.showText("save success!")
-        }
     }
 }
 
