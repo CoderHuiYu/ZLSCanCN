@@ -40,14 +40,14 @@ class ZLScanSortViewController: ZLScannerBasicViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let fromAnimation = AnimationType.from(direction: .right, offset: 50.0)
-        
-        collectionView.reloadData()
-        collectionView.performBatchUpdates({
-            UIView.animate(views: collectionView.orderedVisibleCells,
-                           animations: [fromAnimation], completion: {
-            })
-        }, completion: nil)
+//        let fromAnimation = AnimationType.from(direction: .right, offset: 50.0)
+//        
+//        collectionView.reloadData()
+//        collectionView.performBatchUpdates({
+//            UIView.animate(views: collectionView.orderedVisibleCells,
+//                           animations: [fromAnimation], completion: {
+//            })
+//        }, completion: nil)
     }
 
     private func creatCollectionView() {
